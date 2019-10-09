@@ -1,1 +1,2 @@
-# mockingbird
+# Mockingbird
+A mock interview matching platform.
