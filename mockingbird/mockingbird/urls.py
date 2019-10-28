@@ -18,11 +18,11 @@ from django.urls import path, include
 from django.views.generic.base import TemplateView
 
 from django.conf.urls import url
-from user_database import views as user_database_views
+from onboard import views as onboard_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    url(r'^signup/$', user_database_views.signup, name='signup'),
+    url(r'^signup/$', onboard_views.signup, name='signup'),
 ]
