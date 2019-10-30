@@ -31,13 +31,7 @@ def signup(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            #user.email_user(subject, message)
-            mail_subject = 'Activate your MockingBird account'
-            to_email = form.cleaned_data.get('email')
-            email = EmailMessage(
-                mail_subject, message, to=[to_email]
-            )
-            email.send()
+            user.email_user(subject, message)
             return redirect('account_activation_sent')
     else:
         form = SignUpForm()
