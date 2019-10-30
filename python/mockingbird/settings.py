@@ -124,4 +124,11 @@ LOGOUT_REDIRECT_URL='/'
 
 
 # will need to change for production
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# or this
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'joudrewjoudrew11@gmail.com'
+EMAIL_HOST_PASSWORD = 'spicysunshine11'
+EMAIL_PORT = 587

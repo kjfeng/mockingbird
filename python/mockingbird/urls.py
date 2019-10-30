@@ -24,4 +24,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     url(r'^signup/$', onboard_views.signup, name='signup'),
+    url(r'^account_activation_sent/$', onboard_views.account_activation_sent, name='account_activation_sent'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        onboard_views.activate, name='activate'),
 ]
