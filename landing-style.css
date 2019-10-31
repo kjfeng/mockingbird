@@ -1,6 +1,5 @@
 body, html {
   width: 100%;
-
   height: 100%;
   text-align: left;
   float: left;
@@ -10,14 +9,36 @@ body, html {
   position: relative;
 }
 
+h1 {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+h6 {
+  font-size: 18px;
+}
+
 .left-side {
-  background-color: #efefef
+  background-color: #efefef;
+  padding: 2rem 3rem 2rem 3rem
 }
 
 .right-side {
-  background-color: white
+  background-color: white;
+  padding-top: 2rem;
+  padding-left: 3rem;
 }
 
-.logo {
-  width: 100%
+.logo-wrapper {
+  margin-bottom: 3rem;
+  max-width: 275px
+}
+
+.title-wrapper {
+  padding-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.login-wrapper {
+  margin-top: 7.2rem;
 }
