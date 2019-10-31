@@ -4,9 +4,9 @@ md - 768px
 lg - 992px
 xl - 1200px */
 
-@media only screen and (min-width: 768px) {
+@media only screen and (max-width: 768px) {
 
-  body, html {
-    
+  .login-wrapper {
+    margin-top: 2rem;
   }
 }
