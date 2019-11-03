@@ -6,7 +6,7 @@ xl - 1200px */
 
 @media only screen and (max-width: 768px) {
 
-  .login-wrapper {
+  .login-title-wrapper, .signup-title-wrapper {
     margin-top: 2rem;
   }
 }

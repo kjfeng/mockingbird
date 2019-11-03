@@ -44,12 +44,13 @@ button[type=submit]:focus {
 
 .left-side {
   background-color: #efefef;
-  padding: 2rem 3rem 2rem 3rem
+  padding: 2rem 3rem 2rem 3rem;
+
 }
 
 .right-side {
   background-color: white;
-  padding: 2rem 3rem 2rem 3rem
+  padding: 2rem 3rem 2rem 3rem;
 }
 
 .logo-wrapper {
@@ -58,19 +59,28 @@ button[type=submit]:focus {
 }
 
 .title-wrapper {
-  padding-top: 1rem;
+  /* padding-top: 1rem; */
   margin-bottom: 1.5rem;
 }
 
-.login-wrapper {
-  margin-top: 7.1rem;
+.login-title-wrapper, .signup-title-wrapper {
+  margin-top: 6rem;
 }
 
-.graphic-wrapper {
-  margin-top: -1rem
+.signup-title-wrapper {
+  display: none;
+}
+
+.signup-form-wrapper {
+  display: none;
 }
 
 .login-form {
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+.signup-form {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
 }
