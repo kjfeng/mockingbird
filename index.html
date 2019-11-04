@@ -59,6 +59,11 @@
             <h1>Sign up</h1>
           </div>
 
+          <div class="col-xs-12 col-md-12 password-title-wrapper">
+            <h1>Recover Password</h1>
+            <h6>Enter your email and we'll send you instructions to recover your password.</h6>
+          </div>
+
           <div class="col-xs-12 col-md-10 login-form-wrapper">
             <form class="login-form" action="index.html" method="post">
               Username:<br>
@@ -67,7 +72,7 @@
               <input type="password" name="password">
               <button type="submit" id='login-button'>Log In</button>
             </form>
-            <p><a href="#">Forgot your password?</a><p>
+            <p><a href="#" onclick="switchToRecovery()">Forgot your password?</a><p>
           </div>
 
           <div class="col-xs-12 col-md-10 signup-form-wrapper">
@@ -82,6 +87,18 @@
               <input type="password" name="confirm-password">
               <button type="submit" id='signup-button'>Sign up</button>
             </form>
+          </div>
+
+          <div class="col-xs-12 col-md-10 password-recovery-wrapper">
+            <form class="password-form" action="index.html" method="post">
+              Email Address:<br>
+              <input type="text" name="email"><br>
+              <button type="button" id='submit-email' onclick="displayPasswordConfirmation()" >Send</button>
+            </form>
+          </div>
+
+          <div class="col-xs-12 col-md-10 password-recovery-confirmation">
+            <p>Your password recovery instructions were sent to your email.</p>
           </div>
 
         </div>
