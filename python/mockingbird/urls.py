@@ -19,6 +19,7 @@ from django.contrib.auth import views as auth_views
 
 from django.conf.urls import url
 from onboard import views as onboard_views
+from account import views as account_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +30,6 @@ urlpatterns = [
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         onboard_views.activate, name='activate'),
     url('^', include('django.contrib.auth.urls')),
+    url(r'^account/$', account_views.account_details, name='account_details'),
+    url(r'^delete/$', account_views.account_delete, name='delete'),
 ]
