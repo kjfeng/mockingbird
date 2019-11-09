@@ -19,11 +19,14 @@ from django.contrib.auth import views as auth_views
 
 from django.conf.urls import url
 from onboard import views as onboard_views
+from match import views as match_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('match/', match_views.match_view),
+    path('matchresults/', match_views.matchresults_view),
     url(r'^signup/$', onboard_views.signup, name='signup'),
     url(r'^account_activation_sent/$', onboard_views.account_activation_sent, name='account_activation_sent'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
