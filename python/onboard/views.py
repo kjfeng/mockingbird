@@ -13,6 +13,7 @@ from django.core.mail import EmailMessage
 
 from .tokens import account_activation_token
 from .forms import SignUpForm
+from match.views import match_view
 
 
 def signup(request):
@@ -54,6 +55,7 @@ def activate(request, uidb64, token):
         user.profile.email_confirmed = True
         user.save()
         login(request, user)
+        
         return redirect('home')
     else:
         return render(request, '../templates/account_activation_invalid.html')
