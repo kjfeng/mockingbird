@@ -23,7 +23,7 @@ def match_view(request):
         return redirect('../matchresults/')
 
 
-    return render(request, "home.html", {})    
+    return render(request, "matching/match.html", {})    
 
 def matchresults_view(request):
     storage = messages.get_messages(request)
