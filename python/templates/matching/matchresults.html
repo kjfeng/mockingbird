@@ -6,6 +6,9 @@
     <p><b>User:</b> {{ username }}</p>
     <p><b>Email:</b> {{ email }}</p>
     <p><b>Industry:</b> {{ industry }}</p>
+    <form action='../'>
+        <input type='submit' value="Accept"> 
+    </form>
     <form action='/match/' method='POST'>{% csrf_token %}
         <input type='submit' value="Match Me Again"> 
     </form>

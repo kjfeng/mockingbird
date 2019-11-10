@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from onboard.models import Profile
 from .user_match import quick_match_prototype
@@ -10,9 +11,9 @@ def match_view(request):
         # clear messages
         storage = messages.get_messages(request) 
         for message in storage:
-            print('clearing ' + str(message) + ' from messages')
+            str(message)
 
-        my_profile = Profile.objects.get(id=1)
+        my_profile = Profile.objects.get(id=request.user.id)
         match = quick_match_prototype(my_profile)
         
         if match is not None:
