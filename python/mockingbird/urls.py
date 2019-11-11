@@ -32,4 +32,6 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
     url(r'^account/$', account_views.account_details, name='account_details'),
     url(r'^delete/$', account_views.account_delete, name='delete'),
+    path('account/update/', account_views.account_update.as_view(), name='account_update'),
+
 ]

@@ -5,7 +5,15 @@
 
     {{user.username}}
 
-     Email 
+     Email
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit">
+    </form>
 
     <a href="{% url 'delete' %}"> Delete Account </a>
 
