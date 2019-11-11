@@ -4,19 +4,13 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-<<<<<<< HEAD
-    Hi {{user.username}}!<br>
     {% if not user.profile.onboard_confirmed %}
     <p><a href='../tags'>Complete Profile</a></p>
-    {% else %}
-    <p><a href='../match'>Match Page</a></p>
     {% endif%}
-=======
     <h3>Welcome, {{user.username}}!</h3>
     <form action='.' method='POST'>{% csrf_token %}
         <input type='submit' value="Get Me Matched!"> 
     </form>
->>>>>>> master
     <p><a href="{% url 'logout' %}"> logout </a></p>
 {% else %}
  <p> You are not logged in</p>

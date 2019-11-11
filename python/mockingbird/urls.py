@@ -25,12 +25,8 @@ from tags import views as tags_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-<<<<<<< HEAD
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('tags/', tags_views.tags_view),
-=======
     path('', match_views.match_view, name='home'),
->>>>>>> master
     path('match/', match_views.match_view),
     path('matchresults/', match_views.matchresults_view),
     url(r'^signup/$', onboard_views.signup, name='signup'),
