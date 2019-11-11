@@ -24,7 +24,7 @@ from match import views as match_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('', match_views.match_view, name='home'),
     path('match/', match_views.match_view),
     path('matchresults/', match_views.matchresults_view),
     url(r'^signup/$', onboard_views.signup, name='signup'),

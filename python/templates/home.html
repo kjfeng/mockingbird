@@ -4,8 +4,10 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    Hi {{user.username}}!<br>
-    <p><a href='../match'>Match Page</a></p>
+    <h3>Welcome, {{user.username}}!</h3>
+    <form action='.' method='POST'>{% csrf_token %}
+        <input type='submit' value="Get Me Matched!"> 
+    </form>
     <p><a href="{% url 'logout' %}"> logout </a></p>
 {% else %}
  <p> You are not logged in</p>
