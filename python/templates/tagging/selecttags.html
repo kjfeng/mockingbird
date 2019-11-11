@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Hi {{user.username}}</h2>
+<h2>Hi, {{user.username}}!</h2>
 <h3>Which industry are you currently interviewing for?</h3>
+<p style="color: red">{{error_message}}</p>
+<br>
 <form method="post">
   {% csrf_token %}
   {% for field in form %}
-    <p>
       {{ field.label_tag }}<br>
       {{ field }}
       {% if field.help_text %}
@@ -15,8 +16,8 @@
       {% for error in field.errors %}
         <p style="color: red">{{ error }}</p>
       {% endfor %}
-    </p>
   {% endfor %}
+  <br>
   <button type="submit">Let's Go!</button>
 </form>
 {% endblock %}

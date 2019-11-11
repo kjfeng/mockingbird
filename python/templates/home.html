@@ -5,7 +5,11 @@
 {% block content %}
 {% if user.is_authenticated %}
     Hi {{user.username}}!<br>
+    {% if not user.profile.onboard_confirmed %}
+    <p><a href='../tags'>Complete Profile</a></p>
+    {% else %}
     <p><a href='../match'>Match Page</a></p>
+    {% endif%}
     <p><a href="{% url 'logout' %}"> logout </a></p>
 {% else %}
  <p> You are not logged in</p>
