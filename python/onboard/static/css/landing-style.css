@@ -89,7 +89,7 @@ button[type=submit]:focus, button[type=button]:focus {
 
 .signup-form {
   margin-top: 1rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 2rem;
 }
 
 .password-recovery-confirmation {

@@ -37,6 +37,12 @@ def signup(request):
         form = SignUpForm()
     return render(request, '../templates/signup.html', {'form': form})
 
+def login(request):
+    if request.method == 'POST':
+        pass
+    else: 
+        pass
+    return render(request, '../templates/home.html') 
 
 def account_activation_sent(request):
     return render(request, 'account_activation_sent.html')
