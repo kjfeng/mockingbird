@@ -1,14 +1,95 @@
 {% extends 'base.html' %}
+    {% load static %}
+    {% block title %} Home {% endblock %}
 
-{% block title %} Home {% endblock %}
+    {% block content %}
+    <script src="{% static 'js/landing-script.js' %}"></script>
+    {% if user.is_authenticated %}
+        Hi {{user.username}}!
+        <p><a href="{% url 'logout' %}"> logout </a></p>
+    {% else %}
+    <body>
+        <div class="container-fluid h-100">
+            <div class="row h-100">
 
-{% block content %}
-{% if user.is_authenticated %}
-    Hi {{user.username}}!
-    <p><a href="{% url 'logout' %}"> logout </a></p>
-{% else %}
- <p> You are not logged in</p>
- <a href="{% url 'login' %}"> login</a>
- <a href="{% url 'signup' %}"> sign up</a>
-{% endif %}
-{% endblock %}
+                <div class="col-xs-12 col-md-7 left-side">
+
+                    <div class="col-xs-6 col-sm-6 col-md-5 logo-wrapper">
+                    <div class="logo">
+                        <img src="{% static 'img/logo.png' %}" alt="" style="width: 100%">
+                    </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12 title-wrapper">
+                    <h1 class="title"> Ace 👏</h1>
+                    <h1 class="title"> Your 👏</h1>
+                    <h1 class="title"> Interviews 👏</h1>
+                    </div>
+        
+                    <div class="col-xs-12 col-md-8">
+                    <h6> Find your mock interview partner and succeed together.</h6>
+                    </div>
+        
+                    <div class="col-xs-12 col-md-9 graphic-wrapper">
+                        <img src="{% static 'img/landing-graphic.png' %}" alt="" style="width: 100%">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-5 right-side">
+                        <div class="col-xs-12 col-md-12 login-title-wrapper">
+                        <h1>Login</h1>
+                        <h6>Don't have an account? <a href="#" onclick="switchToSignup()"> Sign Up</a></h6>
+                        </div>
+            
+                        <div class="col-xs-12 col-md-12 signup-title-wrapper">
+                        <h1>Sign up</h1>
+                        </div>
+
+                        <div class="col-xs-12 col-md-10 login-form-wrapper">
+                            <form class="login-form" action="index.html" method="post">
+                            Username:<br>
+                            <input type="text" name="username"><br>
+                            Password:<br>
+                            <input type="password" name="password">
+                            <button type="submit" id='login-button'>Login</button>
+                            </form>
+                            <p><a href="#" onclick="switchToRecovery()">Forgot your password?</a><p>
+                        </div>
+
+                        <div class="col-xs-12 col-md-10 signup-form-wrapper">
+                                <form class="signup-form" action="index.html" method="post">
+                                  Username:<br>
+                                  <input type="text" name="username"><br>
+                                  Email Address:<br>
+                                  <input type="text" name="email"><br>
+                                  Password:<br>
+                                  <input type="password" name="password">
+                                  Confirm Password:<br>
+                                  <input type="password" name="confirm-password">
+                                  <button type="submit" id='signup-button'>Sign up</button>
+                                </form>
+                                <p><a href="#" onclick="switchToLogin()">Back To Login</a></p>
+                        </div>
+
+                        <div class="col-xs-12 col-md-12 password-title-wrapper">
+                            <h1>Recover Password</h1>
+                            <h6>Enter your email and we'll send you instructions to recover your password.</h6>
+                        </div>
+                        
+                        <div class="col-xs-12 col-md-10 password-recovery-wrapper">
+                                <form class="password-form" action="index.html" method="post">
+                                  Email Address:<br>
+                                  <input type="text" name="email"><br>
+                                  <button type="button" id='submit-email' onclick="displayPasswordConfirmation()" >Send</button>
+                                </form>
+                                <p><a href="#" onclick="switchToLogin()">Back To Login</a></p>
+                        </div>
+                    
+                              <div class="col-xs-12 col-md-10 password-recovery-confirmation">
+                                <p>Your password recovery instructions were sent to your email.</p>
+                              </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    {% endif %}
+    {% endblock %}
