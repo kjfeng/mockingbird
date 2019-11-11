@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # created 
-    'onboard'
+    'onboard',
+    'match'
 ]
 
 MIDDLEWARE = [
@@ -122,6 +123,13 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL='/'
 LOGOUT_REDIRECT_URL='/'
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+       "django.core.context_processors.request",
+       "django.core.context_processors.media",
+       "django.contrib.messages.context_processors.messages"
+)
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 # will need to change for production
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
