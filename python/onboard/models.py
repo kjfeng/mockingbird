@@ -8,6 +8,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.TextField(max_length=100, blank=False)
     email_confirmed = models.BooleanField(default=False)
+    onboard_confirmed = models.BooleanField(default=False)
     industry = models.CharField(max_length=30, blank=False)
 
 @receiver(post_save, sender=User)
