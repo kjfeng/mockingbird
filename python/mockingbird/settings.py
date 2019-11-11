@@ -133,5 +133,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 # will need to change for production
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'MockingBird <noreply@mockingbird.com>'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#DEFAULT_FROM_EMAIL = 'MockingBird <noreply@mockingbird.com>'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'teammockingbird333@gmail.com'
+EMAIL_HOST_PASSWORD = 'acddk333'
