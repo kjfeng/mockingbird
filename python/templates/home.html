@@ -6,8 +6,9 @@
 {% if user.is_authenticated %}
     {% if not user.profile.onboard_confirmed %}
     <p><a href='../tags'>Complete Profile</a></p>
-    {% endif%}
+    {% else %}
     <p><a href='../match'>Get Matched</a></p>
+    {% endif%}
     <p><a href="{% url 'logout' %}"> logout </a></p>
 {% else %}
  <p> You are not logged in</p>
