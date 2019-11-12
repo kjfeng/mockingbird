@@ -7,7 +7,10 @@
     {% if not user.profile.onboard_confirmed %}
     <p><a href='../tags'>Complete Profile</a></p>
     {% else %}
-    <p><a href='../match'>Get Matched</a></p>
+    <h3>Welcome, {{user.username}}!</h3>
+    <form action='.' method='POST'>{% csrf_token %}
+        <input type='submit' value="Get Me Matched!">
+    </form>
     {% endif%}
     <p><a href="{% url 'logout' %}"> logout </a></p>
 {% else %}
