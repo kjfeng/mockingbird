@@ -8,6 +8,7 @@
     <p><a href='../tags'>Complete Profile</a></p>
     {% else %}
     <h3>Welcome, {{user.username}}!</h3>
+    <a href="{% url 'account:account_details' %}"> Account Details </a>
     <form action='.' method='POST'>{% csrf_token %}
         <input type='submit' value="Get Me Matched!">
     </form>

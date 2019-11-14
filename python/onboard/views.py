@@ -1,4 +1,3 @@
-
 # Create your views here.
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
@@ -26,7 +25,7 @@ def signup(request):
 
             current_site = get_current_site(request)
             subject = 'Activate Your MockingBird Account'
-            message = render_to_string('../templates/account_activation_email.html', {
+            message = render_to_string('account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -36,7 +35,7 @@ def signup(request):
             return redirect('account_activation_sent')
     else:
         form = SignUpForm()
-    return render(request, '../templates/signup.html', {'form': form})
+    return render(request, 'signup.html', {'form': form})
 
 
 def account_activation_sent(request):
@@ -58,4 +57,4 @@ def activate(request, uidb64, token):
         
         return redirect('home')
     else:
-        return render(request, '../templates/account_activation_invalid.html')
+        return render(request, 'account_activation_invalid.html')
