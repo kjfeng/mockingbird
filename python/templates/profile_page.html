@@ -1,0 +1,22 @@
+{% extends 'base.html'%}
+{% block content %}
+
+    <h1> Profile </h1>
+
+    {{user.username}}
+
+     Email
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <a href="{% url 'account:edit' %}"> Edit Info </a>
+    <br>
+    <a href="{% url 'account:delete' %}"> Delete Account </a>
+    <br>
+    <a href="{% url 'home'%}"> Back </a>
+{% endblock %}

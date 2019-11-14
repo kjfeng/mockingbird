@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     # created
     'onboard',
     'match',
-    'tags'
+    'tags',
+    'account',
 ]
 
 MIDDLEWARE = [
