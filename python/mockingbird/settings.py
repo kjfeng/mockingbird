@@ -35,16 +35,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # added
-    'crispy_forms',
-
-    # created 
+    # created
     'onboard',
+    'match',
+    'tags',
     'account',
 ]
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -87,19 +83,6 @@ DATABASES = {
     }
 }
 
-''' SWITCH TO THIS WHEN HEROKU WORKS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'userdb',
-     #   'USER': '', 
-      #  'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
-'''
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -142,10 +125,18 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL='/'
 LOGOUT_REDIRECT_URL='/'
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+       "django.core.context_processors.request",
+       "django.core.context_processors.media",
+       "django.contrib.messages.context_processors.messages"
+)
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 # will need to change for production
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #DEFAULT_FROM_EMAIL = 'MockingBird <noreply@mockingbird.com>'
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

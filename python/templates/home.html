@@ -4,8 +4,15 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    Hi {{user.username}}!
+    {% if not user.profile.onboard_confirmed %}
+    <p><a href='../tags'>Complete Profile</a></p>
+    {% else %}
+    <h3>Welcome, {{user.username}}!</h3>
     <a href="{% url 'account:account_details' %}"> Account Details </a>
+    <form action='.' method='POST'>{% csrf_token %}
+        <input type='submit' value="Get Me Matched!">
+    </form>
+    {% endif%}
     <p><a href="{% url 'logout' %}"> logout </a></p>
 {% else %}
  <p> You are not logged in</p>

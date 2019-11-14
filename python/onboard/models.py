@@ -6,9 +6,10 @@ from django.dispatch import receiver
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.TextField(max_length=100, blank=True) # not needed
+    email = models.TextField(max_length=100, blank=False)
     email_confirmed = models.BooleanField(default=False)
-   # avatar = models.ImageField(upload_to='avatar_photos', blank=True, null=True)
+    onboard_confirmed = models.BooleanField(default=False)
+    industry = models.CharField(max_length=30, blank=False)
 
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):
