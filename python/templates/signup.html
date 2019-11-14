@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
 <body>
 <div class="col-xs-12 col-md-5 right-side">
+
     <h1>Sign up</h1>
     <form method="post">
       {% csrf_token %}

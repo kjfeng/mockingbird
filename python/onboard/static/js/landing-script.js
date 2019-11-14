@@ -27,6 +27,3 @@ function switchToLogin() {
   document.getElementsByClassName("password-recovery-wrapper")[0].style.display = "none";
 }
 
-function pageIs(page, check) {
-  return page == check;
-}
