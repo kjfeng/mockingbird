@@ -6,7 +6,5 @@ class EditAccountForm(UserChangeForm):
     class Meta:
         model = User
         fields = {
-            'first_name',
             'email',
-            
         }
