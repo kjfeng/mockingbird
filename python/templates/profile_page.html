@@ -14,8 +14,9 @@
         </table>
         <input type="submit" value="Submit">
     </form>
-
-    <a href="{% url 'delete' %}"> Delete Account </a>
-
+    <a href="{% url 'account:edit' %}"> Edit Info </a>
+    <br>
+    <a href="{% url 'account:delete' %}"> Delete Account </a>
+    <br>
     <a href="{% url 'home'%}"> Back </a>
 {% endblock %}

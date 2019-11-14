@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, logout
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView
+
+from .forms import EditAccountForm
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -21,7 +24,15 @@ def logout_view(request):
     logout(request)
     return redirect('home')
 
-# Create your models here.
-class account_update(UpdateView):
-    model = User.profile
-    fields = ['email']
+@login_required(login_url='/login')
+def account_edit(request):
+    if request.method == 'POST':
+        form = EditAccountForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:account_details')
+    else:
+        form = EditAccountForm(instance=request.user)
+        args = {'form':form}
+        return render(request, 'edit_profile.html',args)
