@@ -1,0 +1,50 @@
+<!-- {% extends 'base.html' %} -->
+<html lang="en">
+
+  <head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- main CSS -->
+    <link rel="stylesheet" href="tagging.css">
+    <link rel="stylesheet" href="../mqueries.css">
+
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+    <!-- favicon -->
+    <link rel='icon' href='' type='image/x-icon'>
+
+    <title>Pick Your Industries – Mockingbird</title>
+
+  </head>
+
+  <body>
+    {% block content %}
+    <h2>Hi, {{user.username}}!</h2>
+    <h3>Which industry are you currently interviewing for?</h3>
+    <p style="color: rgb(243, 241, 241)">{{error_message}}</p>
+    <br>
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+          {{ field.label_tag }}<br>
+          {{ field }}
+          {% if field.help_text %}
+            <small style="color: grey">{{ field.help_text }}</small>
+          {% endif %}
+          {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+      {% endfor %}
+      <br>
+      <button type="submit">Let's Go!</button>
+    </form>
+    {% endblock %}
+  </body>
+
+  <script src=""></script>
+
+</html>
