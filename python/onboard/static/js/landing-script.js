@@ -13,8 +13,8 @@ function switchToRecovery() {
 }
 
 function displayPasswordConfirmation() {
-  document.getElementsByClassName("password-title-wrapper")[0].style.display = "none";
-  document.getElementsByClassName("password-recovery-wrapper")[0].style.display = "none";
+  document.getElementsByClassName("login-title-wrapper")[0].style.display = "none";
+  document.getElementsByClassName("login-form")[0].style.display = "none";
   document.getElementsByClassName("password-recovery-confirmation")[0].style.display = "block";
 }
 

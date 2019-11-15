@@ -12,7 +12,7 @@ from django.core.mail import EmailMessage
 
 
 from .tokens import account_activation_token
-from .forms import SignUpForm, ForgotPasswordForm
+from .forms import SignUpForm, ForgotPasswordForm, LoginForm
 
 
 def signup(request):
@@ -40,10 +40,12 @@ def signup(request):
 
 def login(request):
     if request.method == 'POST':
-        pass
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            pass
     else: 
-        pass
-    return render(request, '../templates/home.html')
+        form = LoginForm()
+    return render(request, '../templates/home.html', {'form': form})
 
 def forgotPassword(request):
     print(request.method)
@@ -53,7 +55,7 @@ def forgotPassword(request):
             pass
     else: 
         form = ForgotPasswordForm()
-    return render(request, '../templates/registration/password_reset_form.html', {'form': form})
+    return render(request, '../templates/password_reset_form.html', {'form': form})
 
 def account_activation_sent(request):
     return render(request, 'account_activation_sent.html')

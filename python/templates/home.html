@@ -10,23 +10,12 @@
 {% else %}
 <body>
     <div class="col-xs-12 col-md-5 right-side">
-            <div class="col-xs-12 col-md-12 login-title-wrapper">
+          <div class="col-xs-12 col-md-12 login-title-wrapper">
               <h1>Login</h1>
               <h6>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></h6>
-            </div>
-<!--   
-            <div class="col-xs-12 col-md-10 login-form-wrapper">
-              <form class="login-form" action="index.html" method="post">
-                Username:<br>
-                <input type="text" name="username"><br>
-                Password:<br>
-                <input type="password" name="password">
-                <button type="submit" id='login-button'>Log In</button>
-              </form>
-              <p><a href="{% url 'forgotPassword' %}">Forgot your password?</a></p>
-            </div> -->
-  
-            <!-- <form method="post">
+          </div>
+          <div class="col-xs-12 col-md-10 login-form">
+            <form method="post">
               {% csrf_token %}
               {% for field in form %}
                 <p>
@@ -41,7 +30,11 @@
                 </p>
               {% endfor %}
               <button type="submit">Sign up</button>
-            </form> -->
+            </form>
+          </div>
+          <div class="col-xs-12 col-md-10">
+            <p><a href="{% url 'forgotPassword' %}">Forgot your password?</a></p>
+          </div>
     </div>
 <script src="{% static 'js/landing-script.js' %}"></script>
 </body>
