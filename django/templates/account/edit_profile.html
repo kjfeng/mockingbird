@@ -1,15 +1,15 @@
-
-
 {% block head %}
 <title>Profile</title>
 {% endblock %}
 
 {% block body %}
-<h>hi?</h>
 <div class="container">
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
+
+        {% csrf_token %}
+        {{ formB.as_p }}
         <button type="submit">Submit</button>
     </form>
     <br>
