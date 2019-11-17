@@ -4,19 +4,24 @@
     <h1> Profile </h1>
 
     {{user.username}}
+    <br>
+     Email: {{user.email}}
+    <br>
+    Year: {{user.profile.year_in_school}}
+    <br>
+    Major: {{user.profile.major}}
+    <br>
+    Industry: {{user.profile.industry}}
+    <br>
+    Desired Role:
+    {{user.profile.role}}
+    <br>
 
-     Email
-
-    <form action="" method="post">
-        {% csrf_token %}
-        <table>
-        {{ form.as_table }}
-        </table>
-        <input type="submit" value="Submit">
-    </form>
     <a href="{% url 'account:edit' %}"> Edit Info </a>
+    <br>
+    <a href="{% url 'account:change_password' %}" > Change Password</a>
     <br>
     <a href="{% url 'account:delete' %}"> Delete Account </a>
     <br>
-    <a href="{% url 'home'%}"> Back </a>
+    <a href="{% url 'home'%}"> Home </a>
 {% endblock %}
