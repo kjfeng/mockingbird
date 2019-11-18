@@ -17,7 +17,7 @@ def tags_view(request):
       industry_str = ', '.join(industries)
       my_profile.update(industry=industry_str)
       my_profile.update(onboard_confirmed=True)
-      return redirect('../match/')
+      return redirect('home')
     #
     # else:
     #   return render(request, 'tagging/selecttags.html', {'form': form,
