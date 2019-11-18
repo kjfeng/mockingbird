@@ -20,7 +20,6 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            print("hii")
             user = form.save(commit=False)
             user.is_active = False
             user.save()
@@ -35,6 +34,15 @@ def signup(request):
             })
             user.email_user(subject, message)
             return redirect('account_activation_sent')
+        else:
+          error_message=''
+          username = request.POST['username']
+          try:
+            user = User.objects.get(username=username)
+          except:
+            error_message = "We encountered a problem signing you up"
+          return render(request, 'registration/signup.html', {'form': form, 'error_message':error_message})
+
     else:
         form = SignUpForm()
         return render(request, 'registration/signup.html', {'form': form})
@@ -47,7 +55,6 @@ def login(request):
     if request.method == 'POST':
         print("hello")
         form = LoginForm(request.POST)
-        print(request.POST)
         if form.is_valid():
             username = request.POST['username']
             password = request.POST['password']
@@ -56,8 +63,7 @@ def login(request):
                 auth_login(request, user)
             else:
                 # return invalid login error message
-                print("Invalid User")
-                pass
+                return render(request, '../templates/home.html', {'form': form, 'error_message': "Incorrect username and/or password"})
     else:
         form = LoginForm()
     return render(request, '../templates/home.html', {'form': form})
@@ -83,8 +89,6 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.profile.email_confirmed = True
         user.save()
-        auth_login(request, user)
-
-        return render(request, 'home.html')
+        return redirect('home')
     else:
         return render(request, 'registration/account_activation_invalid.html')

@@ -33,6 +33,7 @@
       <h6>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></h6>
     </div>
     <div class="col-xs-12 col-md-10 login-form">
+      <p style="color:rgb(227, 16, 16)">{{error_message}}</p>
       <form method='POST'>
         {% csrf_token %}
         {% for field in form %}
