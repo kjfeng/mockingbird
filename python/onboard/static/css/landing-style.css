@@ -43,8 +43,8 @@ button[type=submit]:focus, button[type=button]:focus {
 }
 
 .left-side {
-  background-color:  #efefef;
-  padding: 2rem 3rem 2rem 2rem;
+  background-color: #efefef;
+  padding: 2rem 3rem 2rem 3rem;
 }
 
 .right-side {
@@ -62,7 +62,7 @@ button[type=submit]:focus, button[type=button]:focus {
   margin-bottom: 1.5rem;
 }
 
-.login-title-wrapper, .signup-title-wrapper, .password-title-wrapper, .password-recovery-confirmation {
+.login-title-wrapper, .signup-title-wrapper, .password-title-wrapper, .password-recovery-title-wrapper, .password-recovery-confirmation {
   margin-top: 6rem;
 }
 
@@ -87,14 +87,16 @@ button[type=submit]:focus, button[type=button]:focus {
   margin-bottom: 2rem;
 }
 
-.signup-form {
+.password-recovery-form {
   margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.signup-form {
   margin-bottom: 2rem;
 }
 
 .password-recovery-confirmation {
   display: none;
   margin-top: 2rem;
-  margin-bottom: 2rem;
 }
-

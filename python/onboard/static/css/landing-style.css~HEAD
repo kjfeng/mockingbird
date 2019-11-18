@@ -43,8 +43,8 @@ button[type=submit]:focus, button[type=button]:focus {
 }
 
 .left-side {
-  background-color: #efefef;
-  padding: 2rem 3rem 2rem 3rem;
+  background-color:  #efefef;
+  padding: 2rem 3rem 2rem 2rem;
 }
 
 .right-side {
@@ -88,11 +88,13 @@ button[type=submit]:focus, button[type=button]:focus {
 }
 
 .signup-form {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .password-recovery-confirmation {
   display: none;
   margin-top: 2rem;
+  margin-bottom: 2rem;
 }
+
