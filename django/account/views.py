@@ -13,9 +13,10 @@ def account_details(request):
 
 @login_required(login_url='/login/')
 def account_delete(request):
-    if request.method == 'POST':
-        request.user.delete()
-        return render(request, 'account/deleted_user.html')
+    # print(request)
+    # if request.method == 'POST':
+    request.user.delete()
+    return render(request, 'account/deleted_user.html')
 
 def logout_view(request):
     logout(request)
