@@ -34,7 +34,7 @@ def match_view(request):
 
     if match is not None:
         messages.add_message(request, messages.INFO, str(match.user.username))
-        messages.add_message(request, messages.INFO, str(match.email))
+        messages.add_message(request, messages.INFO, str(match.user.email))
         messages.add_message(request, messages.INFO, str(match.industry))
 
     return redirect('../matchresults/')
