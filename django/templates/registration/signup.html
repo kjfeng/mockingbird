@@ -4,8 +4,11 @@
 {% load static %}
 <body>
 <div class="col-xs-12 col-md-5 right-side">
+  <div class="col-xs-12 col-md-12 login-title-wrapper">
+    <h1>Sign up</h1>
+  </div>
+
     <div class="col-xs-12 col-md-10 signup-form">
-      <h1>Sign up</h1>
       <form method="post">
         {% csrf_token %}
         {% for field in form %}
