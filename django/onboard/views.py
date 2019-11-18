@@ -11,7 +11,7 @@ from django.core.mail import EmailMessage
 
 
 from .tokens import account_activation_token
-from .forms import SignUpForm
+from .forms import SignUpForm, ForgotPasswordForm, LoginForm
 from match.views import match_view
 
 
@@ -35,12 +35,34 @@ def signup(request):
             return redirect('account_activation_sent')
     else:
         form = SignUpForm()
-    return render(request, 'registration/signup.html', {'form': form})
+        return render(request, 'registration/signup.html', {'form': form})
 
 
 def account_activation_sent(request):
     return render(request, 'registration/account_activation_sent.html')
 
+
+def login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            pass
+    else: 
+        form = LoginForm()
+    return render(request, '../templates/home.html', {'form': form})
+
+def forgotPassword(request):
+    print(request.method)
+    if request.method == 'post':
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            pass
+    else: 
+        form = ForgotPasswordForm()
+    return render(request, '../templates/password_reset_form.html', {'form': form})
+
+def account_activation_sent(request):
+    return render(request, 'account_activation_sent.html')
 
 def activate(request, uidb64, token):
     try:
@@ -54,7 +76,7 @@ def activate(request, uidb64, token):
         user.profile.email_confirmed = True
         user.save()
         login(request, user)
-        
+
         return redirect('home')
     else:
         return render(request, 'registration/account_activation_invalid.html')

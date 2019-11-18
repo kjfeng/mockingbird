@@ -1,10 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html'%}
+{% block content %}
+<form><input type="submit" value="Submit" id="confirm"/> </form>
+
+<script>
+    jQuery("#confirm").click(function(){
+        $("<div></div>").appendTo('body')
+           .html('<div><h3> write your message for confirm dialog</h3></div>')
+           .dialog({
+                title: "Confirm Dialog" ,
+                width:500, height:300,
+                modal:true,
+                resizable: false,
+                show: { effect: 'drop', direction: "left" },
+                hide:{effect:'blind'}
+
+                buttons: {
+                    Yes: function() {
+                          jQuery.ajax({
+                              type:"POST", //post data
+                              data:{'key':key}, //if you want to send any data to view
+                              url:'/get_viewerModal/' // your url that u write in action in form tag
+                          }).done(function(result){
+                               alert("am done") //this will executes after your view executed
+                          })
+                     },
+                    Cancel: function() {
+                        $( this ).dialog( "close" );
+                    }
+               }
+           });
+    });
+<script>
+
+{% endblock %}
