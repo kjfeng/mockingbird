@@ -1,8 +1,0 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<h3>Welcome, {{user.username}}!</h3>
-<form action='.' method='POST'>{% csrf_token %}
-    <input type='submit' value="Get Me Matched!"> 
-</form>
-{% endblock %}
