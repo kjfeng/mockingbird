@@ -60,9 +60,6 @@ def forgotPassword(request):
         form = ForgotPasswordForm()
     return render(request, '../templates/registration/password_reset_form.html', {'form': form})
 
-def account_activation_sent(request):
-    return render(request, 'account_activation_sent.html')
-
 def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
