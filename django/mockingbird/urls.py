@@ -21,8 +21,14 @@ from django.conf.urls import url
 from onboard import views as onboard_views
 from match import views as match_views
 from tags import views as tags_views
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
+    url(r'^signup/$', onboard_views.signup, name='signup'),
+    url(r'^login/$', onboard_views.login, name='login'),
+    url(r'^ForgotPassword/$', onboard_views.forgotPassword, name='forgotPassword'),
     path('tags/', tags_views.tags_view),
     path('', match_views.match_view, name='home'),
     path('match/', match_views.match_view),

@@ -1,15 +1,52 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Required meta tags -->
         <meta charset="utf-8">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-        <title>{% block title %} MockingBird {% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap 4 -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <!-- fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+        <!-- main CSS -->
+        <link rel="stylesheet" href="{% static 'css/landing-style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/mqueries.css' %}">
+        <!-- favicon -->
+        <link rel='icon' href='' type='image/x-icon'>
+    
+        <title>{% block title %} Mockingbird {% endblock %}</title>
     </head>
     <body>
-        <main>
+    <div class="container-fluid h-100">
+            <div class="row h-100">
+                <div class="col-xs-12 col-md-7 left-side">
+    
+                    <div class="col-xs-6 col-sm-6 col-md-5 logo-wrapper">
+                        <div class="logo">
+                        <img src="{% static 'img/logo.png' %}" alt="" style="width: 100%">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12 title-wrapper">
+                        <h1 class="title"> Ace 👏</h1>
+                        <h1 class="title"> Your 👏</h1>
+                        <h1 class="title"> Interviews 👏</h1>
+                    </div>
+            
+                    <div class="col-xs-12 col-md-8">
+                        <h6> Find your mock interview partner and succeed together.</h6>
+                    </div>
+            
+                    <div class="col-xs-12 col-md-9 graphic-wrapper">
+                        <img src="{% static 'img/landing-graphic.png' %}" alt="" style="width: 100%">
+                    </div>
+            
+                </div>
+        
             {% block content %}
             {% endblock %}
-        </main>
+        
+        </div>
+    </div>
     </body>
 </html>

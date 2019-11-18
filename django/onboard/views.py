@@ -41,7 +41,6 @@ def signup(request):
 def account_activation_sent(request):
     return render(request, 'registration/account_activation_sent.html')
 
-
 def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -59,7 +58,7 @@ def forgotPassword(request):
             pass
     else: 
         form = ForgotPasswordForm()
-    return render(request, '../templates/password_reset_form.html', {'form': form})
+    return render(request, '../templates/registration/password_reset_form.html', {'form': form})
 
 def account_activation_sent(request):
     return render(request, 'account_activation_sent.html')
