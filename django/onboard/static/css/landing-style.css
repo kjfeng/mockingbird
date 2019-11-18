@@ -42,14 +42,26 @@ button[type=submit]:focus, button[type=button]:focus {
   background-color: #6275D8;
 }
 
+.container-fluid {
+  padding: 0
+}
+
 .left-side {
   background-color: #efefef;
   padding: 2rem 3rem 2rem 3rem;
+  float: left;
+  position: fixed;
+  /* top: 0;
+  bottom: 0; */
 }
 
 .right-side {
   background-color: white;
   padding: 2rem 3rem 2rem 3rem;
+  float: right;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll;
 }
 
 .logo-wrapper {
@@ -94,6 +106,7 @@ button[type=submit]:focus, button[type=button]:focus {
 
 .signup-form {
   margin-bottom: 2rem;
+  margin-top: 2rem;
 }
 
 .password-recovery-confirmation {
