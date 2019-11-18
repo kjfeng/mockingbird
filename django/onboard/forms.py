@@ -12,6 +12,9 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('first_name', 'username', 'email',
             'password1', 'password2', )
+        help_text = {
+            'password2': 'why isnt this working',
+        }
 
 class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(max_length=254, required=True, help_text='Required. Enter email to receive password resetting instructions.')

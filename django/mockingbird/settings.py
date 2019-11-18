@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # borrowed
+    'multiselectfield',
+
     # created
     'onboard',
     'match',

@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from multiselectfield import MultiSelectField
+
 
 INDUSTRY_CHOICES = [('Technology', 'Technology'),
                     ('Finance', 'Finance'),
@@ -30,9 +32,10 @@ class Profile(models.Model):
     email_confirmed = models.BooleanField(default=False)
     onboard_confirmed = models.BooleanField(default=False)
     # industry
+    industry = MultiSelectField(max_length=30, blank=False, choices=INDUSTRY_CHOICES)
 
 
-    industry = models.CharField(max_length=30, blank=False, choices=INDUSTRY_CHOICES)
+    #industry = models.CharField(max_length=30, blank=False, choices=INDUSTRY_CHOICES)
 
     role = models.CharField(max_length=30, blank=False, default="Unknown")
     # major

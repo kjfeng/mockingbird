@@ -7,24 +7,38 @@ from sys import stderr
 
 # Create your views here.
 def match_view(request):
-    if request.method == 'POST':
-        # clear messages
-        storage = messages.get_messages(request) 
-        for message in storage:
-            str(message)
+    # if request.method == 'POST':
+    #     print(request.POST)
+    #     # clear messages
+    #     storage = messages.get_messages(request)
+    #     for message in storage:
+    #         str(message)
+    #
+    #     my_profile = Profile.objects.get(id=request.user.id)
+    #     match = quick_match_prototype(my_profile)
+    #
+    #     if match is not None:
+    #         messages.add_message(request, messages.INFO, str(match.user.username))
+    #         messages.add_message(request, messages.INFO, str(match.email))
+    #         messages.add_message(request, messages.INFO, str(match.industry))
+    #
+    #     return redirect('../matchresults/')
 
-        my_profile = Profile.objects.get(id=request.user.id)
-        match = quick_match_prototype(my_profile)
-        
-        if match is not None:
-            messages.add_message(request, messages.INFO, str(match.user.username))
-            messages.add_message(request, messages.INFO, str(match.email))
-            messages.add_message(request, messages.INFO, str(match.industry))
-        
-        return redirect('../matchresults/')
+    # clear messages
+    storage = messages.get_messages(request)
+    for message in storage:
+        str(message)
 
+    my_profile = Profile.objects.get(id=request.user.id)
+    match = quick_match_prototype(my_profile)
 
-    return render(request, "home.html", {})    
+    if match is not None:
+        messages.add_message(request, messages.INFO, str(match.user.username))
+        messages.add_message(request, messages.INFO, str(match.user.email))
+        messages.add_message(request, messages.INFO, str(match.industry))
+
+    return redirect('../matchresults/')
+    return render(request, "home.html", {})
 
 def matchresults_view(request):
     storage = messages.get_messages(request)

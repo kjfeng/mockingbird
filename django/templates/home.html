@@ -6,7 +6,7 @@
 {% load static %}
 
 <body>
-  <div class="col-xs-12 col-md-5 right-side">
+  <div class="col-xs-12 col-md-5 .offset-md-7 h-100 right-side">
     {% if user.is_authenticated %}
 
     <div class="col-xs-12 col-md-12 login-title-wrapper">
@@ -18,9 +18,10 @@
       <p><a href='../tags'>Complete Profile</a></p>
       {% else %}
       <a href="{% url 'account:account_details' %}"> Account Details </a>
-      <form action='.' method='POST'>{% csrf_token %}
+      <!-- <form action="." method='POST'>{% csrf_token %}
         <input type='submit' value="Get Me Matched!">
-      </form>
+      </form> -->
+      <p><a href='match'>Get Me Matched!</a></p>
       {% endif%}
       <p><a href="{% url 'logout' %}">Log Out</a></p>
     </div>

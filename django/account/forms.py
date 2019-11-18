@@ -16,7 +16,7 @@ class EditAccountForm(UserChangeForm):
 class EditProfileForm(UserChangeForm):
     year_in_school = forms.ChoiceField(choices=YEAR_IN_SCHOOL_CHOICES)
 
-    industry = forms.ChoiceField(choices=INDUSTRY_CHOICES)
+    industry = forms.MultipleChoiceField(choices=INDUSTRY_CHOICES)
 
     major = forms.CharField(required=False, widget=forms.Textarea(
         attrs={"rows":1, "cols":50}))
@@ -25,6 +25,7 @@ class EditProfileForm(UserChangeForm):
         attrs={"rows":1,"cols":50}))
 
     password = None
+
     class Meta:
         model = Profile
         fields = {

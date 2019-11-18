@@ -53,7 +53,6 @@ def account_activation_sent(request):
 
 def login(request):
     if request.method == 'POST':
-        print("hello")
         form = LoginForm(request.POST)
         if form.is_valid():
             username = request.POST['username']
@@ -69,7 +68,7 @@ def login(request):
     return render(request, '../templates/home.html', {'form': form})
 
 def forgotPassword(request):
-    print(request.method)
+    # print(request.method)
     if request.method == 'post':
         form = ForgotPasswordForm(request.POST)
         if form.is_valid():
@@ -88,6 +87,7 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.profile.email_confirmed = True
+        user.profile.email = user.email
         user.save()
         return redirect('home')
     else:
