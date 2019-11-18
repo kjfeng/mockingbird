@@ -20,30 +20,31 @@
     <title>Pick Your Industries – Mockingbird</title>
 
   </head>
-
+ {% block content %}
   <body>
-    {% block content %}
-    <h2>Hi, {{user.username}}!</h2>
-    <h3>Which industry are you currently interviewing for?</h3>
-    <p style="color: rgb(243, 241, 241)">{{error_message}}</p>
-    <br>
-    <form method="post">
-      {% csrf_token %}
-      {% for field in form %}
-          {{ field.label_tag }}<br>
-          {{ field }}
-          {% if field.help_text %}
-            <small style="color: grey">{{ field.help_text }}</small>
-          {% endif %}
-          {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
+    <div class="col-xs-12 col-md-5 right-side">
+        <h2>Hi, {{user.username}}!</h2>
+        <h3>Which industry are you currently interviewing for?</h3>
+        <p style="color: rgb(243, 241, 241)">{{error_message}}</p>
+        <br>
+        <form method="post">
+          {% csrf_token %}
+          {% for field in form %}
+              {{ field.label_tag }}<br>
+              {{ field }}
+              {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+              {% endif %}
+              {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+              {% endfor %}
           {% endfor %}
-      {% endfor %}
-      <br>
-      <button type="submit">Let's Go!</button>
-    </form>
-    {% endblock %}
+          <br>
+          <button type="submit">Let's Go!</button>
+        </form>
+    </div>
   </body>
+ {% endblock %}
 
   <script src=""></script>
 

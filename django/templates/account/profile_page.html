@@ -1,6 +1,6 @@
 {% extends 'base.html'%}
 {% block content %}
-
+<div class="col-xs-12 col-md-5 right-side">
     <h1> Profile </h1>
 
     {{user.username}}
@@ -24,4 +24,5 @@
     <a href="{% url 'account:delete' %}"> Delete Account </a>
     <br>
     <a href="{% url 'home'%}"> Home </a>
+</div>
 {% endblock %}

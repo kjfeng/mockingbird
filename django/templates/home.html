@@ -4,40 +4,57 @@
 
 {% block content %}
 {% load static %}
-{% if user.is_authenticated %}
-    Hi {{user.username}}!<br>
-    <p><a href='../match'>Match Page</a></p>
-    <p><a href="{% url 'logout' %}"> logout </a></p>
-{% else %}
+
 <body>
-    <div class="col-xs-12 col-md-5 right-side">
-          <div class="col-xs-12 col-md-12 login-title-wrapper">
-              <h1>Login</h1>
-              <h6>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></h6>
-          </div>
-          <div class="col-xs-12 col-md-10 login-form">
-            <form method="post">
-              {% csrf_token %}
-              {% for field in form %}
-                <p>
-                  {{ field.label_tag }}<br>
-                  {{ field }}
-                  {% if field.help_text %}
-                    <small style="color: grey">{{ field.help_text }}</small>
-                  {% endif %}
-                  {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
-                  {% endfor %}
-                </p>
-              {% endfor %}
-              <button type="submit">Sign up</button>
-            </form>
-          </div>
-          <div class="col-xs-12 col-md-10">
-            <p><a href="{% url 'forgotPassword' %}">Forgot your password?</a></p>
-          </div>
+  <div class="col-xs-12 col-md-5 right-side">
+    {% if user.is_authenticated %}
+
+    <div class="col-xs-12 col-md-12 login-title-wrapper">
+      <h1>Hi, {{user.username}}!</h1>
     </div>
-<script src="{% static 'js/landing-script.js' %}"></script>
+
+    <div class="col-xs-12 col-md-10">
+      {% if not user.profile.onboard_confirmed %}
+      <p><a href='../tags'>Complete Profile</a></p>
+      {% else %}
+      <a href="{% url 'account:account_details' %}"> Account Details </a>
+      <form action='.' method='POST'>{% csrf_token %}
+        <input type='submit' value="Get Me Matched!">
+      </form>
+      {% endif%}
+      <p><a href="{% url 'logout' %}">Log Out</a></p>
+    </div>
+
+
+    {% else %}
+
+    <div class="col-xs-12 col-md-12 login-title-wrapper">
+      <h1>Login</h1>
+      <h6>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></h6>
+    </div>
+    <div class="col-xs-12 col-md-10 login-form">
+      <form method='POST'>
+        {% csrf_token %}
+        {% for field in form %}
+        <p>
+          {{ field.label_tag }}<br>
+          {{ field }}
+          {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+          {% endif %}
+          {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+          {% endfor %}
+        </p>
+        {% endfor %}
+        <button type="submit">Log In</button>
+      </form>
+    </div>
+    <div class="col-xs-12 col-md-10">
+      <p><a href="{% url 'forgotPassword' %}">Forgot your password?</a></p>
+    </div>
+  </div>
+  <script src="{% static 'js/landing-script.js' %}"></script>
 </body>
 {% endif %}
 {% endblock %}

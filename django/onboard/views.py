@@ -1,5 +1,6 @@
 # Create your views here.
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
@@ -19,6 +20,7 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
+            print("hii")
             user = form.save(commit=False)
             user.is_active = False
             user.save()
@@ -43,10 +45,20 @@ def account_activation_sent(request):
 
 def login(request):
     if request.method == 'POST':
+        print("hello")
         form = LoginForm(request.POST)
+        print(request.POST)
         if form.is_valid():
-            pass
-    else: 
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                auth_login(request, user)
+            else:
+                # return invalid login error message
+                print("Invalid User")
+                pass
+    else:
         form = LoginForm()
     return render(request, '../templates/home.html', {'form': form})
 
@@ -56,7 +68,7 @@ def forgotPassword(request):
         form = ForgotPasswordForm(request.POST)
         if form.is_valid():
             pass
-    else: 
+    else:
         form = ForgotPasswordForm()
     return render(request, '../templates/registration/password_reset_form.html', {'form': form})
 
@@ -71,7 +83,7 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.profile.email_confirmed = True
         user.save()
-        login(request, user)
+        auth_login(request, user)
 
         return render(request, 'home.html')
     else:
