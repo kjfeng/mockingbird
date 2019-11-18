@@ -1,9 +1,8 @@
-{% block head %}
-<title>Profile</title>
-{% endblock %}
+{% extends 'base.html' %}
 
-{% block body %}
-<div class="container">
+{% block content %}
+<div class="col-xs-12 col-md-5 right-side">
+    <h1>Profile</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
