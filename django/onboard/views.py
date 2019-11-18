@@ -68,7 +68,7 @@ def login(request):
     return render(request, '../templates/home.html', {'form': form})
 
 def forgotPassword(request):
-    print(request.method)
+    # print(request.method)
     if request.method == 'post':
         form = ForgotPasswordForm(request.POST)
         if form.is_valid():
