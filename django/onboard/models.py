@@ -3,6 +3,26 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+INDUSTRY_CHOICES = [('Technology', 'Technology'),
+                    ('Finance', 'Finance'),
+                    ('Consulting', 'Consulting')]
+
+FRESHMAN = 'Freshman'
+SOPHOMORE = 'Sophomore'
+JUNIOR = 'Junior'
+SENIOR = 'Senior'
+GRADUATE_STUDENT = 'Graduate Student'
+POST_DOC = 'Postdoc'
+NA = 'Not in School'
+YEAR_IN_SCHOOL_CHOICES = [
+    (FRESHMAN, 'Freshman'),
+    (SOPHOMORE, 'Sophomore'),
+    (JUNIOR, 'Junior'),
+    (SENIOR, 'Senior'),
+    (GRADUATE_STUDENT, 'Graduate Student'),
+    (POST_DOC, 'Postdoc'),
+    (NA, 'Not in School'),
+]
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -11,9 +31,7 @@ class Profile(models.Model):
     onboard_confirmed = models.BooleanField(default=False)
     # industry
 
-    INDUSTRY_CHOICES = [('Technology', 'Technology'),
-                        ('Finance', 'Finance'),
-                        ('Consulting', 'Consulting')]
+
     industry = models.CharField(max_length=30, blank=False, choices=INDUSTRY_CHOICES)
 
     role = models.CharField(max_length=30, blank=False, default="Unknown")
@@ -21,22 +39,7 @@ class Profile(models.Model):
     major = models.CharField(max_length=100, blank=False, default="Unknown")
 
     # years
-    FRESHMAN = 'Freshman'
-    SOPHOMORE = 'Sophomore'
-    JUNIOR = 'Junior'
-    SENIOR = 'Senior'
-    GRADUATE_STUDENT = 'Graduate Student'
-    POST_DOC = 'Postdoc'
-    NA = 'Not in School'
-    YEAR_IN_SCHOOL_CHOICES = [
-        (FRESHMAN, 'Freshman'),
-        (SOPHOMORE, 'Sophomore'),
-        (JUNIOR, 'Junior'),
-        (SENIOR, 'Senior'),
-        (GRADUATE_STUDENT, 'Graduate Student'),
-        (POST_DOC, 'Postdoc'),
-        (NA, 'Not in School'),
-    ]
+
     year_in_school = models.CharField(
         max_length=20,
         choices=YEAR_IN_SCHOOL_CHOICES,
