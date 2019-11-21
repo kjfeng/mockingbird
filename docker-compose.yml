@@ -9,4 +9,3 @@ services:
       POSTGRES_DB: mockingbird_db_local
     ports:
       - "54320:5432"
-
