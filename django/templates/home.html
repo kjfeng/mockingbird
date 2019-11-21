@@ -21,7 +21,11 @@
       <!-- <form action="." method='POST'>{% csrf_token %}
         <input type='submit' value="Get Me Matched!">
       </form> -->
-      <p><a href='match'>Get Me Matched!</a></p>
+        {% if user.profile.status == "free" %}
+          <p><a href='match'>Get Me Matched!</a></p>
+        {% else %}
+          <p> Finish Survey </p>
+        {% endif %}
       {% endif%}
       <p><a href="{% url 'logout' %}">Log Out</a></p>
     </div>

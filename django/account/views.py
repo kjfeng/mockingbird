@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+import sys
+
 
 from .forms import EditAccountForm, EditProfileForm
 
@@ -45,18 +48,23 @@ def account_edit(request):
         args = {'form': form, 'formB': formB}
         return render(request, 'account/edit_profile.html', args)
 
+
 @login_required(login_url='/login')
 def change_password(request):
+    print("here", file=sys.stderr)
     if request.method == 'POST':
-        form = PasswordChangeForm(data=request.POST, user=request.user)
+        form = PasswordChangeForm(request.user, request.POST)
 
         if form.is_valid():
-            form.save()
-            update_session_auth_hash(request, form.user)
-            return redirect(reverse('account:account_details'))
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('account:account_details')
         else:
-            return redirect(reverse('account:change_password'))
+            messages.error(request, 'Please correct the error below.')
+
     else:
-        form = PasswordChangeForm(user=request.user)
-        args = {'form': form}
-        return render(request, 'account/change_password.html', args)
+        form = PasswordChangeForm(instance=request.user)
+    return render(request, 'account/change_password.html', {
+        'form': form
+    })
