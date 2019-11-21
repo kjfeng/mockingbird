@@ -1,0 +1,12 @@
+version: "3"
+services:
+  db:
+    image: "postgres:12"
+    container_name: "mockingbird_db_local"
+    environment:
+      POSTGRES_USER: mockingbird_admin
+      POSTGRES_PASSWORD: mockingbird_password_local
+      POSTGRES_DB: mockingbird_db_local
+    ports:
+      - "54320:5432"
+

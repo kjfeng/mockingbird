@@ -81,8 +81,12 @@ WSGI_APPLICATION = 'mockingbird.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'mockingbird_db_local',
+        'USER': 'mockingbird_admin',
+        'PASSWORD': 'mockingbird_password_local',
+        'HOST': 'localhost',
+        'PORT': '54320',
     }
 }
 
