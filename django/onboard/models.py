@@ -53,6 +53,8 @@ class Profile(models.Model):
 
     status = models.CharField(max_length=20, default="free")
 
+    has_request = models.BooleanField(default=False)
+
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):
     if created:
