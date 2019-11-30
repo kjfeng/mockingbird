@@ -52,7 +52,6 @@ class Profile(models.Model):
     # status
 
     status = models.CharField(max_length=20, default="free")
-
     has_request = models.BooleanField(default=False)
 
 @receiver(post_save, sender=User)
