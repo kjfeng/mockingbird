@@ -1,1 +1,1 @@
-web: gunicorn django/mockingbird.wsgi --log-file -
+web: gunicorn --chdir django mockingbird.wsgi --log-file -
