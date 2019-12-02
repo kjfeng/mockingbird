@@ -344,3 +344,4 @@ GitHub.sublime-settings
 
 postgres-data/*
 .idea/*
+.env
