@@ -12,5 +12,5 @@ class TagForm(UserChangeForm):
   class Meta:
     model = Profile
     fields = {
-      'industry',
+      'industry'
     }

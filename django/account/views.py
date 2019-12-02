@@ -51,7 +51,6 @@ def account_edit(request):
 
 @login_required(login_url='/login')
 def change_password(request):
-    print("here", file=sys.stderr)
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
 
@@ -64,8 +63,7 @@ def change_password(request):
             messages.error(request, 'Please correct the error below.')
 
     else:
-        form = PasswordChangeForm(instance=request.user)
+        form = PasswordChangeForm(request.user)
     return render(request, 'account/change_password.html', {
         'form': form
     })
-

@@ -37,5 +37,5 @@ urlpatterns = [
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         onboard_views.activate, name='activate'),
     url('^', include('django.contrib.auth.urls')),
-    url(r'^account/', include(('account.urls', 'account'), namespace='account')),
+    url(r'^account/', include('account.urls')),
 ]
