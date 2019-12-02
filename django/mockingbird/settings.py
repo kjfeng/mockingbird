@@ -132,7 +132,7 @@ STATIC_URL = '/static/'
 PROJECT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static'))
 
 STATIC_ROOT = PROJECT_DIR#os.path.join(PROJECT_DIR, 'static')
-
+STATICFILE_DIRS = PROJECT_DIR
 STATICFILE_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL='/'
