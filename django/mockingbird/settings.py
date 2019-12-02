@@ -12,6 +12,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+DJANGO_ENV = os.environ.get("DJANGO_ENV", "local")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -79,6 +80,11 @@ WSGI_APPLICATION = 'mockingbird.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+# code written in this way for
+PG_PORT = {
+    "local": "54320",
+    "production": "5432"
+}
 
 DATABASES = {
     'default': {
@@ -87,7 +93,7 @@ DATABASES = {
         'USER': 'mockingbird_admin',
         'PASSWORD': 'mockingbird_password_local',
         'HOST': 'localhost',
-        'PORT': '54320',
+        'PORT': PG_PORT[DJANGO_ENV],
     }
 }
 

@@ -1,7 +1,7 @@
 version: "3"
 services:
   db:
-    image: "postgres:12"
+    image: "postgres:11"
     container_name: "mockingbird_db_local"
     environment:
       POSTGRES_USER: mockingbird_admin
