@@ -8,6 +8,8 @@ from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+
 from django.core.mail import EmailMessage
 from sys import stderr
 
@@ -84,8 +86,7 @@ def login(request):
     else:
         form = LoginForm()
     return render(request, '../templates/home.html', {'form': form})
-
-
+'''
 def forgotPassword(request):
     # print(request.method)
     if request.method == 'POST':
@@ -99,7 +100,7 @@ def forgotPassword(request):
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
+                'token': account_activation_token.make_token(user)
             })
             user.email_user(subject, message)
             return redirect('password_reset_sent')
@@ -113,19 +114,29 @@ def password_reset_sent(request):
 
 
 def password_reset(request):
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
-            return redirect('change_password')
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+
+        if request.method == 'POST':
+            form = PasswordChangeForm(request.user, request.POST)
+            if form.is_valid():
+                user = form.save()
+                update_session_auth_hash(request, user)  # Important!
+                messages.success(request, 'Your password was successfully updated!')
+                return redirect('change_password')
+            else:
+                messages.error(request, 'Please correct the error below.')
         else:
-            messages.error(request, 'Please correct the error below.')
+            form = PasswordChangeForm(request.user)
+
+        return render(request, 'accounts/change_password.html', {
+            'form': form
+        })
     else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'accounts/change_password.html', {
-        'form': form
-    })
-
-
+        return render(request, 'registration/account_activation_invalid.html')
+'''
