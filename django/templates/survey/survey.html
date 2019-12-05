@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-xs-12 col-md-5 right-side">
+    <h2>Tell Us About Your Experience With {{ user.profile.current_match }} </h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Submit</button>
+    </form>
+    <br>
+</div>
+
+{% endblock %}

@@ -43,6 +43,8 @@ urlpatterns = [
         onboard_views.activate, name='activate'),
     url('^', include('django.contrib.auth.urls')),
     url(r'^account/', include('account.urls')),
+    url(r'^survey/', include(('survey.urls', 'survey'), namespace='survey')),
+
 ]
 '''
     url(r'^user/password/reset/$',
