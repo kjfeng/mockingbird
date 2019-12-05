@@ -49,10 +49,11 @@ class Profile(models.Model):
         default="Unknown",
     )
 
-    # status
-
-    status = models.CharField(max_length=20, default="free")
+    #
+    is_matched = models.BooleanField(default=False)
     has_request = models.BooleanField(default=False)
+
+    match_name = models.CharField(max_length=100, blank=False)
 
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):

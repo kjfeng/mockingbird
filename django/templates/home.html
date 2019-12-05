@@ -21,7 +21,7 @@
       <!-- <form action="." method='POST'>{% csrf_token %}
         <input type='submit' value="Get Me Matched!">
       </form> -->
-        {% if user.profile.status == "free" %}
+        {% if not user.profile.is_matched %}
           <p><a href='match'>Get Me Matched!</a></p>
         {% else %}
           <p> Finish Survey </p>
