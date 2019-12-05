@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-xs-12 col-md-5 right-side">
+
+<h1> Current Match</h1>
+<p> Please wait for your match to accept the match and contact you. If you would like to cancel your match request,
+you can do so here. </p>
+    <p> <a href="{% url 'confirm_cancel_request' %}" >Cancel Request</a></p>
+
+<p><a href="{% url 'home' %} ">Back to Home</a> </p>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-xs-12 col-md-5 right-side">
+
+<p> Are you sure you want to cancel this request? </p>
+<p> <a href="{% url 'done_cancel' %}"> Yes </a> </p> <p><a href="{% url 'request_info' %} ">No </a> </p>
+
+<p><a href="{% url 'home' %} ">Back to Home</a> </p>
+</div>
+{% endblock %}

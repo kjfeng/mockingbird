@@ -52,6 +52,8 @@ class Profile(models.Model):
     is_matched = models.BooleanField(default=False)
     has_request = models.BooleanField(default=False)
     match_name = models.CharField(max_length=100, blank=False)
+    # boolean to say if this is a sender waiting for someone to response to their request
+    is_waiting = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
