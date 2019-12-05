@@ -11,14 +11,21 @@ def survey(request):
 
         if form.is_valid():
             target = User.objects.filter(username=request.user.profile.match_name)[0]
-            print(target, file=stderr)
-            print(target.profile.industry, file=stderr)
+            #print(target, file=stderr)
+            #print(target.profile.industry, file=stderr)
+
+            # update information about user
+            request.user.profile.match_name = ""
+            request.user.profile.is_matched = False;
+            request.user.save()
+
+            # update information about user's match
             if form.cleaned_data['did_meet'] == 'no':
-                print("did not meet", file=stderr)
+                #print("did not meet", file=stderr)
                 target.statistics.no_show += 1
                 target.statistics.save()
             else:
-                print("did meet", file=stderr)
+                #print("did meet", file=stderr)
 
                 # update on_time
                 target.statistics.tot_interview += 1
@@ -28,9 +35,6 @@ def survey(request):
                 current_total_late = Decimal(target.statistics.late)*target.statistics.tot_interview
                 target.statistics.late += (current_total_late + Decimal(form.cleaned_data['friendly'])/Decimal(5.0))/target.statistics.tot_interview
                 target.statistics.save()
-
-                request.user.profile.is_matched = False;
-                request.user.save()
             return redirect('survey:survey_complete')
     else:
         form = SurveyForm()

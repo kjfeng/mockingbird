@@ -7,7 +7,7 @@
     <p><b>User:</b> {{ username }}</p>
     <p><b>Email:</b> {{ email }}</p>
     <p><b>Industry:</b> {{ industry }}</p>
-    <form action='../'>
+    <form action='../'> # this is where it redirects
         <input type='submit' value="Accept">
     </form>
     <form action='/match/' method='POST'>{% csrf_token %}

@@ -40,6 +40,7 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
     url(r'^account/', include('account.urls')),
     url(r'^survey/', include(('survey.urls', 'survey'), namespace='survey')),
+    #url(r'^confirmation_user/', include(('match.urls', 'match_funcs'), namespace='match_funcs')),
 
 ]
 
