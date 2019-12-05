@@ -53,6 +53,9 @@ class Profile(models.Model):
     has_request = models.BooleanField(default=False)
     match_name = models.CharField(max_length=100, blank=False)
 
+    def __str__(self):
+        return self.user.username
+
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):
     if created:

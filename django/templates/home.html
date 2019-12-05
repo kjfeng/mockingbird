@@ -21,10 +21,13 @@
       <!-- <form action="." method='POST'>{% csrf_token %}
         <input type='submit' value="Get Me Matched!">
       </form> -->
-        {% if user.profile.is_matched %} <!-- should be not -->
-          <p><a href='match'>Get Me Matched!</a></p>
+        {% if not user.profile.is_matched %} <!-- should be not -->
+          <p><a href='match'> Get Me Matched!</a></p>
         {% else %}
+          <p>Get Me Matched!****</p>
           <p><a href='survey'>Finish Survey </a> </p>
+
+          <p> **** this feature is disabled until you complete all surveys</p>
         {% endif %}
       {% endif%}
       <p><a href="{% url 'logout' %}">Log Out</a></p>

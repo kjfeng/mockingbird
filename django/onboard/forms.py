@@ -16,11 +16,13 @@ class SignUpForm(UserCreationForm):
             'password2': 'why isnt this working',
         }
 
+
 class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(max_length=254, required=True, help_text='Required. Enter email to receive password resetting instructions.')
 
     class Meta:
         fields = ('email',)
+
 
 class LoginForm(forms.Form):
     username = forms.CharField()
