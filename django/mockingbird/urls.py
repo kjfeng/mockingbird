@@ -29,10 +29,6 @@ urlpatterns = [
 
     url(r'^signup/$', onboard_views.signup, name='signup'),
     url(r'^login/$', onboard_views.login, name='login'),
-    #url(r'^ForgotPassword/$', onboard_views.forgotPassword, name='forgotPassword'),
-    #url(r'reset_password_sent/$', onboard_views.password_reset_sent, name='password_reset_sent'),
-    #url(r'reset_password_confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-    #   onboard_views.password_reset, name='password_reset_confirm'),
 
     path('tags/', tags_views.tags_view),
     path('', onboard_views.login, name='home'),
@@ -46,17 +42,5 @@ urlpatterns = [
     url(r'^survey/', include(('survey.urls', 'survey'), namespace='survey')),
 
 ]
-'''
-    url(r'^user/password/reset/$',
-        'django.contrib.auth.views.password_reset',
-        {'post_reset_redirect' : '/user/password/reset/done/'},
-        name="password_reset"),
-    url(r'^user/password/reset/done/$',
-        'django.contrib.auth.views.password_reset_done'),
-    url(r'^user/password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
-        'django.contrib.auth.views.password_reset_confirm',
-        {'post_reset_redirect' : '/user/password/done/'}),
-    url(r'^user/password/done/$',
-        'django.contrib.auth.views.password_reset_complete'),
-'''
+
 
