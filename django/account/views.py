@@ -16,14 +16,18 @@ def account_details(request):
 
 @login_required(login_url='/login/')
 def account_delete(request):
-    # print(request)
-    # if request.method == 'POST':
+    return render(request, 'account/confirm_delete_user.html')
+
+
+def account_delete_confirm(request):
     request.user.delete()
     return render(request, 'account/deleted_user.html')
+
 
 def logout_view(request):
     logout(request)
     return redirect('home')
+
 
 @login_required(login_url='/login')
 def account_edit(request):
