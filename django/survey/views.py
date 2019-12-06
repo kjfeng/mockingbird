@@ -44,7 +44,14 @@ def survey(request):
             return redirect('survey:survey_complete')
     else:
         form = SurveyForm()
-        args = {'form': form}
+        form.fields['did_meet'].label = "Did you meet with your match?"
+        form.fields['on_time'].label = "Was your match on time?"
+        form.fields['friendly'].label = "How friendly or rude was your match?"
+
+        args = {
+            'form': form,
+            'username': str(request.user.profile.match_name),
+        }
         return render(request, 'survey/survey.html', args)
 
 
