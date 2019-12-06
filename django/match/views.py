@@ -75,15 +75,17 @@ def matchresults_view(request):
         # change sender to blocked
         request.user.profile.is_matched = True
         request.user.profile.is_waiting = True
-        request.user.profile.match_name = username
+        request.user.profile.match_name = str(username)
+        request.user.profile.save()
 
         # change target's settings
         target = User.objects.filter(username=str(t_username))[0]
         #print(target[0],file=stderr)
 
-        target.profile.match_name = request.user
+        target.profile.match_name = request.user.username
         target.profile.is_matched = True
         target.profile.has_request = True
+        target.profile.save()
 
         # logic to send email to the target
         current_site = get_current_site(request)
@@ -100,59 +102,39 @@ def matchresults_view(request):
 
 
 def request_info(request):
-    storage = messages.get_messages(request)
-    msgs = []
-    username = ''
-    email = ''
-    industry = ''
-
-    for message in storage:
-        print(message, file=stderr)
-        msgs.append(message)
-
-    if len(msgs) > 0:
-        username = msgs[0]
-        email = msgs[1]
-        industry = msgs[2]
-        messages.add_message(request, messages.INFO, username)
-        messages.add_message(request, messages.INFO, email)
-        messages.add_message(request, messages.INFO, industry)
-
+    target = User.objects.filter(username=request.user.profile.match_name)[0]
     context = {
-        'msgs': msgs,
-        'username': username,
-        'email': email,
-        'industry': industry
+        'username': target.username,
+        'industry': target.profile.industry,
+        'year': target.profile.year_in_school,
+        'role': target.profile.role
     }
 
     return render(request, 'matching/request_info.html', context)
 
 
 def confirm_cancel_request(request):
-    storage = messages.get_messages(request)
-    msgs = []
-    username = ''
-    email = ''
-    industry = ''
-
-    for message in storage:
-        print(message, file=stderr)
-        msgs.append(message)
-
-    if len(msgs) > 0:
-        username = msgs[0]
-        email = msgs[1]
-        industry = msgs[2]
-        messages.add_message(request, messages.INFO, username)
-        messages.add_message(request, messages.INFO, email)
-        messages.add_message(request, messages.INFO, industry)
+    target = User.objects.filter(username=request.user.profile.match_name)[0]
 
     context = {
-        'msgs': msgs,
-        'username': username,
+        'username': target.username,
     }
     return render(request, 'matching/confirm_cancel.html', context)
 
 
 def done_cancel(request):
-    return render(request, 'matching/done_cancel.html')
+    target = User.objects.filter(username=request.user.profile.match_name)[0]
+    target.profile.match_name = ""
+    target.profile.is_matched = False
+    target.profile.has_request = False
+    target.profile.save()
+
+    request.user.profile.is_matched = False
+    request.user.profile.match_name = ""
+    request.user.profile.is_waiting = False
+    request.user.profile.save()
+
+    context = {
+        'username': target.username,
+    }
+    return render(request, 'matching/done_cancel.html', context)
