@@ -48,6 +48,10 @@ class Profile(models.Model):
     has_request = models.BooleanField(default=False)
     match_name = models.CharField(max_length=100, blank=False)
 
+    # is this user  the sender
+    is_sender = models.BooleanField(default=False)
+    # countdown from time matched
+    time_matched = models.DateTimeField(auto_now=True)
     # boolean to say if this is a sender waiting for someone to response to their request
     is_waiting = models.BooleanField(default=False)
 

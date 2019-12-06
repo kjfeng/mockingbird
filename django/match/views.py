@@ -80,6 +80,7 @@ def matchresults_view(request):
         request.user.profile.is_matched = True
         request.user.profile.is_waiting = True
         request.user.profile.match_name = str(username)
+        request.user.profile.is_sender = True
         request.user.profile.save()
 
         # change target's settings
