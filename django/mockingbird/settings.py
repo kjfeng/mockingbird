@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'tags',
     'account',
     'survey',
+    'feedback',
 ]
 
 MIDDLEWARE = [

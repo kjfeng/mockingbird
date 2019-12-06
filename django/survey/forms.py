@@ -12,5 +12,7 @@ class SurveyForm(forms.Form):
                       ('2', 'Rude'), ('1', 'Extremely Rude')]
     friendly = forms.ChoiceField(widget=forms.RadioSelect, choices=FRIEND_CHOICES)
 
-    class Meta:
+    comment = forms.CharField(max_length=500, required=False)
+
+  class Meta:
         fields = ('did_meet', 'on_time', 'friendly')
