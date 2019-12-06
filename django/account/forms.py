@@ -4,7 +4,6 @@ from django.contrib.auth.forms import UserChangeForm
 
 from onboard.models import Profile, YEAR_IN_SCHOOL_CHOICES, INDUSTRY_CHOICES
 
-
 class EditAccountForm(UserChangeForm):
     password = None
     class Meta:
