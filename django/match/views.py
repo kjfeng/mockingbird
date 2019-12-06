@@ -133,12 +133,23 @@ def confirm_cancel_request(request):
 
 @login_required(login_url='/login/')
 def done_cancel(request):
+
+    # update target's info
     target = User.objects.filter(username=request.user.profile.match_name)[0]
     target.profile.match_name = ""
     target.profile.is_matched = False
     target.profile.has_request = False
     target.profile.save()
 
+    # send email that the match has been canceled
+    subject = '[MockingBird] Canceled Match :('
+    message = render_to_string('matching/cancel_email.html', {
+        'user': target,
+        'cancel_username': request.user.username,
+    })
+    target.email_user(subject, message)
+
+    # update current user's info
     request.user.profile.is_matched = False
     request.user.profile.match_name = ""
     request.user.profile.is_waiting = False

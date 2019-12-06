@@ -2,7 +2,8 @@
 
 {% block content %}
 <div class="col-xs-12 col-md-5 right-side">
-    <h2>Tell Us About Your Experience With {{ user.profile.current_match }} </h2>
+    <h2>Tell Us About Your Experience With <b> {{ username }} </b></h2>
+    <br>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
