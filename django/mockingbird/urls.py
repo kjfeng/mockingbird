@@ -37,6 +37,7 @@ urlpatterns = [
     path('match/', match_views.match_view, name='match'),
     path('matchresults/', match_views.matchresults_view),
     url(r'^request_info/', match_views.request_info, name='request_info'),
+    url(r'^accept_request/', match_views.accept_request, name='accept_request'),
     url(r'^confirm_cancel_request/', match_views.confirm_cancel_request, name='confirm_cancel_request'),
     url(r'^done_cancel/', match_views.done_cancel, name='done_cancel'),
 
@@ -48,5 +49,3 @@ urlpatterns = [
     url(r'^survey/', include(('survey.urls', 'survey'), namespace='survey')),
 
 ]
-
-

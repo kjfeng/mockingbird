@@ -137,10 +137,10 @@ def accept_request(request):
         # change target's settings
         target = User.objects.filter(username=str(t_username))[0]
 
-        #target.profile.is_waiting = False
-        target.profile.is_sender = False
+        target.profile.is_waiting = False
+        #target.profile.is_sender = False
         target.profile.is_matched = True
-        request.user.profile.save()
+        target.profile.save()
 
         # logic to send email to the target
         current_site = get_current_site(request)
