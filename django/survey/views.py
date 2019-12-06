@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from sys import stderr
@@ -5,7 +6,12 @@ from decimal import *
 
 from .forms import SurveyForm
 
+
+@login_required(login_url='/login/')
 def survey(request):
+    if not request.user.profile.is_matched:
+        return render(request, 'survey/no_survey.html')
+
     if request.method == 'POST':
         form = SurveyForm(request.POST)
 
@@ -16,7 +22,7 @@ def survey(request):
 
             # update information about user
             request.user.profile.match_name = ""
-            request.user.profile.is_matched = False;
+            request.user.profile.is_matched = False
             request.user.save()
 
             # update information about user's match
@@ -42,5 +48,6 @@ def survey(request):
         return render(request, 'survey/survey.html', args)
 
 
+@login_required(login_url='/login/')
 def survey_complete(request):
     return render(request, 'survey/survey_complete.html')

@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
@@ -8,6 +9,7 @@ from .user_match import quick_match_prototype
 from sys import stderr
 
 # Create your views here.
+@login_required(login_url='/login/')
 def match_view(request):
     # if request.method == 'POST':
     #     print(request.POST)
@@ -42,6 +44,8 @@ def match_view(request):
     return redirect('../matchresults/')
     #return render(request, "home.html", {})
 
+
+@login_required(login_url='/login/')
 def matchresults_view(request):
     storage = messages.get_messages(request)
     msgs = []
@@ -101,18 +105,23 @@ def matchresults_view(request):
     return render(request, 'matching/matchresults.html', context)
 
 
+@login_required(login_url='/login/')
 def request_info(request):
-    target = User.objects.filter(username=request.user.profile.match_name)[0]
-    context = {
-        'username': target.username,
-        'industry': target.profile.industry,
-        'year': target.profile.year_in_school,
-        'role': target.profile.role
-    }
+    if not request.user.profile.is_matched:
+        return render(request, 'matching/no_request.html')
+    else:
+        target = User.objects.filter(username=request.user.profile.match_name)[0]
+        context = {
+            'username': target.username,
+            'industry': target.profile.industry,
+            'year': target.profile.year_in_school,
+            'role': target.profile.role
+        }
 
-    return render(request, 'matching/request_info.html', context)
+        return render(request, 'matching/request_info.html', context)
 
 
+@login_required(login_url='/login/')
 def confirm_cancel_request(request):
     target = User.objects.filter(username=request.user.profile.match_name)[0]
 
@@ -122,6 +131,7 @@ def confirm_cancel_request(request):
     return render(request, 'matching/confirm_cancel.html', context)
 
 
+@login_required(login_url='/login/')
 def done_cancel(request):
     target = User.objects.filter(username=request.user.profile.match_name)[0]
     target.profile.match_name = ""
