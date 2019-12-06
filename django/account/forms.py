@@ -11,6 +11,7 @@ class EditAccountForm(UserChangeForm):
         model = User
         fields = {
             'email',
+            'first_name'
         }
 
 class EditProfileForm(UserChangeForm):
