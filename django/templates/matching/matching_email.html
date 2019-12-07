@@ -1,0 +1,8 @@
+{% autoescape off %}
+Hi {{ user.username }},
+
+Someone has requested you for a mock interview! Please review the request by clicking the link below.
+
+http://{{ domain }}{% url 'request_info' %}
+
+{% endautoescape %}

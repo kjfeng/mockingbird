@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-xs-12 col-md-5 right-side">
+
+<h1> Current Match</h1>
+{% if user.profile.is_matched %}
+<p> Congratulations on getting Matched! Please contact your Match with the contact information below. </p>
+{% elif user.profile.is_sender %}
+<p> Please wait for your match to accept the match and contact you. If you would like to cancel your match request,
+you can do so here. </p>
+{% else %}
+<p> Please review your match request. You may choose to accept or decline. </p>
+{% endif %}
+<div>
+    <p> Username: {{ username }} </p>
+    <p> Industry: {{ industry }}</p>
+    <p> Year: {{year}} </p>
+    <p> Desired Role: {{role }}</p>
+    {% if user.profile.is_matched %}
+    <p> Contact Info: {{email }}</p>
+    {% elif user.profile.is_sender %}
+    <p> <a href="{% url 'confirm_cancel_request' %}" >Cancel Request</a></p>
+    {% elif user.profile.has_request %}
+    <p> <a href="{% url 'accept_request' %}" >Accept Request</a></p>
+    <p> <a href="{% url 'confirm_cancel_request' %}" >Reject Request</a></p>
+    {% endif %}
+</div>
+<p><a href="{% url 'home' %} ">Back to Home</a> </p>
+</div>
+
+{% endblock %}

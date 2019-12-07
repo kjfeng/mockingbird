@@ -1,0 +1,4 @@
+release: python django/manage.py migrate
+web: gunicorn --chdir django mockingbird.wsgi --log-file -
+worker: python django/manage.py celery worker --loglevel=info
+celery_beat: python django/manage.py celery beat --loglevel=info
