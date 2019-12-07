@@ -7,6 +7,10 @@ from django.template.loader import render_to_string
 from onboard.models import Profile
 from .user_match import quick_match_prototype
 from sys import stderr
+from .tasks import send_survey
+from datetime import timedelta
+from django.utils import timezone
+#from post_office import mail
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -150,6 +154,9 @@ def accept_request(request):
             'domain': current_site.domain,
         })
         target.email_user(subject, message)
+        #send_survey(request, target, str(target.profile.match_name), str(t_username))
+        send_time = timezone.now() + timedelta(seconds=10)
+        send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
         return redirect('request_info')
 
 @login_required(login_url='/login/')

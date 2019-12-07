@@ -22,6 +22,10 @@ SECRET_KEY = 'j!8l9$b(2=ngj&=4%+ds4$si1p8nq&%760+w3i43w@8148)040'
 DEBUG =True #False
 
 ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1']
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_TASK_SERIALIZER = 'pickle'
 
 # Application definition
 
@@ -42,6 +46,7 @@ INSTALLED_APPS = [
     'tags',
     'account',
     'survey',
+    #'post_office',
 ]
 
 MIDDLEWARE = [
@@ -115,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 

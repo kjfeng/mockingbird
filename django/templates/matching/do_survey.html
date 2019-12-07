@@ -1,0 +1,8 @@
+{% autoescape off %}
+Hi {{ user.username }},
+
+We hope you had a helpful mock interview session. We want to continue to provide the best experience for our users, so please fill out the survey at the link below. You won't be able to match with another user before you do so. (If you haven't yet met with your Match, don't worry - just fill out the survey after you're done.)
+http://{{ domain }}{% url 'survey' %}
+
+Thanks and hope you get matching again soon!
+{% endautoescape %}
