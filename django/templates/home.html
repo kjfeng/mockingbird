@@ -33,6 +33,8 @@
         {% else %}
           <p><a href='match'> Get Me Matched!</a></p>
         {% endif %}
+
+        <p> <a href="{% url 'feedback:feedback' %}">Leave Feedback</a></p>
       {% endif%}
       <p><a href="{% url 'logout' %}">Log Out</a></p>
     </div>

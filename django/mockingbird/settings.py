@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'tags',
     'account',
     'survey',
-    #'post_office',
+    'feedback',
 ]
 
 MIDDLEWARE = [
