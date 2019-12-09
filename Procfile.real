@@ -1,4 +1,4 @@
 release: python django/manage.py migrate
 web: gunicorn --chdir django mockingbird.wsgi --log-file -
-worker: celery --workdir -A django mockingbird worker --loglevel=info
+worker: celery --workdir django -A mockingbird worker --loglevel=info
 
