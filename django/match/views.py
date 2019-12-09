@@ -166,7 +166,7 @@ def accept_request(request):
 
         # change sender and accepter to matched
         request.user.profile.is_matched = True
-        #request.user.profile.has_request = False
+        request.user.profile.has_request = False
         request.user.profile.save()
 
         # change target's settings
