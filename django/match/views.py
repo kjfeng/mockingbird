@@ -137,17 +137,14 @@ def matchresults_view(request):
 
 @login_required(login_url='/login/')
 def request_info(request):
-
-    if not request.user.profile.is_sender and not request.user.profile.has_request:
-        request.user.profile.is_matched = False
-        request.user.profile.save()
-        return render(request, 'matching/no_request.html')
-    elif request.user.profile.match_name == "":
+    if request.user.profile.is_matched or request.user.profile.is_waiting or request.user.profile.has_request:
+        # corner case if match name somehow is_matched improperly updated
+        if request.user.profile.match_name == "":
         request.user.profile.is_matched = False
         request.user.profile.has_request = False
         request.user.profile.save()
         return render(request, 'matching/no_request.html')
-    else:
+
         target = User.objects.filter(username=request.user.profile.match_name)[0]
         context = {
             'username': target.username,
@@ -158,6 +155,15 @@ def request_info(request):
         }
 
         return render(request, 'matching/request_info.html', context)
+    else:
+        return render(request, 'matching/no_request.html')
+    '''    
+    if not request.user.profile.is_sender and not request.user.profile.has_request:
+        request.user.profile.is_matched = False
+        request.user.profile.save()
+        return render(request, 'matching/no_request.html')
+    '''
+
 
 @login_required(login_url='/login/')
 def accept_request(request):
