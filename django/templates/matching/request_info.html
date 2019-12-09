@@ -18,6 +18,7 @@ you can do so here. </p>
     <p> Desired Role: {{role }}</p>
     {% if user.profile.is_matched %}
     <p> Contact Info: {{email }}</p>
+    {% endif %}
     {% if user.profile.is_sender %}
     <p> <a href="{% url 'confirm_cancel_request' %}" >Cancel Request</a></p>
     {% else %}
