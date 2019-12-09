@@ -19,7 +19,7 @@ DJANGO_ENV = os.environ.get("DJANGO_ENV", "local")
 SECRET_KEY = 'j!8l9$b(2=ngj&=4%+ds4$si1p8nq&%760+w3i43w@8148)040'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =False
+DEBUG =True
 
 ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1']
 
