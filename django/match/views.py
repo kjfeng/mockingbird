@@ -109,7 +109,6 @@ def matchresults_view(request):
         request.user.profile.match_name = str(username)
         request.user.profile.is_sender = True
         request.user.profile.save()
-
         # change target's settings
         target = User.objects.filter(username=str(t_username))[0]
         #print(target[0],file=stderr)
@@ -137,6 +136,7 @@ def matchresults_view(request):
 
 @login_required(login_url='/login/')
 def request_info(request):
+
     if request.user.profile.is_matched or request.user.profile.is_waiting or request.user.profile.has_request:
         # corner case if match name somehow is_matched improperly updated
 
