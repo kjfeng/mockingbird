@@ -8,5 +8,4 @@ services:
       POSTGRES_PASSWORD: mockingbird_password_local
       POSTGRES_DB: mockingbird_db_local
     ports:
-      - "127.0.0.1:54320:5432"
-      
+      - "54320:5432"
