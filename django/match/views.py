@@ -201,7 +201,7 @@ def done_cancel(request):
     # update target's info
     target = User.objects.filter(username=request.user.profile.match_name)[0]
     target.profile.match_name = ""
-    #target.profile.is_matched = False
+    target.profile.is_matched = False
     target.profile.has_request = False
     target.profile.save()
 
