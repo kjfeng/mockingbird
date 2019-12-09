@@ -5,12 +5,15 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from onboard.models import Profile
+from .models import Cached_Matches, Recent_Matches
 from .user_match import quick_match_prototype, get_match_list
+from .user_match import to_user_list, to_user_string, dequeue, enqueue
 from sys import stderr
 
 # Create your views here.
 @login_required(login_url='/login/')
 def match_view(request):
+    L_SIZE = 10
     # if request.method == 'POST':
     #     print(request.POST)
     #     # clear messages
@@ -34,19 +37,36 @@ def match_view(request):
         str(message)
 
     my_profile = Profile.objects.get(id=request.user.id)
-    match_list = get_match_list(my_profile)
+
+    recent = Recent_Matches.objects.get(user=my_profile.user)
+    recent_list = to_user_list(recent.matches)
+
+    match_cache = Cached_Matches.objects.get(user=my_profile.user)
+    match_cache_list = to_user_list(match_cache.matches)
+
+    match_list = match_cache_list
+    if len(match_list) is 0:
+        match_list = get_match_list(my_profile, recent_list)
 
     # match = quick_match_prototype(my_profile)
+    if match_list is not None and len(match_list) is not 0:
+        match = User.objects.get(username=match_list[0])
+        match_profile = Profile.objects.get(user=match)
 
-    if match_list is not None:
-        match = match_list[0]
-        messages.add_message(request, messages.INFO, str(match.user.username))
-        messages.add_message(request, messages.INFO, str(match.user.email))
-        messages.add_message(request, messages.INFO, str(match.industry))
+        recent_list = enqueue(recent_list, match_profile, L_SIZE)
+        recent.matches = to_user_string(recent_list)
+        recent.save()
+
+        messages.add_message(request, messages.INFO, str(match.username))
+        messages.add_message(request, messages.INFO, str(match.email))
+        messages.add_message(request, messages.INFO, str(match_profile.industry))
+
+        match_list = dequeue(match_list)
+        match_cache.matches = to_user_string(match_list)
+        match_cache.save()
+        print("cache after matching: " + match_cache.matches, file=stderr)
 
     return redirect('../matchresults/')
-    #return render(request, "home.html", {})
-
 
 @login_required(login_url='/login/')
 def matchresults_view(request):
