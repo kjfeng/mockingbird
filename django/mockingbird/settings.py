@@ -129,13 +129,13 @@ USE_TZ = True
 # Celery stuff
 # CELERY_BROKER_URL=os.environ.get('REDIS_URL', '')
 # CELERY_RESULT_BACKEND=os.environ.get('REDIS_URL', '')
-BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+BROKER_URL = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-164-134-74.compute-1.amazonaws.com:22949'
+CELERY_RESULT_BACKEND = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-164-134-74.compute-1.amazonaws.com:22949'
 CELERY_ACCEPT_CONTENT = ['pickle']
 CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_TIMEZONE = TIME_ZONE
 
-redis_host = os.environ.get('REDIS_HOST', 'localhost')
+redis_host = os.environ.get('REDIS_HOST', 'ec2-54-164-134-74.compute-1.amazonaws.com')
 # Channel layer definitions
 # http://channels.readthedocs.org/en/latest/deploying.html#setting-up-a-channel-backend
 CHANNEL_LAYERS = {
@@ -143,7 +143,7 @@ CHANNEL_LAYERS = {
         # This example app uses the Redis channel layer implementation asgi_redis
         "BACKEND": "asgi_redis.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(redis_host, 6379)],
+            "hosts": [(redis_host, 22949)],
         },
         "ROUTING": "multichat.routing.channel_routing",
     },
