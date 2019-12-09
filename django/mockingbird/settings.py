@@ -116,13 +116,23 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
+
+
+# Celery stuff
+# CELERY_BROKER_URL=os.environ.get('REDIS_URL', '')
+# CELERY_RESULT_BACKEND=os.environ.get('REDIS_URL', '')
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_TIMEZONE = TIME_ZONE
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

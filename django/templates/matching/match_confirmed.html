@@ -1,0 +1,8 @@
+{% autoescape off %}
+Hi {{ user.username }},
+
+Your request for a mock interview has been confirmed! Please view your Match's contact info below or in your dashboard.
+
+http://{{ domain }}{% url 'request_info' %}
+
+{% endautoescape %}
