@@ -139,11 +139,13 @@ def matchresults_view(request):
 def request_info(request):
     if request.user.profile.is_matched or request.user.profile.is_waiting or request.user.profile.has_request:
         # corner case if match name somehow is_matched improperly updated
-        if request.user.profile.match_name == "":
-            request.user.profile.is_matched = False
-            request.user.profile.has_request = False
-            request.user.profile.save()
-        return render(request, 'matching/no_request.html')
+
+        #if request.user.profile.match_name == "":
+
+        #    request.user.profile.is_matched = False
+         #   request.user.profile.has_request = False
+         #   request.user.profile.save()
+        #return render(request, 'matching/no_request.html')
 
         target = User.objects.filter(username=request.user.profile.match_name)[0]
         context = {
@@ -151,7 +153,7 @@ def request_info(request):
             'industry': target.profile.industry,
             'year': target.profile.year_in_school,
             'role': target.profile.role,
-            'email': target.email
+            'emailcv': target.email
         }
 
         return render(request, 'matching/request_info.html', context)
