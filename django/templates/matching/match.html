@@ -1,32 +1,17 @@
 {% extends 'base.html' %}
-<!DOCTYPE html>
-<html lang="en">
-
-  <head>
-
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap 4 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- main CSS -->
-    <link rel="stylesheet" href="landing-style.css">
-    <link rel="stylesheet" href="mqueries.css">
-
-    <!-- fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
-    <!-- favicon -->
-    <link rel='icon' href='' type='image/x-icon'>
-
-    <title>Mockingbird</title>
-
-  </head>
-
 
 {% block content %}
-<h3>Welcome, {{user.username}}!</h3>
-<form action='.' method='POST'>{% csrf_token %}
-    <input type='submit' value="Get Me Matched!">
-</form>
+<div class="col-xs-12 col-md-5 right-side">
+    <h1>Match Configuration</h1>
+    <p><strong>Filter Matching By:</strong></p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+      <p><a href='../match'>Quick Match!</a></p>
+      <p><a href='../matchlist'>List Match!</a></p>
+  </form>
+    <br>
+</div>
+
 {% endblock %}
-</html>
+
