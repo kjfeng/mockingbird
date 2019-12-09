@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from multiselectfield import MultiSelectField
+from phone_field import PhoneField
+
 
 
 INDUSTRY_CHOICES = [('Technology', 'Technology'),
@@ -54,6 +56,8 @@ class Profile(models.Model):
     time_matched = models.DateTimeField(auto_now=True)
     # boolean to say if this is a sender waiting for someone to response to their request
     is_waiting = models.BooleanField(default=False)
+
+    phone = PhoneField(blank=True, help_text='Contact phone number', default="(None)")
 
     def __str__(self):
         return self.user.username

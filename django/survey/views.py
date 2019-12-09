@@ -24,7 +24,7 @@ def survey(request):
             # update information about user
             request.user.profile.match_name = ""
             request.user.profile.is_matched = False
-            request.user.save()
+            request.user.profile.save()
 
             # update information about user's match
             if form.cleaned_data['did_meet'] == 'no':

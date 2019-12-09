@@ -1,2 +1,2 @@
-release: python django/manage.py migrate
-web: gunicorn --chdir django mockingbird.wsgi --log-file -
+release: python django/manage.py makemigrations && python django/manage.py migrate
+web: env > .env; env PYTHONUNBUFFERED=true honcho start -f ProcfileHoncho 2>&1
