@@ -21,28 +21,7 @@ SECRET_KEY = 'j!8l9$b(2=ngj&=4%+ds4$si1p8nq&%760+w3i43w@8148)040'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG =False
 
-ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1', 'localhost']
-REDIS_URL = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-164-134-74.compute-1.amazonaws.com:22949'
-#BROKER_URL = 'redis://localhost:6379'
-#BROKER_URL = os.environ.get("REDISCLOUD_URL", "django://")
-#BROKER_URL = 'amqp://agixgbiz:rz5IW-...@shark.rmq.cloudamqp.com/agixgbiz'
-BROKER_URL= os.environ['REDIS_URL']
-CELERY_RESULT_BACKEND=os.environ['REDIS_URL']
-BROKER_POOL_LIMIT = 3
-
-
-# if goes over the limit
-#BROKER_TRANSPORT_OPTIONS = {
-#    "max_connections": 2,
-#}
-
-#BROKER_POOL_LIMIT = None
-
-#CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_ACCEPT_CONTENT = ['pickle']
-CELERY_TASK_SERIALIZER = 'pickle'
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
@@ -145,6 +124,30 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# Celery stuff
+# CELERY_BROKER_URL=os.environ.get('REDIS_URL', '')
+# CELERY_RESULT_BACKEND=os.environ.get('REDIS_URL', '')
+BROKER_URL = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-164-134-74.compute-1.amazonaws.com:22949'
+CELERY_RESULT_BACKEND = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-164-134-74.compute-1.amazonaws.com:22949'
+CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_TIMEZONE = TIME_ZONE
+
+redis_host = os.environ.get('REDIS_HOST', 'ec2-54-164-134-74.compute-1.amazonaws.com')
+# Channel layer definitions
+# http://channels.readthedocs.org/en/latest/deploying.html#setting-up-a-channel-backend
+CHANNEL_LAYERS = {
+    "default": {
+        # This example app uses the Redis channel layer implementation asgi_redis
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(redis_host, 22949)],
+        },
+        "ROUTING": "multichat.routing.channel_routing",
+    },
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

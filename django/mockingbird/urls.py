@@ -48,4 +48,5 @@ urlpatterns = [
     url(r'^survey/', include(('survey.urls', 'survey'), namespace='survey')),
     url(r'^feedback/', include(('feedback.urls', 'feedback'), namespace='feedback')),
     url('^', include('django.contrib.auth.urls')),
+
 ]
