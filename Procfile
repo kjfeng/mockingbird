@@ -1,1 +1,3 @@
-web: env > .env; env PYTHONUNBUFFERED=true honcho start -f Procfile.real 2>&1
+release: python django/manage.py migrate
+web: gunicorn --chdir django mockingbird.wsgi --log-file -
+worker: celery -A mockingbird worker
