@@ -135,7 +135,10 @@ def matchresults_view(request):
 
 @login_required(login_url='/login/')
 def request_info(request):
+
     if not request.user.profile.is_sender and not request.user.profile.has_request:
+        return render(request, 'matching/no_request.html')
+    elif request.user.profile.match_name == "":
         return render(request, 'matching/no_request.html')
     else:
         target = User.objects.filter(username=request.user.profile.match_name)[0]
