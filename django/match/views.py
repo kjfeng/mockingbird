@@ -117,7 +117,7 @@ def matchresults_view(request):
         target.profile.match_name = request.user.username
         #target.profile.is_matched = True
         target.profile.is_sender = False
-        target.profie.is_waiting = False
+        target.profile.is_waiting = False
         target.profile.has_request = True
         target.profile.save()
 
