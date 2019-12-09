@@ -12,7 +12,8 @@ year = {"Freshman":1,
         "Senior":4,
         "Graduate Student":5,
         "Postdoc":6,
-        "Not in School": -1}
+        "Not in School": -1,
+        "Unknown": 0}
 
 #----------------------------------------------------------------#
 
