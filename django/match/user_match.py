@@ -1,9 +1,10 @@
+from django.contrib.auth.models import User
 from onboard.models import Profile
 from account.models import Statistics
 from numpy.random import choice
 import random
 import math
-
+from sys import stderr
 
 year = {"Freshman":1,
         "Sophomore":2,
@@ -12,6 +13,59 @@ year = {"Freshman":1,
         "Graduate Student":5,
         "Postdoc":6,
         "Not in School": -1}
+
+#----------------------------------------------------------------#
+
+def dequeue(my_list):
+    if len(my_list) is 0:
+        return 0
+
+    my_list[0] = None
+
+    return my_list[1:]
+
+def enqueue(my_list, next_elem, max_size):
+    if len(my_list) is max_size:
+        my_list = dequeue(my_list)
+
+    if next_elem not in my_list:
+        my_list.append(next_elem)
+
+    return my_list
+
+#----------------------------------------------------------------#
+
+def to_user_list(user_string):
+    user_list = []
+
+    if user_string is not None:
+        user_list = user_string.split(",")
+
+    if len(user_list) is 0:
+        return user_list
+
+    if "" in user_list:
+        user_list.remove("")
+
+    i = 0
+    while i < len(user_list):
+        username = user_list[i]
+        user = User.objects.get(username=username)
+        user_profile = Profile.objects.get(user=user)
+        user_list[i] = user_profile
+        i += 1
+
+    return user_list
+
+def to_user_string(user_list):
+    user_string = ""
+
+    for u in user_list:
+        user_string += u.user.username + ","
+
+    return user_string
+
+#----------------------------------------------------------------#
 
 def _calculate_score(user_profile, match):
     MIN_SCORE = 1
@@ -58,6 +112,8 @@ def _normalize(p):
 
     return p
 
+#----------------------------------------------------------------#
+
 def quick_match_prototype(profile):
     matches = Profile.objects.filter(industry=profile.industry)
     matchesList = []
@@ -73,9 +129,13 @@ def quick_match_prototype(profile):
 
     return matchesList[randomMatch]
 
-def get_match_list(user_profile):
+def get_match_list(user_profile, recent_list):
     matchSet = Profile.objects.filter(industry=user_profile.industry, is_matched=False)
     matchSet = matchSet.exclude(pk=user_profile.pk)
+
+    for recent_match in recent_list:
+        matchSet = matchSet.exclude(user=recent_match.user)
+
     p = []
 
     for m in matchSet:
@@ -92,6 +152,10 @@ def get_match_list(user_profile):
 
     p = _normalize(p)
 
+    print(p, file=stderr)
+
     matchList = list(choice(matchSet, list_size, replace=False, p=p))
+
+    # print(matchList, file=stderr)
 
     return matchList
