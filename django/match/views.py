@@ -142,6 +142,7 @@ def request_info(request):
         return render(request, 'matching/no_request.html')
     elif request.user.profile.match_name == "":
         request.user.profile.is_matched = False
+        request.user.profile.has_request = False
         request.user.profile.save()
         return render(request, 'matching/no_request.html')
     else:
