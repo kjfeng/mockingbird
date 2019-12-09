@@ -202,7 +202,9 @@ def done_cancel(request):
     target = User.objects.filter(username=request.user.profile.match_name)[0]
     target.profile.match_name = ""
     target.profile.is_matched = False
+    target.profile.is_waiting = False
     target.profile.has_request = False
+    target.profile.is_sender = False
     target.profile.save()
 
     # send email that the match has been canceled
