@@ -5,8 +5,12 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from onboard.models import Profile
-from .user_match import quick_match_prototype, get_match_list
+from .user_match import quick_match_prototype
 from sys import stderr
+from .tasks import send_survey
+from datetime import timedelta
+from django.utils import timezone
+#from post_office import mail
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -34,12 +38,9 @@ def match_view(request):
         str(message)
 
     my_profile = Profile.objects.get(id=request.user.id)
-    match_list = get_match_list(my_profile)
+    match = quick_match_prototype(my_profile)
 
-    # match = quick_match_prototype(my_profile)
-
-    if match_list is not None:
-        match = match_list[0]
+    if match is not None:
         messages.add_message(request, messages.INFO, str(match.user.username))
         messages.add_message(request, messages.INFO, str(match.user.email))
         messages.add_message(request, messages.INFO, str(match.industry))
@@ -57,7 +58,7 @@ def matchresults_view(request):
     industry = ''
 
     for message in storage:
-        # print(message, file=stderr)
+        print(message, file=stderr)
         msgs.append(message)
 
     if len(msgs) > 0:
@@ -80,7 +81,7 @@ def matchresults_view(request):
         t_username = context['username']
 
         # change sender to blocked
-        request.user.profile.is_matched = True
+        #request.user.profile.is_matched = True
         request.user.profile.is_waiting = True
         request.user.profile.match_name = str(username)
         request.user.profile.is_sender = True
@@ -91,7 +92,7 @@ def matchresults_view(request):
         #print(target[0],file=stderr)
 
         target.profile.match_name = request.user.username
-        target.profile.is_matched = True
+        #target.profile.is_matched = True
         target.profile.has_request = True
         target.profile.save()
 
@@ -111,7 +112,7 @@ def matchresults_view(request):
 
 @login_required(login_url='/login/')
 def request_info(request):
-    if not request.user.profile.is_matched:
+    if not request.user.profile.is_sender and not request.user.profile.has_request:
         return render(request, 'matching/no_request.html')
     else:
         target = User.objects.filter(username=request.user.profile.match_name)[0]
@@ -119,11 +120,44 @@ def request_info(request):
             'username': target.username,
             'industry': target.profile.industry,
             'year': target.profile.year_in_school,
-            'role': target.profile.role
+            'role': target.profile.role,
+            'email': target.email
         }
 
         return render(request, 'matching/request_info.html', context)
 
+@login_required(login_url='/login/')
+def accept_request(request):
+    if not request.user.profile.has_request:
+        return render(request, 'matching/no_request.html')
+    else:
+        t_username = request.user.profile.match_name
+
+        # change sender and accepter to matched
+        request.user.profile.is_matched = True
+        #request.user.profile.has_request = False
+        request.user.profile.save()
+
+        # change target's settings
+        target = User.objects.filter(username=str(t_username))[0]
+
+        target.profile.is_waiting = False
+        #target.profile.is_sender = False
+        target.profile.is_matched = True
+        target.profile.save()
+
+        # logic to send email to the target
+        current_site = get_current_site(request)
+        subject = '[MockingBird] Your Match has been confirmed!'
+        message = render_to_string('matching/match_confirmed.html', {
+            'user': target,
+            'domain': current_site.domain,
+        })
+        target.email_user(subject, message)
+        #send_survey(request, target, str(target.profile.match_name), str(t_username))
+        send_time = timezone.now() + timedelta(seconds=30)
+        send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
+        return redirect('request_info')
 
 @login_required(login_url='/login/')
 def confirm_cancel_request(request):
@@ -141,7 +175,7 @@ def done_cancel(request):
     # update target's info
     target = User.objects.filter(username=request.user.profile.match_name)[0]
     target.profile.match_name = ""
-    target.profile.is_matched = False
+    #target.profile.is_matched = False
     target.profile.has_request = False
     target.profile.save()
 
@@ -157,6 +191,7 @@ def done_cancel(request):
     request.user.profile.is_matched = False
     request.user.profile.match_name = ""
     request.user.profile.is_waiting = False
+    request.user.profile.is_sender = False
     request.user.profile.save()
 
     context = {
