@@ -137,8 +137,12 @@ def matchresults_view(request):
 def request_info(request):
 
     if not request.user.profile.is_sender and not request.user.profile.has_request:
+        request.user.profile.is_matched = False
+        request.user.profile.save()
         return render(request, 'matching/no_request.html')
     elif request.user.profile.match_name == "":
+        request.user.profile.is_matched = False
+        request.user.profile.save()
         return render(request, 'matching/no_request.html')
     else:
         target = User.objects.filter(username=request.user.profile.match_name)[0]
