@@ -22,8 +22,11 @@ SECRET_KEY = 'j!8l9$b(2=ngj&=4%+ds4$si1p8nq&%760+w3i43w@8148)040'
 DEBUG =True #False
 
 ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1']
-BROKER_URL = 'redis://localhost:6379'
+#ROKER_URL = 'redis://localhost:6379'
 #BROKER_URL = os.environ.get("REDISCLOUD_URL", "django://")
+BROKER_URL = 'amqp://agixgbiz:rz5IW-...@shark.rmq.cloudamqp.com/agixgbiz'
+BROKER_POOL_LIMIT = 3
+
 
 # if goes over the limit
 #BROKER_TRANSPORT_OPTIONS = {
