@@ -14,5 +14,5 @@ class SurveyForm(forms.Form):
 
     comment = forms.CharField(max_length=500, required=False)
 
-  class Meta:
+class Meta:
         fields = ('did_meet', 'on_time', 'friendly')
