@@ -21,8 +21,13 @@ SECRET_KEY = 'j!8l9$b(2=ngj&=4%+ds4$si1p8nq&%760+w3i43w@8148)040'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG =True #False
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1']
 #ROKER_URL = 'redis://localhost:6379'
+=======
+ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1', 'localhost']
+BROKER_URL = 'redis://localhost:6379'
+>>>>>>> 12e72ef99952720da1daf3c7331dfa59eff98cc1
 #BROKER_URL = os.environ.get("REDISCLOUD_URL", "django://")
 BROKER_URL = 'amqp://agixgbiz:rz5IW-...@shark.rmq.cloudamqp.com/agixgbiz'
 BROKER_POOL_LIMIT = 3
