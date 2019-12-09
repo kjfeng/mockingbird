@@ -140,9 +140,9 @@ def request_info(request):
     if request.user.profile.is_matched or request.user.profile.is_waiting or request.user.profile.has_request:
         # corner case if match name somehow is_matched improperly updated
         if request.user.profile.match_name == "":
-        request.user.profile.is_matched = False
-        request.user.profile.has_request = False
-        request.user.profile.save()
+            request.user.profile.is_matched = False
+            request.user.profile.has_request = False
+            request.user.profile.save()
         return render(request, 'matching/no_request.html')
 
         target = User.objects.filter(username=request.user.profile.match_name)[0]
