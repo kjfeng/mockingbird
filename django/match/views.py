@@ -178,7 +178,7 @@ def accept_request(request):
         })
         target.email_user(subject, message)
         #send_survey(request, target, str(target.profile.match_name), str(t_username))
-        send_time = timezone.now() + timedelta(seconds=10)
+        send_time = timezone.now() + timedelta(seconds=30)
         send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
         return redirect('request_info')
 
