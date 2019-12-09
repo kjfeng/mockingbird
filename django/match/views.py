@@ -153,7 +153,7 @@ def request_info(request):
             'industry': target.profile.industry,
             'year': target.profile.year_in_school,
             'role': target.profile.role,
-            'emailcv': target.email
+            'email': target.email
         }
 
         return render(request, 'matching/request_info.html', context)
