@@ -46,7 +46,7 @@ def survey(request):
                 # send email if there is feedback
                 if form.cleaned_data['comment'] != "":
                     subject = 'Comment Left'
-                    message = form.cleaned_data['comment'] + "\n from <b>" + str(request.user.username) + "</b>"
+                    message = form.cleaned_data['comment'] + "\n from <b>" + str(request.user.username) + "</b> for " + str(target.uesrname)
                     send_mail(
                         subject,
                         message,
