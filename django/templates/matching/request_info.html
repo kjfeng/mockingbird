@@ -20,7 +20,7 @@ you can do so here. </p>
     <p> Contact Info: {{email }}</p>
     {% if user.profile.is_sender %}
     <p> <a href="{% url 'confirm_cancel_request' %}" >Cancel Request</a></p>
-    {% else user.profile.has_request %}
+    {% else %}
     <p> <a href="{% url 'accept_request' %}" >Accept Request</a></p>
     <p> <a href="{% url 'confirm_cancel_request' %}" >Reject Request</a></p>
     {% endif %}
