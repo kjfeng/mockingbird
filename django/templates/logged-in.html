@@ -1,0 +1,40 @@
+{% extends 'base-app.html' %}
+{% load static %}
+{% block content %}
+
+<div class="">
+
+  <div>
+    <h1 class="title">Hi, {{user.first_name}}!</h1>
+  </div>
+
+  <div class="">
+    {% if not user.profile.onboard_confirmed %}
+    <p><a href='../tags'>Complete Profile</a></p>
+    {% else %}
+    <a href="{% url 'account:account_details' %}"> Account Details </a>
+    <!-- <form action="." method='POST'>{% csrf_token %}
+      <input type='submit' value="Get Me Matched!">
+    </form> -->
+      {% if user.profile.is_matched %} <!-- should be not -->
+        <p>Get Me Matched!****</p>
+        <p><a href='survey'>Finish Survey </a> </p>
+
+        <p> **** this feature is disabled until you complete all surveys</p>
+      {% elif user.profile.has_request %}
+        <p><a href='request_info'>Pending Match Request</a> </p>
+      {% elif user.profile.is_waiting %}
+        <p><a href='request_info'>Current Match Request</a> </p>
+      {% else %}
+        <p><a href='match'> Get Me Matched!</a></p>
+      {% endif %}
+
+      <p> <a href="{% url 'feedback:feedback' %}">Leave Feedback</a></p>
+    {% endif%}
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
+  </div>
+</div>
+
+<script src="{% static 'js/base-app.js' %}"></script>
+
+{% endblock %}

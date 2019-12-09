@@ -1,0 +1,135 @@
+html, body {
+  font-family: 'Poppins', sans-serif !important;
+  color: #3f3f3f;
+  font-size: 12pt;
+  width: 100%;
+  height: 100%;
+}
+
+nav {
+  font-family: 'Poppins', sans-serif;
+  color: #3f3f3f;
+  font-size: 12pt;
+}
+
+.navbar-custom {
+  background-color: white;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+input[type="text"], button {
+  border-radius: 25px;
+  margin: auto;
+}
+
+.nav-item {
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+}
+
+.form-control-feedback {
+  padding-right: 2em;
+}
+
+.user-icon {
+  color: #5a5a5a;
+  background-color: #b9b9b9;
+  border-radius: 50%;
+  padding: 3px;
+  margin-top: -3px;
+}
+
+.user-icon:hover {
+  background-color: #dadada;
+}
+
+.logo-wrapper {
+  padding-left: 10px;
+}
+
+.navbar-toggler .custom-toggler {
+    border: none !important;
+}
+
+.custom-toggler {
+  background-color: white;
+}
+
+
+.notif-container {
+  width: 350px;
+  white-space: normal;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.notif {
+  padding: 0.5em 1.5em 0em 1.5em;
+}
+
+#notif:hover {
+  background-color: #efefef;
+}
+
+.notif-detail {
+  font-size: 10pt;
+  color: #aaa;
+  padding-top: 0.3em;
+  margin-bottom: 0.5em;
+}
+
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color: red;
+  border-radius: 50%;
+  /* display: inline-block; */
+  position: absolute;
+  top: 5px;
+  left: 25px;
+}
+
+.stuff-under-navbar {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-bottom: 5rem;
+}
+
+.card-contents {
+  background-color: white;
+  margin-top: 5rem;
+  width: 100%;
+  padding: 3rem !important;
+}
+
+.title {
+  font-weight: 600;
+  padding-bottom: 1rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  outline: none
+}
+
+input:focus {
+  border: 2px solid #2042F8
+}
+
+button[type=submit], button[type=button] {
+  background-color: #2042F8;
+  color: white;
+  padding: 0.8rem 2rem;
+  cursor: pointer;
+  border-radius: 8px;
+  outline: none
+}
+
+button[type=submit]:focus, button[type=button]:focus {
+  background-color: #6275D8;
+}

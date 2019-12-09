@@ -1,9 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'base-app.html' %}
 
 {% block content %}
-<div class="col-xs-12 col-md-5 right-side">
+<div >
 {% if msgs|length != 0 %}
-    <h3>Your mock interview match is ready!</h3>
+    <h3 class="title">Your mock interview match is ready!</h3>
     <p><b>User:</b> {{ username }}</p>
     <p><b>Email:</b> {{ email }}</p>
     <p><b>Industry:</b> {{ industry }}</p>
