@@ -19,11 +19,18 @@ DJANGO_ENV = os.environ.get("DJANGO_ENV", "local")
 SECRET_KEY = 'j!8l9$b(2=ngj&=4%+ds4$si1p8nq&%760+w3i43w@8148)040'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =True #False
+DEBUG =False
 
-ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1']
-BROKER_URL = 'redis://localhost:6379'
-#BROKER_URL = os.environ.get("REDISCLOUD_URL", "django://")
+ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1', 'localhost']
+REDIS_URL = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-164-134-74.compute-1.amazonaws.com:22949'
+
+#BROKER_URL = 'redis://localhost:6379'
+
+BROKER_URL = os.environ['REDIS_URL']
+
+#BROKER_URL = 'amqp://agixgbiz:rz5IW-...@shark.rmq.cloudamqp.com/agixgbiz'
+BROKER_POOL_LIMIT = 3
+
 
 # if goes over the limit
 #BROKER_TRANSPORT_OPTIONS = {
@@ -32,10 +39,11 @@ BROKER_URL = 'redis://localhost:6379'
 
 #BROKER_POOL_LIMIT = None
 
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = os.environ['REDIS_URL']
 CELERY_ACCEPT_CONTENT = ['pickle']
 CELERY_TASK_SERIALIZER = 'pickle'
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Application definition
 
@@ -49,6 +57,7 @@ INSTALLED_APPS = [
 
     # borrowed
     'multiselectfield',
+    'phone_field',
 
     # created
     'onboard',
