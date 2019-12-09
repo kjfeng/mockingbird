@@ -23,6 +23,7 @@
       </form> -->
         {% if user.profile.has_request %}
           <p><a href='request_info'>Pending Match Request</a> </p>
+
         {% elif user.profile.is_waiting %}
           <p><a href='request_info'>Current Match Request</a> </p>
         {% elif user.profile.is_matched %} <!-- should be not -->

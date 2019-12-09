@@ -175,7 +175,7 @@ def accept_request(request):
         target = User.objects.filter(username=str(t_username))[0]
 
         target.profile.is_waiting = False
-        #target.profile.is_sender = False
+        target.profile.is_sender = False
         target.profile.is_matched = True
         target.profile.save()
 
