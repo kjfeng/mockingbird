@@ -71,3 +71,11 @@ def change_password(request):
     return render(request, 'account/change_password.html', {
         'form': form
     })
+
+
+def show_statistics(request):
+    total_late = request.user.statistics.late*request.user.statistics.tot_interview
+    context = {
+        'tot_late': total_late
+    }
+    return render(request, 'account/stat_page.html')
