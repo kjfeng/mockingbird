@@ -9,14 +9,16 @@
     <h3>Your mock interview matches are ready!</h3>
     {% endif %}
     {% for matchedUser in matchedUsers %}
+    <form action='/matchresults/' method="POST"> <!-- this is where it redirects -->
+        <input type="hidden" id="username" name="username" value={{matchedUser.username}}>
         <p><b>User:</b> {{matchedUser.username}}</p>
         <p><b>Email:</b> {{matchedUser.email}}</p>
         <p><b>Industry:</b> {{matchedUser.industry}}</p>
-        <form action='../'>
-            <input type='submit' value="Accept">
-        </form>
+        {% csrf_token %}
+        <input type='submit' value="Accept">
+    </form>
     {% endfor %}
-    {% if matchedUsers|length == 1 %}
+    {% if not configured %}
         <form action='/match/' method='POST'>{% csrf_token %}
             <input type='submit' value="Match Me Again">
         </form>
@@ -25,6 +27,9 @@
     <h4>Aww... it's an empty nest</h4>
     <p><a href='../match'>Try Another Match</a></p>
 {% endif %}
-<a href="{% url 'home'%}"> Home </a>
+<p><a href="{% url 'home'%}"> Home </a> </p>
+{% if configured %}
+    <p><a href="{% url 'matchlist' %}"> Back </a> </p>
+{% endif %}
 </div>
 {% endblock %}

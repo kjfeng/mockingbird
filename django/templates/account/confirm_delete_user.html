@@ -1,0 +1,13 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="col-xs-12 col-md-5 right-side">
+
+<form method=POST action=".">
+    {% csrf_token %}
+    <p> Are you sure you want to delete your account?</p>
+    <p> <a href= "{% url 'account:confirm_delete' %}">Yes </a>
+        <a href= "{% url 'account:account_details' %}">No </a>
+    </p>
+</form>
+</div>
+{% endblock %}

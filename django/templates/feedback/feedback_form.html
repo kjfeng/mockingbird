@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-xs-12 col-md-5 right-side">
+    <h2>What can we improve upon?</h2>
+    <br>
+
+    <p> We're always interested in hearing about what we can do to make your experiences better! If you have any
+          suggestions or concerns about the platform, please let us know down below!'</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Submit</button>
+    </form>
+    <br>
+</div>
+
+{% endblock %}

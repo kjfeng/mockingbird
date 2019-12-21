@@ -16,20 +16,25 @@ def account_details(request):
 
 @login_required(login_url='/login/')
 def account_delete(request):
-    # print(request)
-    # if request.method == 'POST':
+    return render(request, 'account/confirm_delete_user.html')
+
+
+def account_delete_confirm(request):
     request.user.delete()
     return render(request, 'account/deleted_user.html')
+
 
 def logout_view(request):
     logout(request)
     return redirect('home')
 
+
 @login_required(login_url='/login')
 def account_edit(request):
     initial_data = {
         'year_in_school': request.user.profile.year_in_school,
-        'industry': request.user.profile.industry,
+        'industry_choice_1': request.user.profile.industry_choice_1,
+        'industry_choice_2': request.user.profile.industry_choice_2,
         'major': request.user.profile.major,
         'role': request.user.profile.role
     }

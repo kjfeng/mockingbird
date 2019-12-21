@@ -19,9 +19,11 @@ DJANGO_ENV = os.environ.get("DJANGO_ENV", "local")
 SECRET_KEY = 'j!8l9$b(2=ngj&=4%+ds4$si1p8nq&%760+w3i43w@8148)040'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =True #False
+DEBUG =True
 
 ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1']
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Application definition
 
@@ -35,12 +37,15 @@ INSTALLED_APPS = [
 
     # borrowed
     'multiselectfield',
+    'phone_field',
 
     # created
     'onboard',
     'match',
     'tags',
     'account',
+    'survey',
+    'feedback',
 ]
 
 MIDDLEWARE = [
@@ -114,13 +119,37 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
+
+
+# Celery stuff
+# CELERY_BROKER_URL=os.environ.get('REDIS_URL', '')
+# CELERY_RESULT_BACKEND=os.environ.get('REDIS_URL', '')
+BROKER_URL = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-164-134-74.compute-1.amazonaws.com:22949'
+CELERY_RESULT_BACKEND = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-164-134-74.compute-1.amazonaws.com:22949'
+CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_TIMEZONE = TIME_ZONE
+
+redis_host = os.environ.get('REDIS_HOST', 'ec2-54-164-134-74.compute-1.amazonaws.com')
+# Channel layer definitions
+# http://channels.readthedocs.org/en/latest/deploying.html#setting-up-a-channel-backend
+CHANNEL_LAYERS = {
+    "default": {
+        # This example app uses the Redis channel layer implementation asgi_redis
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(redis_host, 22949)],
+        },
+        "ROUTING": "multichat.routing.channel_routing",
+    },
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

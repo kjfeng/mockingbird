@@ -21,11 +21,24 @@
       <!-- <form action="." method='POST'>{% csrf_token %}
         <input type='submit' value="Get Me Matched!">
       </form> -->
-        {% if user.profile.status == "free" %}
-          <p><a href='matchconfig'>Get Me Matched!</a></p>
+        {% if user.profile.has_request %}
+          <p><a href='request_info'>Pending Match Request</a> </p>
+
+        {% elif user.profile.is_waiting %}
+          <p><a href='request_info'>Current Match Request</a> </p>
+        {% elif user.profile.is_matched %} <!-- should be not -->
+          <p>Get Me Matched!****</p>
+          <p><a href='request_info'>Current Match Information </a> </p>
+          <p><a href='survey'>Finish Survey </a> </p>
+
+          <p> **** this feature is disabled until you complete all surveys</p>
+
         {% else %}
-          <p> Finish Survey </p>
+          <p><a href='match'> Get Me Matched!</a></p>
+          <p><a href='matchconfig'> Find Matches!</a></p>
         {% endif %}
+
+        <p> <a href="{% url 'feedback:feedback' %}">Leave Feedback</a></p>
       {% endif%}
       <p><a href="{% url 'logout' %}">Log Out</a></p>
     </div>
@@ -33,34 +46,34 @@
 
     {% else %}
 
-    <div class="col-xs-12 col-md-12 login-title-wrapper">
-      <h1>Login</h1>
-      <h6>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></h6>
-    </div>
-    <div class="col-xs-12 col-md-10 login-form">
-      <p style="color:rgb(227, 16, 16)">{{error_message}}</p>
-      <form method='POST'>
-        {% csrf_token %}
-        {% for field in form %}
-        <p>
-          {{ field.label_tag }}<br>
-          {{ field }}
-          {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
-          {% endif %}
-          {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
+      <div class="col-xs-12 col-md-12 login-title-wrapper">
+        <h1>Login</h1>
+        <h6>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></h6>
+      </div>
+      <div class="col-xs-12 col-md-10 login-form">
+        <p style="color:rgb(227, 16, 16)">{{error_message}}</p>
+        <form method='POST'>
+          {% csrf_token %}
+          {% for field in form %}
+          <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.help_text %}
+            <small style="color: grey">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+            {% endfor %}
+          </p>
           {% endfor %}
-        </p>
-        {% endfor %}
-        <button type="submit">Log In</button>
-      </form>
+          <button type="submit">Log In</button>
+        </form>
+      </div>
+      <div class="col-xs-12 col-md-10">
+        <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+      </div>
     </div>
-    <div class="col-xs-12 col-md-10">
-      <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
-    </div>
-  </div>
-  <script src="{% static 'js/landing-script.js' %}"></script>
-</body>
+    <script src="{% static 'js/landing-script.js' %}"></script>
+  </body>
 {% endif %}
 {% endblock %}

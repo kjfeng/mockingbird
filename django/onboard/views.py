@@ -25,8 +25,9 @@ def signup(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False
+            print("hello")
             user.save()
-
+            print("yay")
             current_site = get_current_site(request)
             subject = 'Activate Your MockingBird Account'
             message = render_to_string('registration/account_activation_email.html', {

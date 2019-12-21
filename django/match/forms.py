@@ -3,19 +3,19 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
 from multiselectfield import MultiSelectField
 
-from onboard.models import Profile, YEAR_IN_SCHOOL_CHOICES, INDUSTRY_CHOICES
+from onboard.models import Profile, RANK_CHOICES, INDUSTRY_MATCH_CHOICE
 
-class MatchConfigurationForm(forms.Form):
-    FILTER_CHOICES = [
-        ('Industry', 'Industry'),
-        ('Role', 'Role'),
-        ('Year In School', 'Year In School'),
-    ]
-
-    filter_by = forms.MultipleChoiceField(required=False,
-        choices=FILTER_CHOICES)
+class MatchConfigurationForm(UserChangeForm):
+    password = None
+    industry_match = forms.ChoiceField(choices=INDUSTRY_MATCH_CHOICE)
+    rank_by = forms.MultipleChoiceField(required=False,
+        choices=RANK_CHOICES)
 
     class Meta():
-        fields = ('filter_by',)
+        model = Profile
+        fields = {
+            'industry_match',
+            'rank_by',
+        }
 
     

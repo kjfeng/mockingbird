@@ -21,7 +21,7 @@ from django.conf.urls import url
 from onboard import views as onboard_views
 from match import views as match_views
 from tags import views as tags_views
-
+from feedback import views as feedback_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,35 +29,27 @@ urlpatterns = [
 
     url(r'^signup/$', onboard_views.signup, name='signup'),
     url(r'^login/$', onboard_views.login, name='login'),
-    #url(r'^ForgotPassword/$', onboard_views.forgotPassword, name='forgotPassword'),
-    #url(r'reset_password_sent/$', onboard_views.password_reset_sent, name='password_reset_sent'),
-    #url(r'reset_password_confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-    #   onboard_views.password_reset, name='password_reset_confirm'),
 
     path('tags/', tags_views.tags_view),
     path('', onboard_views.login, name='home'),
+
+    # matching urls
     path('match/', match_views.match_view, name='match'),
     path('matchresults/', match_views.matchresults_view),
     path('matchlist/', match_views.matchlist_view, name='matchlist'),
     path('matchlistresults/', match_views.matchlistresults_view),
     path('matchconfig/', match_views.matchconfig_view, name='matchconfig'),
+    url(r'^request_info/', match_views.request_info, name='request_info'),
+    url(r'^accept_request/', match_views.accept_request, name='accept_request'),
+    url(r'^confirm_cancel_request/', match_views.confirm_cancel_request, name='confirm_cancel_request'),
+    url(r'^done_cancel/', match_views.done_cancel, name='done_cancel'),
+
     url(r'^account_activation_sent/$', onboard_views.account_activation_sent, name='account_activation_sent'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         onboard_views.activate, name='activate'),
-    url('^', include('django.contrib.auth.urls')),
     url(r'^account/', include('account.urls')),
-]
-'''
-    url(r'^user/password/reset/$',
-        'django.contrib.auth.views.password_reset',
-        {'post_reset_redirect' : '/user/password/reset/done/'},
-        name="password_reset"),
-    url(r'^user/password/reset/done/$',
-        'django.contrib.auth.views.password_reset_done'),
-    url(r'^user/password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
-        'django.contrib.auth.views.password_reset_confirm',
-        {'post_reset_redirect' : '/user/password/done/'}),
-    url(r'^user/password/done/$',
-        'django.contrib.auth.views.password_reset_complete'),
-'''
+    url(r'^survey/', include(('survey.urls', 'survey'), namespace='survey')),
+    url(r'^feedback/', include(('feedback.urls', 'feedback'), namespace='feedback')),
+    url('^', include('django.contrib.auth.urls')),
 
+]
