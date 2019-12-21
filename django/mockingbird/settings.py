@@ -21,7 +21,7 @@ SECRET_KEY = 'j!8l9$b(2=ngj&=4%+ds4$si1p8nq&%760+w3i43w@8148)040'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG =True
 
-ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1', 'localhost']
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
 
     # borrowed
     'multiselectfield',
-    'phone_field',
+    # 'phone_field',
 
     # created
     'onboard',

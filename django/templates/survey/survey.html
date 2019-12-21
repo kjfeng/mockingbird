@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'base-app.html' %}
 
 {% block content %}
-<div class="col-xs-12 col-md-5 right-side">
-    <h2>Tell Us About Your Experience With <b> {{ username }} </b></h2>
+<div>
+    <h2 class="title">Tell Us About Your Experience With <b> {{ username }} </b></h2>
     <br>
     <form method="post">
         {% csrf_token %}

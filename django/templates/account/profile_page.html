@@ -1,6 +1,6 @@
-{% extends 'base.html'%}
+{% extends 'base-app.html'%}
 {% block content %}
-<div class="col-xs-12 col-md-5 right-side">
+<div>
     <h1> Profile </h1>
 
     {{user.first_name}} (@{{user.username}})
@@ -28,5 +28,7 @@
     <a href="{% url 'account:delete' %}"> Delete Account </a>
     <br>
     <a href="{% url 'home'%}"> Home </a>
+    <br>
+    <a href="{% url 'account:show_statistics' %}"> Stats</a>
 </div>
 {% endblock %}

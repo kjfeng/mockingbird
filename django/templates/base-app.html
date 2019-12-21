@@ -1,31 +1,115 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!-- Bootstrap 4 -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <!-- fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
-        <!-- main CSS -->
-        <link rel="stylesheet" href="{% static 'css/landing-style.css' %}">
-        <link rel="stylesheet" href="{% static 'css/app-style.css' %}">
-        <link rel="stylesheet" href="{% static 'css/mqueries.css' %}">
-        <!-- favicon -->
-        <link rel='icon' href='' type='image/x-icon'>
 
-        <title>{% block title %} Mockingbird {% endblock %}</title>
-    </head>
-    <body>
-    <div class="container-fluid h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %} Mockingbird {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base-app.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
-            {% block content %}
-            {% endblock %}
+  </head>
 
-          <!-- </div> -->
+  <body style="background-color: #efefef; font-family: 'Poppins', sans-serif;">
+    <!-- Navigation -->
+    <div style="background-color: white">
+      <nav class="navbar navbar-light navbar-expand-md navbar-custom">
+        <div class="logo-wrapper">
+          <!-- CHANGE PATH TO RELATIVE PATH -->
+            <a href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt="" style="width: 10em; padding: 0.5em"></a>
+        </div>
+        <!-- Header and button for mobile view -->
+        <button class="navbar-toggler ml-auto custom-toggler" data-toggle="collapse" data-target="#mainNav" style="border: none;">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- The actual navigation menu -->
+        <div class="collapse navbar-collapse" id="mainNav">
+          <!-- Navigation options on the left (site related) -->
+
+          <!-- Navigation options on the right (user related) -->
+          <ul class="nav navbar-nav ml-auto">
+
+            <li class="dropdown nav-item">
+
+              <a href="#Alerts" class="nav-link"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                <div class="notif-icon-container" >
+                  <i class="material-icons">notifications</i>
+                  {% if request.user.profile.has_request %}
+                  <span class="dot"></span>
+                  {% endif %}
+                </div>
+
+            </a>
+
+              <div class="dropdown-menu dropdown-menu-right" id="notif-panel">
+
+                <div class="notif" id="notif">
+                  <div class="notif-container">
+                    <a href="#">{{username}}</a> sent you a mock interview invite! <a href="#">View it here.</a>
+                    <p class="notif-detail">10:09am on 10/10/2019</p>
+                  </div>
+                </div>
+                <!--
+                <div class="notif" id="notif">
+                  <div class="notif-container">
+                    <a href="#">{{username}}</a> sent you a mock interview invite! <a href="#">View it here.</a>
+                    <p class="notif-detail">10:09am on 10/10/2019</p>
+                  </div>
+                </div>
+
+                <div class="notif" id="notif">
+                  <div class="notif-container">
+                    <a href="#">{{username}}</a> sent you a mock interview invite! <a href="#">View it here.</a>
+                    <p class="notif-detail">10:09am on 10/10/2019</p>
+                  </div>
+                </div>
+
+                -->
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item notif-footer" href="#" style="color: #d10000; text-align: center">Mark all as read</a>
+              </div>
+            </li>
+            <li class="dropdown nav-item"> <a href="#UserMenu" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+
+                <i class="material-icons user-icon">person</i>
+
+              </a>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="{% url 'account:account_details' %}">Profile</a>
+                <a class="dropdown-item" href="#">Settings</a>
+                <!-- <a class="dropdown-item" href="#">My Activity</a> -->
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'feedback:feedback' %}">Send Feedback</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+              </div>
+            </li>
+            <!-- dropdown -->
+          </ul>
+          <!-- ml-auto -->
+        </div>
+        <!-- #mainNav -->
+      </nav>
     </div>
-    </body>
+
+    <div class="stuff-under-navbar">
+      <div class="col-sm-12 col-md-8 offset-md-2 col-lg-8 offset-lg-2 card-contents">
+
+        {% block content %}
+        {% endblock %}
+      </div>
+
+    </div>
+
+    <script src="{% static 'js/base-app.js' %}"></script>
+
+  </body>
+
+
 </html>

@@ -35,6 +35,7 @@ def account_edit(request):
         'year_in_school': request.user.profile.year_in_school,
         'industry_choice_1': request.user.profile.industry_choice_1,
         'industry_choice_2': request.user.profile.industry_choice_2,
+        'industry_match': request.user.profile.industry_match,
         'major': request.user.profile.major,
         'role': request.user.profile.role
     }
@@ -72,3 +73,11 @@ def change_password(request):
     return render(request, 'account/change_password.html', {
         'form': form
     })
+
+
+def show_statistics(request):
+    total_late = request.user.statistics.late*request.user.statistics.tot_interview
+    context = {
+        'tot_late': total_late
+    }
+    return render(request, 'account/stat_page.html')

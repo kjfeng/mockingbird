@@ -243,7 +243,7 @@ def request_info(request):
             'industry': industry,
             'year': target.profile.year_in_school,
             'role': target.profile.role,
-            'emailcv': target.email
+            'email': target.email
         }
 
         return render(request, 'matching/request_info.html', context)
@@ -399,76 +399,76 @@ def done_cancel(request):
 
 #         return render(request, 'matching/request_info.html', context)
 
-@login_required(login_url='/login/')
-def accept_request(request):
-    if not request.user.profile.has_request:
-        return render(request, 'matching/no_request.html')
-    else:
-        t_username = request.user.profile.match_name
+# @login_required(login_url='/login/')
+# def accept_request(request):
+#     if not request.user.profile.has_request:
+#         return render(request, 'matching/no_request.html')
+#     else:
+#         t_username = request.user.profile.match_name
 
-        # change sender and accepter to matched
-        request.user.profile.is_matched = True
-        #request.user.profile.has_request = False
-        request.user.profile.save()
+#         # change sender and accepter to matched
+#         request.user.profile.is_matched = True
+#         #request.user.profile.has_request = False
+#         request.user.profile.save()
 
-        # change target's settings
-        target = User.objects.filter(username=str(t_username))[0]
+#         # change target's settings
+#         target = User.objects.filter(username=str(t_username))[0]
 
-        target.profile.is_waiting = False
-        #target.profile.is_sender = False
-        target.profile.is_matched = True
-        target.profile.save()
+#         target.profile.is_waiting = False
+#         #target.profile.is_sender = False
+#         target.profile.is_matched = True
+#         target.profile.save()
 
-        # logic to send email to the target
-        current_site = get_current_site(request)
-        subject = '[MockingBird] Your Match has been confirmed!'
-        message = render_to_string('matching/match_confirmed.html', {
-            'user': target,
-            'domain': current_site.domain,
-        })
-        target.email_user(subject, message)
-        #send_survey(request, target, str(target.profile.match_name), str(t_username))
-        send_time = timezone.now() + timedelta(seconds=10)
-        send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
-        return redirect('request_info')
+#         # logic to send email to the target
+#         current_site = get_current_site(request)
+#         subject = '[MockingBird] Your Match has been confirmed!'
+#         message = render_to_string('matching/match_confirmed.html', {
+#             'user': target,
+#             'domain': current_site.domain,
+#         })
+#         target.email_user(subject, message)
+#         #send_survey(request, target, str(target.profile.match_name), str(t_username))
+#         send_time = timezone.now() + timedelta(seconds=10)
+#         send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
+#         return redirect('request_info')
 
-@login_required(login_url='/login/')
-def confirm_cancel_request(request):
-    target = User.objects.filter(username=request.user.profile.match_name)[0]
+# @login_required(login_url='/login/')
+# def confirm_cancel_request(request):
+#     target = User.objects.filter(username=request.user.profile.match_name)[0]
 
-    context = {
-        'username': target.username,
-    }
-    return render(request, 'matching/confirm_cancel.html', context)
+#     context = {
+#         'username': target.username,
+#     }
+#     return render(request, 'matching/confirm_cancel.html', context)
 
 
-@login_required(login_url='/login/')
-def done_cancel(request):
+# @login_required(login_url='/login/')
+# def done_cancel(request):
 
-    # update target's info
-    target = User.objects.filter(username=request.user.profile.match_name)[0]
-    target.profile.match_name = ""
-    #target.profile.is_matched = False
-    target.profile.has_request = False
-    target.profile.save()
+#     # update target's info
+#     target = User.objects.filter(username=request.user.profile.match_name)[0]
+#     target.profile.match_name = ""
+#     #target.profile.is_matched = False
+#     target.profile.has_request = False
+#     target.profile.save()
 
-    # send email that the match has been canceled
-    subject = '[MockingBird] Canceled Match :('
-    message = render_to_string('matching/cancel_email.html', {
-        'user': target,
-        'cancel_username': request.user.username,
-    })
-    target.email_user(subject, message)
+#     # send email that the match has been canceled
+#     subject = '[MockingBird] Canceled Match :('
+#     message = render_to_string('matching/cancel_email.html', {
+#         'user': target,
+#         'cancel_username': request.user.username,
+#     })
+#     target.email_user(subject, message)
 
-    # update current user's info
-    request.user.profile.is_matched = False
-    request.user.profile.match_name = ""
-    request.user.profile.is_waiting = False
-    request.user.profile.is_sender = False
-    request.user.profile.save()
+#     # update current user's info
+#     request.user.profile.is_matched = False
+#     request.user.profile.match_name = ""
+#     request.user.profile.is_waiting = False
+#     request.user.profile.is_sender = False
+#     request.user.profile.save()
 
-    context = {
-        'username': target.username,
-    }
-    return render(request, 'matching/done_cancel.html', context)
+#     context = {
+#         'username': target.username,
+#     }
+#     return render(request, 'matching/done_cancel.html', context)
 
