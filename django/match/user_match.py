@@ -82,7 +82,7 @@ def _calculate_score(user_profile, match):
 
 
 def _tot_interview_similarity(user_profile, match):
-    user_count = Statistics.objects.get(user=match.user).tot_interview
+    user_count = Statistics.objects.get(user=user_profile.user).tot_interview
     match_count = Statistics.objects.get(user=match.user).tot_interview
 
     diff = math.fabs(user_count - match_count)
@@ -203,11 +203,36 @@ def _scoreIndustries(profile, match):
     return score
             
         
-def _scoreMostInterviews():
-    pass
+def _scoreMostInterviews(match, mostInterviewsUsersList):
+    userIndex = mostInterviewsUsersList.index(match.user)
+    numUsers = len(mostInterviewsUsersList)
+    FIRST = 5.0
+    SECOND = 3.0
+    THIRD = 1.0
+    FOURTH = 0.0
 
-def _scoreRating():
-    pass
+    if userIndex <= numUsers / 4:
+        return FIRST
+    if userIndex <= numUsers / 2:
+        return SECOND
+    if userIndex <= 3 * numUsers / 4:
+        return THIRD
+    return FOURTH
+
+# scoring based off of the similarity of rating between the given user and the matched user
+def _scoreRating(profile, match):
+    profile_rating = Statistics.objects.get(user=profile.user).rate
+    match_rating = Statistics.objects.get(user=match.user).rate
+
+    diff = math.fabs(profile_rating - match_rating)
+
+    if diff <= 1.0:
+        return 4.0
+    elif diff <= 2.0:
+        return 2.0
+    else:
+        return 1.0
+    
 
 def _getProfiles(profile, industryChoice):
     if (industryChoice == 'Industry 2' and profile.industry_choice_2 != 'None'):
@@ -244,9 +269,17 @@ def _getProfiles(profile, industryChoice):
 
     return matchesList
 
-def _getNumInterviewsList(matchesList):
-    numList = Statistics.objects.get(user=match.user).tot_interview
+def _getMostInterviewsList(matchesList):
+    interviewDict = {}
+    for match in matchesList:
+        interviewDict[match.user] = Statistics.objects.get(user=match.user).tot_interview
 
+    # Taken from: https://www.geeksforgeeks.org/python-sort-python-dictionaries-by-key-or-value/
+    interviewDict = sorted(interviewDict.items(), key = lambda kv:(kv[1]), reverse=True)
+
+    interviewUsersList = [x[0] for x in interviewDict]
+
+    return interviewUsersList
 #----------------------------------------------------------------#
 class MatchedUser(object):
 
@@ -289,7 +322,7 @@ def list_match(profile, rankers, industryChoice):
     matchList = []
 
     if ('Most Interviews' in rankers):
-        mostInterviewsList = _getNumInterviewsList(matchesList)
+        mostInterviewsUsersList = _getMostInterviewsList(matchesList)
 
     for match in matchesList:
         score = 0.0
@@ -303,9 +336,9 @@ def list_match(profile, rankers, industryChoice):
         if 'Similar Interviews' in rankers:
             score += _tot_interview_similarity(profile, match)
         if 'Most Interviews' in rankers:
-            pass
+            score += _scoreMostInterviews(match, mostInterviewsUsersList)
         if 'Rating' in rankers:
-            pass
+            score += _scoreRating(profile, match)
 
         match = MatchedUser(score, match)
         matchList.append(match)
