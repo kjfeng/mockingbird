@@ -121,35 +121,86 @@ def _normalize(p):
 
     return p
 
-# (@chuk TODD)
 def _scoreIndustries(profile, match):
-    # if (match.industry_match == 'Industry 1' and profile.industry_match == 'Industry 1'):
-    #     if (profile.industry_choice_1 == match.industry_choice_1):
-    #         return 6.0
-    #     else:
-    #         if (profile.industry_choice_2 == match.industry_choice_1):
-    #             return 1.0
-    #         else:
-    #             return 0.0
+    GREAT_MATCH_BASE = 5.0
+    MATCH_ADD = 2.0
+    GOOD_MATCH_BASE = 4.0
+    OKAY_MATCH_BASE = 3.0
+    # Must be the case that profile.industry_choice_1 == match.industry_choice_1
+    if (match.industry_match == 'Industry 1' and profile.industry_match == 'Industry 1'):
+        score = GREAT_MATCH_BASE
+        if (match.industry_choice_2 == profile.industry_choice_2):
+            score += MATCH_ADD
     
-    # if (match.industry_match == 'Industry 2' and profile.industry_match == 'Industry 2'):
-    #     if (profile.industry_choice_2 == match.industry_choice_2):
-    #             return 6.0
-    #     else:
-    #         if (profile.industry_choice_1 == match.industry_choice_2):
-    #             return 1.0
-    #         else:
-    #             return 0.0
+    # Must be the case that profile.industry_choice_2 == match.industry_choice_2
+    if (match.industry_match == 'Industry 2' and profile.industry_match == 'Industry 2'):
+        score = GREAT_MATCH_BASE
+        if (match.industry_choice_1 == profile.industry_choice_1):
+            score += MATCH_ADD
+    
+    # Must be the case that profile.industry_choice_1 == match.industry_choice_2
+    if (match.industry_match == 'Industry 2' and profile.industry_match == 'Industry 1'):
+        score = GREAT_MATCH_BASE
+        if (match.industry_choice_1 == profile.industry_choice_2):
+            score += MATCH_ADD
 
-    # if (match.industry_match == 'Both' and profile.industry_match == 'Both'):
-    #     if (profile.industry_choice_2 == match.industry_choice_2 and profile.industry_choice_1 == match.industry_choice_1):
-    #         return 6.0
-    #     elif (profile.industry_choice_2 == match.industry_choice_2 or profile.industry_choice_1 == match.industry_choice_1):
-    #         return 4.0
-    #     elif (profile.industry_choice_2 == match.industry_choice_1 and profile.industry_choice_1 == match.industry_choice_2):
-    #         return 2.0
-    #     return 0.0
-    pass
+    # Must be the case that profile.industry_choice_2 == match.industry_choice_1
+    if (match.industry_match == 'Industry 1' and profile.industry_match == 'Industry 2'):
+        score = GREAT_MATCH_BASE
+        if (match.industry_choice_2 == profile.industry_choice_1):
+            score += MATCH_ADD
+    
+    if (match.industry_match == 'Both' and profile.industry_match == 'Both'):
+        if (profile.industry_choice_2 == match.industry_choice_2 and profile.industry_choice_1 == match.industry_choice_1):
+            score = GREAT_MATCH_BASE + MATCH_ADD
+        elif (profile.industry_choice_1 == match.industry_choice_2 and profile.industry_choice_2 == match.industry_choice_1):
+            score = GREAT_MATCH_BASE 
+        elif (profile.industry_choice_1 == match.industry_choice_1 or profile.industry_choice_2 == match.industry_choice_2):
+            score = GOOD_MATCH_BASE
+        elif (profile.industry_choice_1 == match.industry_choice_2 or profile.industry_choice_2 == match.industry_choice_1):
+            score = OKAY_MATCH_BASE
+
+    if (match.industry_match == 'Both' and profile.industry_match == 'Industry 1'):
+        if (profile.industry_choice_1 == match.industry_choice_1):
+            score = GOOD_MATCH_BASE
+            if (profile.industry_choice_2 == match.industry_choice_2):
+                score = GREAT_MATCH_BASE + MATCH_ADD
+        elif (profile.industry_choice_1 == match.industry_choice_2):
+            score = GOOD_MATCH_BASE
+            if (profile.industry_choice_2 == match.industry_choice_1):
+                    score = GREAT_MATCH_BASE + MATCH_ADD
+
+    if (match.industry_match == 'Both' and profile.industry_match == 'Industry 2'):
+        if (profile.industry_choice_2 == match.industry_choice_2):
+            score = GOOD_MATCH_BASE
+            if (profile.industry_choice_1 == match.industry_choice_1):
+                score = GREAT_MATCH_BASE + MATCH_ADD
+        elif (profile.industry_choice_2 == match.industry_choice_1):
+            score = GOOD_MATCH_BASE
+            if (profile.industry_choice_1 == match.industry_choice_2):
+                    score = GREAT_MATCH_BASE + MATCH_ADD
+
+    if (match.industry_match == 'Industry 1' and profile.industry_match == 'Both'):
+        if (profile.industry_choice_1 == match.industry_choice_1):
+            score = GREAT_MATCH_BASE
+            if (profile.industry_choice_2 == match.industry_choice_2):
+                score = GREAT_MATCH_BASE + MATCH_ADD
+        elif (profile.industry_choice_2 == match.industry_choice_1):
+            score = GOOD_MATCH_BASE
+            if (profile.industry_choice_1 == match.industry_choice_2):
+                    score = GOOD_MATCH_BASE + MATCH_ADD
+
+    if (match.industry_match == 'Industry 2' and profile.industry_match == 'Both'):
+        if (profile.industry_choice_2 == match.industry_choice_2):
+            score = GREAT_MATCH_BASE
+            if (profile.industry_choice_1 == match.industry_choice_1):
+                score = GREAT_MATCH_BASE + MATCH_ADD
+        elif (profile.industry_choice_1 == match.industry_choice_2):
+            score = GOOD_MATCH_BASE
+            if (profile.industry_choice_2 == match.industry_choice_1):
+                    score = GOOD_MATCH_BASE + MATCH_ADD
+        
+    return score
             
         
 def _scoreMostInterviews():
@@ -157,6 +208,41 @@ def _scoreMostInterviews():
 
 def _scoreRating():
     pass
+
+def _getProfiles(profile, industryChoice):
+    if (industryChoice == 'Industry 2' and profile.industry_choice_2 != 'None'):
+        matchesList = Profile.objects.filter(
+            # if (otherProfile.id != profile.id)
+                # if (profile.industry2 == otherProfile.industry1 && otherProfile.industryMatch == 'Industry 1' or 'Both' OR
+                #     profile.industry2 == otherProfile.industry2 && otherProfile.industryMatch == 'Industry 2' or 'Both')
+            ~Q(id=profile.id), Q(is_matched=False), Q(Q(Q(industry_choice_1=profile.industry_choice_2), Q(Q(industry_match='Industry 1') | Q(industry_match='Both'))) |
+             Q(Q(industry_choice_2=profile.industry_choice_2), Q(Q(industry_match='Industry 2') | Q(industry_match='Both'))))
+            
+            )
+    elif (industryChoice == 'Both' and profile.industry_choice_2 != 'None'):
+        matchesList = Profile.objects.filter(~Q(id=profile.id), Q(is_matched=False),
+            # Combines the logic of the two other cases with an OR conditional
+            Q(
+            Q(Q(Q(industry_choice_1=profile.industry_choice_2), Q(Q(industry_match='Industry 1') | Q(industry_match='Both'))) |
+             Q(Q(industry_choice_2=profile.industry_choice_2), Q(Q(industry_match='Industry 2') | Q(industry_match='Both'))))   
+             
+             |
+
+             Q(Q(Q(industry_choice_1=profile.industry_choice_1), Q(Q(industry_match='Industry 1') | Q(industry_match='Both'))) |
+             Q(Q(industry_choice_2=profile.industry_choice_1), Q(Q(industry_match='Industry 2') | Q(industry_match='Both')))) 
+             )
+        )
+    else:
+        matchesList = Profile.objects.filter(
+            # if (otherProfile.id != profile.id)
+                # if (profile.industry1 == otherProfile.industry1 && otherProfile.industryMatch == 'Industry 1' or 'Both' OR
+                #     profile.industry1 == otherProfile.industry2 && otherProfile.industryMatch == 'Industry 2' or 'Both')
+            ~Q(id=profile.id), Q(is_matched=False), Q(Q(Q(industry_choice_1=profile.industry_choice_1), Q(Q(industry_match='Industry 1') | Q(industry_match='Both'))) |
+             Q(Q(industry_choice_2=profile.industry_choice_1), Q(Q(industry_match='Industry 2') | Q(industry_match='Both'))))
+            
+        )
+
+    return matchesList
 #----------------------------------------------------------------#
 class MatchedUser(object):
 
@@ -194,39 +280,8 @@ def quick_match_prototype(profile):
 def list_match(profile, rankers, industryChoice):
     if (industryChoice == 'Not Looking'):
         return []
-    # @Damon: If you want we can move this out to a separate helper method so that both the quick match and list match can use it
-    if (industryChoice == 'Industry 2' and profile.industry_choice_2 != 'None'):
-        matchesList = Profile.objects.filter(
-            # if (otherProfile.id != profile.id)
-                # if (profile.industry2 == otherProfile.industry1 && otherProfile.industryMatch == 'Industry 1' or 'Both' OR
-                #     profile.industry2 == otherProfile.industry2 && otherProfile.industryMatch == 'Industry 2' or 'Both')
-            ~Q(id=profile.id), Q(is_matched=False), Q(Q(Q(industry_choice_1=profile.industry_choice_2), Q(Q(industry_match='Industry 1') | Q(industry_match='Both'))) |
-             Q(Q(industry_choice_2=profile.industry_choice_2), Q(Q(industry_match='Industry 2') | Q(industry_match='Both'))))
-            
-            )
-    elif (industryChoice == 'Both' and profile.industry_choice_2 != 'None'):
-        matchesList = Profile.objects.filter(~Q(id=profile.id), Q(is_matched=False),
-            # Combines the logic of the two other cases with an OR conditional
-            Q(
-            Q(Q(Q(industry_choice_1=profile.industry_choice_2), Q(Q(industry_match='Industry 1') | Q(industry_match='Both'))) |
-             Q(Q(industry_choice_2=profile.industry_choice_2), Q(Q(industry_match='Industry 2') | Q(industry_match='Both'))))   
-             
-             |
 
-             Q(Q(Q(industry_choice_1=profile.industry_choice_1), Q(Q(industry_match='Industry 1') | Q(industry_match='Both'))) |
-             Q(Q(industry_choice_2=profile.industry_choice_1), Q(Q(industry_match='Industry 2') | Q(industry_match='Both')))) 
-             )
-        )
-    else:
-        matchesList = Profile.objects.filter(
-            # if (otherProfile.id != profile.id)
-                # if (profile.industry1 == otherProfile.industry1 && otherProfile.industryMatch == 'Industry 1' or 'Both' OR
-                #     profile.industry1 == otherProfile.industry2 && otherProfile.industryMatch == 'Industry 2' or 'Both')
-            ~Q(id=profile.id), Q(is_matched=False), Q(Q(Q(industry_choice_1=profile.industry_choice_1), Q(Q(industry_match='Industry 1') | Q(industry_match='Both'))) |
-             Q(Q(industry_choice_2=profile.industry_choice_1), Q(Q(industry_match='Industry 2') | Q(industry_match='Both'))))
-            
-        )
-
+    matchesList = _getProfiles(profile, industryChoice)
     matchList = []
 
     for match in matchesList:
@@ -255,8 +310,10 @@ def list_match(profile, rankers, industryChoice):
     return returnList
 
 def get_match_list(user_profile, recent_list):
-    matchSet = Profile.objects.filter(industry_choice_1=user_profile.industry_choice_1, is_matched=False)
-    matchSet = matchSet.exclude(id=user_profile.id)
+    matchSet = _getProfiles(user_profile, user_profile.industry_match)
+    
+    # @Damon Does this need to be "pk"?
+    # matchSet = matchSet.exclude(pk=user_profile.pk)
 
     print(len(matchSet))
     for recent_match in recent_list:
