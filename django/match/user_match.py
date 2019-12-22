@@ -243,6 +243,10 @@ def _getProfiles(profile, industryChoice):
         )
 
     return matchesList
+
+def _getNumInterviewsList(matchesList):
+    numList = Statistics.objects.get(user=match.user).tot_interview
+
 #----------------------------------------------------------------#
 class MatchedUser(object):
 
@@ -283,6 +287,9 @@ def list_match(profile, rankers, industryChoice):
 
     matchesList = _getProfiles(profile, industryChoice)
     matchList = []
+
+    if ('Most Interviews' in rankers):
+        mostInterviewsList = _getNumInterviewsList(matchesList)
 
     for match in matchesList:
         score = 0.0
