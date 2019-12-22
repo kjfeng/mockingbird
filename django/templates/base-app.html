@@ -40,7 +40,7 @@
               <a href="#Alerts" class="nav-link"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                 <div class="notif-icon-container" >
                   <i class="material-icons">notifications</i>
-                  {% if request.user.profile.has_request %}
+                  {% if has_unread %}
                   <span class="dot"></span>
                   {% endif %}
                 </div>
@@ -48,13 +48,14 @@
             </a>
 
               <div class="dropdown-menu dropdown-menu-right" id="notif-panel">
-
-                <div class="notif" id="notif">
-                  <div class="notif-container">
-                    <a href="#">{{username}}</a> sent you a mock interview invite! <a href="#">View it here.</a>
-                    <p class="notif-detail">10:09am on 10/10/2019</p>
+                {% for n in notif %}
+                  <div class="notif" id="notif">
+                    <div class="notif-container">
+                      <a href="#">{{n.match_name}}</a> sent you a mock interview invite! <a href="#">View it here.</a>
+                      <p class="notif-detail"> {{n.created_at}} </p>
+                    </div>
                   </div>
-                </div>
+                {% endfor %}
                 <!--
                 <div class="notif" id="notif">
                   <div class="notif-container">

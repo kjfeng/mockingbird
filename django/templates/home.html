@@ -4,13 +4,9 @@
 {% load static %}
 
 <!-- <body> -->
+
 {% if user.is_authenticated %}
-{% include 'logged-in.html' %}
-
-
-
-
-
+        {% include 'logged-in.html' %}
 {% else %}
 {% include 'to-log-in.html' %}
 

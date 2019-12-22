@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
+from account.pull_notif import pull_notif
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 from django.core.mail import EmailMessage
@@ -86,7 +87,9 @@ def login(request):
                 return render(request, '../templates/home.html', {'form': form, 'error_message': "Incorrect username and/or password"})
     else:
         form = LoginForm()
-    return render(request, '../templates/home.html', {'form': form})
+
+    pulled = pull_notif(request.user)
+    return render(request, '../templates/home.html', {'form': form, 'has_unread': pulled[0], 'notif': pulled[1]})
 '''
 def forgotPassword(request):
     # print(request.method)

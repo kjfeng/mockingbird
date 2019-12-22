@@ -1,5 +1,4 @@
 from django.contrib import admin
-from onboard.models import Profile
 from .models import Cached_Matches, Recent_Matches
 
 # # Register your models here.

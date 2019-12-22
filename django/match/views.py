@@ -14,6 +14,8 @@ from datetime import timedelta
 from django.utils import timezone
 #from post_office import mail
 
+from account.models import NotificationItem
+
 # Create your views here.
 @login_required(login_url='/login/')
 def match_view(request):
@@ -128,6 +130,9 @@ def matchresults_view(request):
             'domain': current_site.domain,
         })
         target.email_user(subject, message)
+
+        # logic to create a notification for the target
+        NotificationItem.objects.create(user=target, match_name=str(request.user.username))
 
         return redirect('request_info')
 
