@@ -21,6 +21,8 @@ def tags_view(request):
       #my_profile.update(onboard_confirmed=True)
       form.save()
       return redirect('home')
+    else:
+      return render(request, "tagging/selecttags.html", {'form': form, 'error_message':'There was an error. Make sure you make a selection for Industry 1 and that the two industries are distinct.'})
     #
     # else:
     #   return render(request, 'tagging/selecttags.html', {'form': form,

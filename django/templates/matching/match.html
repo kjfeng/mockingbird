@@ -1,9 +1,17 @@
-{% extends 'base-app.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-<h3 class="title">Welcome, {{user.username}}!</h3>
-<form action='.' method='POST'>{% csrf_token %}
-    <input type='submit' value="Get Me Matched!">
-</form>
+<div class="col-xs-12 col-md-5 right-side">
+    <h1>Match Configuration</h1>
+    <p>If 'Industry Match' is not set to 'Not Looking' and you don't have a second industry listed, then it will default to 'Industry 1'.</p>
+    <form action="../matchlist/" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Get Matches!">
+    </form>
+  <p><a href="{% url 'home'%}">Home</a></p>
+    <br>
+</div>
+
 {% endblock %}
-</html>
+

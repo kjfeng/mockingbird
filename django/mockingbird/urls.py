@@ -36,6 +36,9 @@ urlpatterns = [
     # matching urls
     path('match/', match_views.match_view, name='match'),
     path('matchresults/', match_views.matchresults_view),
+    path('matchlist/', match_views.matchlist_view, name='matchlist'),
+    path('matchlistresults/', match_views.matchlistresults_view),
+    path('matchconfig/', match_views.matchconfig_view, name='matchconfig'),
     url(r'^request_info/', match_views.request_info, name='request_info'),
     url(r'^accept_request/', match_views.accept_request, name='accept_request'),
     url(r'^confirm_cancel_request/', match_views.confirm_cancel_request, name='confirm_cancel_request'),

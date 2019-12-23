@@ -1,15 +1,16 @@
 {% extends 'base-app.html' %}
  {% block content %}
   <body>
-    <div>
-        <h2 class="title">Hi, {{user.username}}!</h2>
-        <h3>Which industry are you currently interviewing for?</h3>
-        <p style="color: rgb(243, 241, 241)">{{error_message}}</p>
+    <div class="col-xs-12 col-md-5 right-side">
+        <h2>Hi, {{user.username}}!</h2>
+        <h3>Which industry(s) are you currently interviewing for or are interested in?</h3>
+        <p style="color: red">{{error_message}}</p> <!-- rgb(243, 241, 241)-->
+        <br>
         <form method="post">
           {% csrf_token %}
           {% for field in form %}
               {{ field.label_tag }}<br>
-              {{ field }}
+              {{ field }} <br><br>
               {% if field.help_text %}
                 <small style="color: grey">{{ field.help_text }}</small>
               {% endif %}

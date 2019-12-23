@@ -1,25 +1,35 @@
-{% extends 'base-app.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-<div >
-{% if msgs|length != 0 %}
-    <h3 class="title">Your mock interview match is ready!</h3>
-    <p><b>User:</b> {{ username }}</p>
-    <p><b>Email:</b> {{ email }}</p>
-    <p><b>Industry:</b> {{ industry }}</p>
-
-    <form method="POST"> <!-- this is where it redirects -->
+<div class="col-xs-12 col-md-5 right-side">
+{% if matchedUsers|length > 0 %}
+    {% if matchedUsers|length == 1 %}
+    <h3>Your mock interview match is ready!</h3>
+    {% else %}
+    <h3>Your mock interview matches are ready!</h3>
+    {% endif %}
+    {% for matchedUser in matchedUsers %}
+    <form action='/matchresults/' method="POST"> <!-- this is where it redirects -->
+        <input type="hidden" id="username" name="username" value={{matchedUser.username}}>
+        <p><b>User:</b> {{matchedUser.username}}</p>
+        <p><b>Email:</b> {{matchedUser.email}}</p>
+        <p><b>Industry:</b> {{matchedUser.industry}}</p>
         {% csrf_token %}
         <input type='submit' value="Accept">
     </form>
-
-    <form action='/match/' method='POST'>{% csrf_token %}
-        <input type='submit' value="Match Me Again">
-    </form>
+    {% endfor %}
+    {% if not configured %}
+        <form action='/match/' method='POST'>{% csrf_token %}
+            <input type='submit' value="Match Me Again">
+        </form>
+    {% endif %}
 {% else %}
     <h4>Aww... it's an empty nest</h4>
     <p><a href='../match'>Try Another Match</a></p>
 {% endif %}
-<a href="{% url 'home'%}"> Home </a>
+<p><a href="{% url 'home'%}"> Home </a> </p>
+{% if configured %}
+    <p><a href="{% url 'matchlist' %}"> Back </a> </p>
+{% endif %}
 </div>
 {% endblock %}

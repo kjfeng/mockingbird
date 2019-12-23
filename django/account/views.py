@@ -50,7 +50,9 @@ def logout_view(request):
 def account_edit(request):
     initial_data = {
         'year_in_school': request.user.profile.year_in_school,
-        'industry': request.user.profile.industry,
+        'industry_choice_1': request.user.profile.industry_choice_1,
+        'industry_choice_2': request.user.profile.industry_choice_2,
+        'industry_match': request.user.profile.industry_match,
         'major': request.user.profile.major,
         'role': request.user.profile.role
     }
