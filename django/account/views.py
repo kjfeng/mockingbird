@@ -8,20 +8,37 @@ import sys
 
 
 from .forms import EditAccountForm, EditProfileForm
+from .pull_notif import pull_notif
 
 # Create your views here.
 @login_required(login_url='/login/')
 def account_details(request):
-    return render(request, 'account/profile_page.html')
+    pulled = pull_notif(request.user)
+    context = {
+        'has_unread':pulled[0],
+        'notif': pulled[1]
+    }
+    return render(request, 'account/profile_page.html', context)
 
 @login_required(login_url='/login/')
 def account_delete(request):
-    return render(request, 'account/confirm_delete_user.html')
+    pulled = pull_notif(request.user)
+    context = {
+        'has_unread': pulled[0],
+        'notif': pulled[1]
+    }
+    return render(request, 'account/confirm_delete_user.html', context)
 
 
 def account_delete_confirm(request):
     request.user.delete()
-    return render(request, 'account/deleted_user.html')
+
+    pulled = pull_notif(request.user)
+    context = {
+        'has_unread': pulled[0],
+        'notif': pulled[1]
+    }
+    return render(request, 'account/deleted_user.html', context)
 
 
 def logout_view(request):
@@ -49,7 +66,11 @@ def account_edit(request):
     else:
         form = EditAccountForm(instance=request.user)
         formB = EditProfileForm(instance=request.user.profile, initial=initial_data)
-        args = {'form': form, 'formB': formB}
+        pulled = pull_notif(request.user)
+        args = {'form': form,
+                'formB': formB,
+                'has_unread': pulled[0],
+                'notif': pulled[1] }
         return render(request, 'account/edit_profile.html', args)
 
 
@@ -68,14 +89,22 @@ def change_password(request):
 
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'account/change_password.html', {
-        'form': form
-    })
+    pulled = pull_notif(request.user)
+    context = {
+        'form': form,
+        'has_unread': pulled[0],
+        'notif': pulled[1]
+    }
+    return render(request, 'account/change_password.html', context)
 
 
 def show_statistics(request):
     total_late = request.user.statistics.late*request.user.statistics.tot_interview
+    pulled = pull_notif(request.user)
+
     context = {
-        'tot_late': total_late
+        'tot_late': total_late,
+        'has_unread': pulled[0],
+        'notif': pulled[1]
     }
-    return render(request, 'account/stat_page.html')
+    return render(request, 'account/stat_page.html', context)

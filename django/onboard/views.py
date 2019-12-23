@@ -74,7 +74,15 @@ def activate(request, uidb64, token):
 
 
 def login(request):
-    if request.method == 'POST':
+    pulled = pull_notif(request.user)
+
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
+        form = LoginForm()
+
+    elif request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             username = request.POST['username']
@@ -88,7 +96,6 @@ def login(request):
     else:
         form = LoginForm()
 
-    pulled = pull_notif(request.user)
     return render(request, '../templates/home.html', {'form': form, 'has_unread': pulled[0], 'notif': pulled[1]})
 '''
 def forgotPassword(request):

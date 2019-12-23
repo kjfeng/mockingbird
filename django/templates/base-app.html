@@ -49,12 +49,42 @@
 
               <div class="dropdown-menu dropdown-menu-right" id="notif-panel">
                 {% for n in notif %}
-                  <div class="notif" id="notif">
-                    <div class="notif-container">
-                      <a href="#">{{n.match_name}}</a> sent you a mock interview invite! <a href="#">View it here.</a>
-                      <p class="notif-detail"> {{n.created_at}} </p>
+                 {% if n.type == "MR" %}
+                    <div class="notif" id="notif">
+                      <div class="notif-container">
+                        <a href="#">{{n.match_name}}</a> sent you a mock interview invite! <a href="#">View it here.</a>
+                        <p class="notif-detail"> {{n.created_at}} </p>
+                      </div>
                     </div>
-                  </div>
+                  {% elif n.type == "MC" %}
+                    <div class="notif" id="notif">
+                      <div class="notif-container">
+                        <a href="#">{{n.match_name}}</a> has canceled their match request :(
+                        <p class="notif-detail"> {{n.created_at}} </p>
+                      </div>
+                    </div>
+                  {% elif n.type == "MD" %}
+                    <div class="notif" id="notif">
+                      <div class="notif-container">
+                        <a href="#">{{n.match_name}}</a> has rejected your match request :(
+                        <p class="notif-detail"> {{n.created_at}} </p>
+                      </div>
+                    </div>
+                  {% elif n.type == "MA" %}
+                    <div class="notif" id="notif">
+                      <div class="notif-container">
+                        <a href="#">{{n.match_name}}</a> has accepted your match request! Find out how to contact them <a href="#">here </a>.
+                        <p class="notif-detail"> {{n.created_at}} </p>
+                      </div>
+                    </div>
+                  {% else %}
+                    <div class="notif" id="notif">
+                      <div class="notif-container">
+                        Please complete your survey with <a href="#">{{n.match_name}}</a>!<a href="#"> View it here</a>
+                        <p class="notif-detail"> {{n.created_at}} </p>
+                      </div>
+                    </div>
+                  {% endif %}
                 {% endfor %}
                 <!--
                 <div class="notif" id="notif">
@@ -73,7 +103,10 @@
 
                 -->
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item notif-footer" href="#" style="color: #d10000; text-align: center">Mark all as read</a>
+                <form method="post">
+                  {% csrf_token %}
+                <button class="dropdown-item notif-footer" type="submit" style="color: #d10000; text-align: center" name="markread">Mark all as read</>
+                </form>
               </div>
             </li>
             <li class="dropdown nav-item"> <a href="#UserMenu" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -108,7 +141,9 @@
 
     </div>
 
-    <script src="{% static 'js/base-app.js' %}"></script>
+    <script src="{% static 'js/base-app.js' %}">
+
+    </script>
 
   </body>
 

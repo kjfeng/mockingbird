@@ -2,11 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.utils.timezone import now
 
+
+NOT_TYPES = [('MR', 'Match Request'),
+            ('CS', 'Complete Survey'),
+            ('MC', 'Match Canceled'),
+             ('MA', 'Match Accept'),
+             ('MD', 'Match Deny/Reject')]
 
 class NotificationItem(models.Model):
-    # type
+    type = models.CharField(
+        max_length=100,
+        choices=NOT_TYPES,
+    )
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     match_name = models.CharField(max_length=254)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, editable=False)
