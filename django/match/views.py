@@ -15,6 +15,9 @@ from django.utils import timezone
 from .forms import MatchConfigurationForm
 #from post_office import mail
 
+from account.models import NotificationItem
+from account.pull_notif import pull_notif
+
 class MatchedUser(object):
     def __init__(self, username: str, email: str, industry1: str, industry2: str):
         self.username = username
@@ -68,22 +71,6 @@ def _on_accept(request):
 @login_required(login_url='/login/')
 def match_view(request):
     L_SIZE = 10
-    # if request.method == 'POST':
-    #     print(request.POST)
-    #     # clear messages
-    #     storage = messages.get_messages(request)
-    #     for message in storage:
-    #         str(message)
-    #
-    #     my_profile = Profile.objects.get(id=request.user.id)
-    #     match = quick_match_prototype(my_profile)
-    #
-    #     if match is not None:
-    #         messages.add_message(request, messages.INFO, str(match.user.username))
-    #         messages.add_message(request, messages.INFO, str(match.email))
-    #         messages.add_message(request, messages.INFO, str(match.industry))
-    #
-    #     return redirect('../matchresults/')
 
     # clear messages
     # storage = messages.get_messages(request)
@@ -158,14 +145,29 @@ def matchresults_view(request):
         request.session['matchedUser'] = matchedUser
         matchedUsers.append(matchedUser)
 
+    pulled = pull_notif(request.user)
+
     context = {
+        'msgs': msgs,
+        'username': username,
+        'email': email,
+        'industry': industry,
+        'has_unread': pulled[0],
+        'notif': pulled[1]
         'matchedUsers': matchedUsers,
         'configured': False
     }
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
 
-    val_acceptance = _on_accept(request)
-    if (val_acceptance):
-        return redirect('request_info')
+    elif request.method == 'POST':
+        #print(context['username'])
+        t_username = context['username']
+        val_acceptance = _on_accept(request)
+        if (val_acceptance):
+          return redirect('request_info')
 
     return render(request, 'matching/matchresults.html', context)
 
@@ -194,7 +196,6 @@ def matchlist_view(request):
     else:
         return redirect('../matchconfig/')
 
-
     return redirect('../matchlistresults/')
 
 def matchlistresults_view(request):
@@ -206,6 +207,9 @@ def matchlistresults_view(request):
 
     val_acceptance = _on_accept(request)
     if (val_acceptance):
+      # logic to create a notification for the target
+        NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username))
+
         return redirect('request_info')
     return render(request, 'matching/matchresults.html', context)
 
@@ -221,6 +225,7 @@ def matchconfig_view(request):
 
 @login_required(login_url='/login/')
 def request_info(request):
+    pulled = pull_notif(request.user)
 
     if request.user.profile.is_matched or request.user.profile.is_waiting or request.user.profile.has_request:
         # corner case if match name somehow is_matched improperly updated
@@ -233,6 +238,11 @@ def request_info(request):
         #return render(request, 'matching/no_request.html')
 
         target = User.objects.filter(username=request.user.profile.match_name)[0]
+        if request.method == 'POST' and 'markread' in request.POST:
+            for x in pulled[1]:
+                x.read = True
+                x.save()
+
         
         if (str(target.profile.industry_choice_2) == 'None'):
             industry = target.profile.industry_choice_1
@@ -243,23 +253,40 @@ def request_info(request):
             'industry': industry,
             'year': target.profile.year_in_school,
             'role': target.profile.role,
-            'email': target.email
+            'email': target.email,
+            'has_unread': pulled[0],
+            'notif': pulled[1]
         }
 
         return render(request, 'matching/request_info.html', context)
     else:
-        return render(request, 'matching/no_request.html')
-    '''    
-    if not request.user.profile.is_sender and not request.user.profile.has_request:
-        request.user.profile.is_matched = False
-        request.user.profile.save()
-        return render(request, 'matching/no_request.html')
-    '''
+        if request.method == 'POST' and 'markread' in request.POST:
+            for x in pulled[1]:
+                x.read = True
+                x.save()
+
+        context = {
+            'has_unread': pulled[0],
+            'notif': pulled[1]
+        }
+
+        return render(request, 'matching/no_request.html', context)
 
 
 @login_required(login_url='/login/')
 def accept_request(request):
     if not request.user.profile.has_request:
+        pulled = pull_notif(request.user)
+
+        if request.method == 'POST' and 'markread' in request.POST:
+            for x in pulled[1]:
+                x.read = True
+                x.save()
+
+        context = {
+            'has_unread': pulled[0],
+            'notif': pulled[1]
+        }
         return render(request, 'matching/no_request.html')
     else:
         t_username = request.user.profile.match_name
@@ -277,6 +304,9 @@ def accept_request(request):
         target.profile.is_matched = True
         target.profile.save()
 
+        # make notification item for target
+        NotificationItem.objects.create(type="MA", user=target, match_name=str(request.user.username))
+
         # logic to send email to the target
         current_site = get_current_site(request)
         subject = '[MockingBird] Your Match has been confirmed!'
@@ -285,6 +315,7 @@ def accept_request(request):
             'domain': current_site.domain,
         })
         target.email_user(subject, message)
+
         #send_survey(request, target, str(target.profile.match_name), str(t_username))
         send_time = timezone.now() + timedelta(seconds=30)
         send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
@@ -293,9 +324,17 @@ def accept_request(request):
 @login_required(login_url='/login/')
 def confirm_cancel_request(request):
     target = User.objects.filter(username=request.user.profile.match_name)[0]
+    pulled = pull_notif(request.user)
+
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
 
     context = {
         'username': target.username,
+        'has_unread': pulled[0],
+        'notif': pulled[1]
     }
     return render(request, 'matching/confirm_cancel.html', context)
 
@@ -312,6 +351,15 @@ def done_cancel(request):
     target.profile.is_sender = False
     target.profile.save()
 
+    # make a notification for the target
+    # if user is sender, they are canceling
+    if request.user.profile.is_sender:
+        NotificationItem.objects.create(type="MC", user=target, match_name=str(request.user.username))
+
+    # if they are not the sender, they are rejected
+    else:
+        NotificationItem.objects.create(type="MD", user=target, match_name=str(request.user.username))
+
     # send email that the match has been canceled
     subject = '[MockingBird] Canceled Match :('
     message = render_to_string('matching/cancel_email.html', {
@@ -327,6 +375,20 @@ def done_cancel(request):
     request.user.profile.is_sender = False
     request.user.profile.has_request = False
     request.user.profile.save()
+
+    pulled = pull_notif(request.user)
+
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
+
+    context = {
+        'username': target.username,
+        'has_unread': pulled[0],
+        'notif': pulled[1]
+    }
+    return render(request, 'matching/done_cancel.html', context)
 
     context = {
         'username': target.username,

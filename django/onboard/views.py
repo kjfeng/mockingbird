@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
+from account.pull_notif import pull_notif
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 from django.core.mail import EmailMessage
@@ -73,7 +74,15 @@ def activate(request, uidb64, token):
 
 
 def login(request):
-    if request.method == 'POST':
+    pulled = pull_notif(request.user)
+
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
+        form = LoginForm()
+
+    elif request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             username = request.POST['username']
@@ -86,7 +95,8 @@ def login(request):
                 return render(request, '../templates/home.html', {'form': form, 'error_message': "Incorrect username and/or password"})
     else:
         form = LoginForm()
-    return render(request, '../templates/home.html', {'form': form})
+
+    return render(request, '../templates/home.html', {'form': form, 'has_unread': pulled[0], 'notif': pulled[1]})
 '''
 def forgotPassword(request):
     # print(request.method)
