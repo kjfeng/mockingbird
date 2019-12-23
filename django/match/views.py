@@ -66,7 +66,10 @@ def _on_accept(request):
         })
         target.email_user(subject, message)
 
-        return True
+        # logic to create a notification for the target
+        NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username))
+
+    return True
 # Create your views here.
 @login_required(login_url='/login/')
 def match_view(request):
@@ -147,13 +150,13 @@ def matchresults_view(request):
 
     pulled = pull_notif(request.user)
 
-    context = {
-        'msgs': msgs,
-        'username': username,
-        'email': email,
-        'industry': industry,
+    context = {#
+        #'msgs': msgs,
+        #'username': username,
+        #'email': email,
+        #'industry': industry,
         'has_unread': pulled[0],
-        'notif': pulled[1]
+        'notif': pulled[1],
         'matchedUsers': matchedUsers,
         'configured': False
     }
@@ -162,12 +165,12 @@ def matchresults_view(request):
             x.read = True
             x.save()
 
-    elif request.method == 'POST':
+    #elif request.method == 'POST':
         #print(context['username'])
-        t_username = context['username']
-        val_acceptance = _on_accept(request)
-        if (val_acceptance):
-          return redirect('request_info')
+    #    t_username = context['username']
+    val_acceptance = _on_accept(request)
+    if (val_acceptance):
+        return redirect('request_info')
 
     return render(request, 'matching/matchresults.html', context)
 
@@ -207,9 +210,6 @@ def matchlistresults_view(request):
 
     val_acceptance = _on_accept(request)
     if (val_acceptance):
-      # logic to create a notification for the target
-        NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username))
-
         return redirect('request_info')
     return render(request, 'matching/matchresults.html', context)
 
