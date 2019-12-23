@@ -37,7 +37,7 @@ INSTALLED_APPS = [
 
     # borrowed
     'multiselectfield',
-    # 'phone_field',
+    'phone_field',
 
     # created
     'onboard',
