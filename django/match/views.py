@@ -69,7 +69,8 @@ def _on_accept(request):
         # logic to create a notification for the target
         NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username))
 
-    return True
+        return True
+    return False
 # Create your views here.
 @login_required(login_url='/login/')
 def match_view(request):

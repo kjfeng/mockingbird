@@ -317,10 +317,10 @@ def quick_match_prototype(profile):
 def list_match(profile, rankers, industryChoice):
     if (industryChoice == 'Not Looking'):
         return []
-
+        
     matchesList = _getProfiles(profile, industryChoice)
     matchList = []
-
+    
     if ('Most Interviews' in rankers):
         mostInterviewsUsersList = _getMostInterviewsList(matchesList)
 
@@ -355,11 +355,9 @@ def get_match_list(user_profile, recent_list):
     # @Damon Does this need to be "pk"?
     # matchSet = matchSet.exclude(pk=user_profile.pk)
 
-    print(len(matchSet))
     for recent_match in recent_list:
         matchSet = matchSet.exclude(user=recent_match.user)
 
-    print(len(matchSet))
     p = []
 
     for m in matchSet:
