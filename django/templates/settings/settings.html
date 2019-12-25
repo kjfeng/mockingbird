@@ -1,0 +1,20 @@
+{% extends 'base-app.html' %}
+
+{% block content %}
+<div>
+    <h2 class="title">Settings</h2>
+
+    <p>
+    Receive Emails:
+        {% if request.user.profile.receive_email %}
+            Yes
+        {% else %}
+            No
+        {% endif %}
+    </p>
+    <br>
+
+    <p> <a href="{% url 'settings:edit_settings' %}">Edit Settings</a></p>
+</div>
+
+{% endblock %}

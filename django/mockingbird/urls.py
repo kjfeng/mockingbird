@@ -21,7 +21,6 @@ from django.conf.urls import url
 from onboard import views as onboard_views
 from match import views as match_views
 from tags import views as tags_views
-from feedback import views as feedback_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -50,6 +49,7 @@ urlpatterns = [
     url(r'^account/', include('account.urls')),
     url(r'^survey/', include(('survey.urls', 'survey'), namespace='survey')),
     url(r'^feedback/', include(('feedback.urls', 'feedback'), namespace='feedback')),
+    url(r'^settings/', include(('settings.urls', 'settings'), namespace='settings')),
     url('^', include('django.contrib.auth.urls')),
 
 ]
