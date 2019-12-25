@@ -308,13 +308,14 @@ def accept_request(request):
         NotificationItem.objects.create(type="MA", user=target, match_name=str(request.user.username))
 
         # logic to send email to the target
-        current_site = get_current_site(request)
-        subject = '[MockingBird] Your Match has been confirmed!'
-        message = render_to_string('matching/match_confirmed.html', {
-            'user': target,
-            'domain': current_site.domain,
-        })
-        target.email_user(subject, message)
+        if target.profile.receive_email:
+            current_site = get_current_site(request)
+            subject = '[MockingBird] Your Match has been confirmed!'
+            message = render_to_string('matching/match_confirmed.html', {
+                'user': target,
+                'domain': current_site.domain,
+            })
+            target.email_user(subject, message)
 
         #send_survey(request, target, str(target.profile.match_name), str(t_username))
         send_time = timezone.now() + timedelta(seconds=30)
@@ -360,13 +361,14 @@ def done_cancel(request):
     else:
         NotificationItem.objects.create(type="MD", user=target, match_name=str(request.user.username))
 
-    # send email that the match has been canceled
-    subject = '[MockingBird] Canceled Match :('
-    message = render_to_string('matching/cancel_email.html', {
-        'user': target,
-        'cancel_username': request.user.username,
-    })
-    target.email_user(subject, message)
+    if target.profile.receive_email:
+        # send email that the match has been canceled
+        subject = '[MockingBird] Canceled Match :('
+        message = render_to_string('matching/cancel_email.html', {
+            'user': target,
+            'cancel_username': request.user.username,
+        })
+        target.email_user(subject, message)
 
     # update current user's info
     request.user.profile.is_matched = False
