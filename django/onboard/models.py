@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from multiselectfield import MultiSelectField
 from phone_field import PhoneField
 
-
+BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
 
 INDUSTRY_CHOICES = [('None', 'None'),
                     ('Consulting', 'Consulting'),
@@ -79,7 +79,9 @@ class Profile(models.Model):
     # boolean to say if this is a sender waiting for someone to response to their request
     is_waiting = models.BooleanField(default=False)
 
+    # Contact Information Settings
     phone = PhoneField(blank=True, help_text='Contact phone number', default="(None)")
+    receive_email = models.BooleanField(default=True, choices=BOOL_CHOICES)
 
     def __str__(self):
         return self.user.username
