@@ -75,10 +75,11 @@ def _on_accept(request):
 def match_view(request):
     L_SIZE = 10
 
+
     # clear messages
-    # storage = messages.get_messages(request)
-    # for message in storage:
-    #     str(message)
+    storage = messages.get_messages(request)
+    for message in storage:
+         str(message)
 
     my_profile = Profile.objects.get(id=request.user.id)
 
@@ -104,9 +105,9 @@ def match_view(request):
         matchedUser = MatchedUser(username = str(match.username), email = str(match.email),
                     industry1 = str(match_profile.industry_choice_1), industry2 = str(match_profile.industry_choice_2))
         request.session['matchedUser'] = matchedUser.__dict__
-        # messages.add_message(request, messages.INFO, str(match.username))
-        # messages.add_message(request, messages.INFO, str(match.email))
-        # messages.add_message(request, messages.INFO, str(match_profile.industry))
+        messages.add_message(request, messages.INFO, str(match.username))
+        messages.add_message(request, messages.INFO, str(match.email))
+        messages.add_message(request, messages.INFO, str(match_profile.industry))
 
         match_list = dequeue(match_list)
         match_cache.matches = to_user_string(match_list)
@@ -117,30 +118,25 @@ def match_view(request):
 
 @login_required(login_url='/login/')
 def matchresults_view(request):
-    # storage = messages.get_messages(request)
-    # msgs = []
-    # username = ''
-    # email    = ''
-    # industry = ''
+    '''
+    storage = messages.get_messages(request)
+    msgs = []
+    username = ''
+    email    = ''
+    industry = ''
 
-    # for message in storage:
-    #     print(message, file=stderr)
-    #     msgs.append(message)
+    for message in storage:
+        print(message, file=stderr)
+        msgs.append(message)
 
-    # if len(msgs) > 0:
-    #     username = msgs[0]
-    #     email    = msgs[1]
-    #     industry = msgs[2]
-    #     messages.add_message(request, messages.INFO, username)
-    #     messages.add_message(request, messages.INFO, email)
-    #     messages.add_message(request, messages.INFO, industry)
-
-    # context = {
-    #     'msgs': msgs,
-    #     'username': username,
-    #     'email': email,
-    #     'industry': industry
-    # }
+    if len(msgs) > 0:
+        username = msgs[0]
+        email    = msgs[1]
+        industry = msgs[2]
+        messages.add_message(request, messages.INFO, username)
+        messages.add_message(request, messages.INFO, email)
+        messages.add_message(request, messages.INFO, industry)
+    '''
 
     matchedUser = request.session.get('matchedUser', None)
     matchedUsers = []
@@ -164,13 +160,10 @@ def matchresults_view(request):
         for x in pulled[1]:
             x.read = True
             x.save()
-
-    #elif request.method == 'POST':
-        #print(context['username'])
-    #    t_username = context['username']
-    val_acceptance = _on_accept(request)
-    if (val_acceptance):
-        return redirect('request_info')
+    else:
+        val_acceptance = _on_accept(request)
+        if (val_acceptance):
+            return redirect('request_info')
 
     return render(request, 'matching/matchresults.html', context)
 
@@ -203,7 +196,15 @@ def matchlist_view(request):
 
 def matchlistresults_view(request):
     matchedUsers = request.session.get('matchedUsers', None)
+    pulled = pull_notif(request.user)
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
+
     context = {
+        'has_read': pulled[0],
+        'notif': pulled[1],
         'matchedUsers': matchedUsers,
         'configured': True
     }
@@ -221,21 +222,22 @@ def matchconfig_view(request):
 
     form = MatchConfigurationForm(instance=request.user.profile, initial=initial_data)
 
-    return render(request, 'matching/match.html', {'form': form})
+    pulled = pull_notif(request.user)
+
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
+
+    return render(request, 'matching/match.html', {'form': form,
+                                                   'has_unread': pulled[0],
+                                                   'notif': pulled[1]})
 
 @login_required(login_url='/login/')
 def request_info(request):
     pulled = pull_notif(request.user)
 
     if request.user.profile.is_matched or request.user.profile.is_waiting or request.user.profile.has_request:
-        # corner case if match name somehow is_matched improperly updated
-
-        #if request.user.profile.match_name == "":
-
-        #    request.user.profile.is_matched = False
-         #   request.user.profile.has_request = False
-         #   request.user.profile.save()
-        #return render(request, 'matching/no_request.html')
 
         target = User.objects.filter(username=request.user.profile.match_name)[0]
         if request.method == 'POST' and 'markread' in request.POST:
