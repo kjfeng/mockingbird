@@ -19,17 +19,18 @@ def edit_settings(request):
     pulled = pull_notif(request.user)
 
     if request.method == "POST" and 'markread' not in request.POST:
-        form = SettingsForm(request.user)
+        form = SettingsForm(request.POST, instance=request.user.profile)
+
         if form.is_valid():
             form.save()
-            return redirect('settings')
+            return redirect('settings:settings')
     else:
         if request.method == 'POST' and 'markread' in request.POST:
             for x in pulled[1]:
                 x.read = True
                 x.save()
 
-        form = SettingsForm(request.user)
+        form = SettingsForm(instance=request.user.profile)
         context = {
             'form': form,
             'has_unread': pulled[0],
