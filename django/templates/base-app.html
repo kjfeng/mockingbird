@@ -89,6 +89,11 @@
                     </div>
                   {% endif %}
                 {% endfor %}
+                <div class="dropdown-divider"></div>
+                <form method="post">
+                  {% csrf_token %}
+                <button class="dropdown-item notif-footer" type="submit" style="color: #d10000; text-align: center; background-color: white;" name="markread">Mark all as read</>
+                </form>
                 {% else %}
                 <div class="notif" id="notif">
                       <div class="notif-container">
@@ -112,11 +117,7 @@
                 </div>
 
                 -->
-                <div class="dropdown-divider"></div>
-                <form method="post">
-                  {% csrf_token %}
-                <button class="dropdown-item notif-footer" type="submit" style="color: #d10000; text-align: center; background-color: white;" name="markread">Mark all as read</>
-                </form>
+
               </div>
             </li>
             <li class="dropdown nav-item"> <a href="#UserMenu" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
