@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
 from django.urls import reverse
 import sys
 
@@ -99,7 +101,7 @@ def change_password(request):
     }
     return render(request, 'account/change_password.html', context)
 
-
+@login_required(login_url='/login')
 def show_statistics(request):
     total_late = request.user.statistics.late*request.user.statistics.tot_interview
     pulled = pull_notif(request.user)
@@ -110,3 +112,15 @@ def show_statistics(request):
         'notif': pulled[1]
     }
     return render(request, 'account/stat_page.html', context)
+
+@login_required(login_url='/login')
+def profile_view(request, username):
+    u = User.objects.get(username=username)
+    pulled = pull_notif(request.user)
+
+    context = {
+        'user': u,
+        'has_unread': pulled[0],
+        'notif': pulled[1]
+    }
+    return render(request, 'account/profile_view.html', context)

@@ -1,0 +1,28 @@
+{% extends 'base-app.html'%}
+{% block content %}
+<div>
+    <h1><b>{{user.first_name}}</b>(@{{user.username}}) </h1>
+    {% if user.profile.email_confirmed %}
+          <p><span class="glyphicon glyphicon-ok"></span> Email is Confirmed</p>
+
+    {% else %}
+        <p><span class="glyphicon glyphicon-remove"></span> Email not Confirmed</p>
+
+    {% endif %}
+    Overall Score:
+    <br>
+    Lateness Rate: {{ user.statistics.late }}
+    <br>
+    Year: {{user.profile.year_in_school}}
+    <br>
+    Major: {{user.profile.major}}
+    <br>
+    Industry 1: {{user.profile.industry_choice_1}}
+    <br>
+    Industry 2: {{user.profile.industry_choice_2}}
+    <br>
+    Desired Role:
+    {{user.profile.role}}
+    <br>
+</div>
+{% endblock %}
