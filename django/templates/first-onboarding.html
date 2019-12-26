@@ -1,0 +1,13 @@
+{% load static %}
+{% block content %}
+<div class="col-xs-12 col-sm-6 offset-sm-3" style="text-align: center">
+  <img src="{% static 'img/forest.png' %}" alt="" style="width: 100%; padding-top: 2rem">
+
+  <form action="../tags" style="padding-top: 1rem; padding-bottom: 1rem">
+    <button type="submit">Complete My Profile</button>
+  </form>
+
+  <p><a href="{% url 'logout' %}">Log Out</a></p>
+</div>
+
+{% endblock %}
