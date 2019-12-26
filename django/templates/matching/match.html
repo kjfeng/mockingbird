@@ -1,16 +1,16 @@
-{% extends 'base.html' %}
+{% extends 'base-app.html' %}
 
 {% block content %}
-<div class="col-xs-12 col-md-5 right-side">
     <h1>Match Configuration</h1>
     <form action="../matchlist/" method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <input type="submit" value="Get Matches!">
+      <button type="submit">Get Matches!</button>
     </form>
+    <br>
   <p><a href="{% url 'home'%}">Home</a></p>
     <br>
-</div>
+
 
 {% endblock %}
 
