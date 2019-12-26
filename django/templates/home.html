@@ -10,35 +10,7 @@
 {% else %}
 {% include 'to-log-in.html' %}
 
-      <div class="col-xs-12 col-md-12 login-title-wrapper">
-        <h1>Login</h1>
-        <h6>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></h6>
-      </div>
-      <div class="col-xs-12 col-md-10 login-form">
-        <p style="color:rgb(227, 16, 16)">{{error_message}}</p>
-        <form method='POST'>
-          {% csrf_token %}
-          {% for field in form %}
-          <p>
-            {{ field.label_tag }}<br>
-            {{ field }}
-            {% if field.help_text %}
-            <small style="color: grey">{{ field.help_text }}</small>
-            {% endif %}
-            {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
-            {% endfor %}
-          </p>
-          {% endfor %}
-          <button type="submit">Log In</button>
-        </form>
-      </div>
-      <div class="col-xs-12 col-md-10">
-        <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
-      </div>
-    </div>
-    <script src="{% static 'js/landing-script.js' %}"></script>
-  </body>
+      
 <!-- <script src="{% static 'js/base-app.js' %}"></script> -->
 <!-- </body> -->
 {% endif %}

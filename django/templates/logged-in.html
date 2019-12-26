@@ -10,7 +10,8 @@
 
   <div class="">
     {% if not user.profile.onboard_confirmed %}
-    <p><a href='../tags'>Complete Profile</a></p>
+    
+    {% include 'first-onboarding.html' %}
     {% else %}
     <a href="{% url 'account:account_details' %}"> Account Details </a>
     <!-- <form action="." method='POST'>{% csrf_token %}
@@ -31,8 +32,8 @@
       {% endif %}
 
       <p> <a href="{% url 'feedback:feedback' %}">Leave Feedback</a></p>
+      <p><a href="{% url 'logout' %}">Log Out</a></p>
     {% endif%}
-    <p><a href="{% url 'logout' %}">Log Out</a></p>
   </div>
 </div>
 
