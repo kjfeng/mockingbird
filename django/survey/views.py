@@ -22,7 +22,8 @@ def survey(request):
             for x in pulled[1]:
                 x.read = True
                 x.save()
-        return render(request, 'survey/no_survey.html')
+
+        return render(request, 'survey/no_survey.html', context)
 
     if request.method == 'POST' and 'markread' not in request.POST:
         form = SurveyForm(request.POST)

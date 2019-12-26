@@ -50,6 +50,7 @@
             </a>
 
               <div class="dropdown-menu dropdown-menu-right" id="notif-panel">
+                {% if notif %}
                 {% for n in notif %}
                  {% if n.type == "MR" %}
                     <div class="notif" id="notif">
@@ -88,6 +89,13 @@
                     </div>
                   {% endif %}
                 {% endfor %}
+                {% else %}
+                <div class="notif" id="notif">
+                      <div class="notif-container">
+                        No Notifications
+                      </div>
+                </div>
+                {% endif %}
                 <!--
                 <div class="notif" id="notif">
                   <div class="notif-container">
