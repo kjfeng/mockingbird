@@ -3,13 +3,14 @@
 {% block content %}
 <div>
     <h1>Profile</h1>
+    <p style="color: red">{{ error_message }}</p>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
 
         {% csrf_token %}
         {{ formB.as_p }}
-        <button type="submit">Update Information</button>
+        <button type="submit" style="height:75px;width:200px;">Update Information</button>
     </form>
     <br>
 </div>

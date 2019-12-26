@@ -4,7 +4,7 @@ from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-
+from onboard.models import ERROR_MESSAGES
 from django.urls import reverse
 import sys
 
@@ -62,11 +62,20 @@ def account_edit(request):
     if request.method == 'POST':
         form = EditAccountForm(request.POST, instance=request.user)
         formB = EditProfileForm(request.POST, instance=request.user.profile)
-
-        if form.is_valid() and formB.is_valid():
+        isBValidReturn = formB.is_valid()
+        if form.is_valid() and isBValidReturn == 1:
             form.save()
             formB.save()
             return redirect('account:account_details')
+        else:
+            error_message = 'You can\'t fly just yet! ' + ERROR_MESSAGES[isBValidReturn]
+            pulled = pull_notif(request.user)
+            args = {'form': form,
+                'formB': formB,
+                'has_unread': pulled[0],
+                'notif': pulled[1],
+                'error_message': error_message}
+            return render(request, 'account/edit_profile.html', args)
     else:
         form = EditAccountForm(instance=request.user)
         formB = EditProfileForm(instance=request.user.profile, initial=initial_data)
@@ -74,7 +83,8 @@ def account_edit(request):
         args = {'form': form,
                 'formB': formB,
                 'has_unread': pulled[0],
-                'notif': pulled[1] }
+                'notif': pulled[1],
+                'error_message': ''}
         return render(request, 'account/edit_profile.html', args)
 
 

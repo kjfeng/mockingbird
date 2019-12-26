@@ -6,6 +6,8 @@ from onboard.models import Profile, YEAR_IN_SCHOOL_CHOICES, INDUSTRY_CHOICES, IN
 
 class EditAccountForm(UserChangeForm):
     password = None
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=50)
     class Meta:
         model = User
         fields = {
@@ -51,10 +53,15 @@ class EditProfileForm(UserChangeForm):
             return valid
 
         if (self.cleaned_data['industry_choice_1'] == self.cleaned_data['industry_choice_2']):
-            return False
+            return 'Dup Industry'
 
-        if (self.cleaned_data['industry_choice_1'] == 'None'):
-            return False
+        if (self.cleaned_data['industry_choice_1'] == 'None' or self.cleaned_data['industry_choice_1'] == None):
+            return 'No Industry 1'
  
+        if (self.cleaned_data['industry_choice_2'] == 'None' and (self.cleaned_data['industry_match'] == 'Industry 2' or self.cleaned_data['industry_match'] == 'Both')):
+            return 'Industry Match'
+
+        
+       
         # all good
-        return True
+        return 1
