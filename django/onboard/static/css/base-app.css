@@ -20,6 +20,12 @@ h1 {
   margin-top: 0;
 }
 
+.header-wrapper {
+  background-color: #efefef;
+  margin: -3rem -3rem 2rem -3rem;
+  padding-bottom: 1rem;
+}
+
 .nav-item {
   padding-left: 0.3em;
   padding-right: 0.3em;
@@ -95,9 +101,10 @@ h1 {
 
 .card-contents {
   background-color: white;
-  margin-top: 5rem;
+  margin-top: 3rem;
   width: 100%;
   padding: 3rem !important;
+  border-radius: 15px;
 }
 
 .title {
