@@ -30,7 +30,7 @@ def signup(request):
             user.save()
             print("yay")
             current_site = get_current_site(request)
-            subject = 'Activate Your MockingBird Account'
+            subject = 'Activate Your Mockingbird Account'
             message = render_to_string('registration/account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
@@ -106,7 +106,7 @@ def forgotPassword(request):
             user = User.objects.filter(email=form.cleaned_data['email'])[0]
             current_site = get_current_site(request)
 
-            subject = 'Reset Your MockingBird Password'
+            subject = 'Reset Your Mockingbird Password'
             message = render_to_string('registration/password_reset_email.html', {
                 'user': user,
                 'domain': current_site.domain,
