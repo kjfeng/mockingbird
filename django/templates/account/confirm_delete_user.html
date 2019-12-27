@@ -2,12 +2,19 @@
 {% block content %}
 <div>
 
-<form method=POST action=".">
-    {% csrf_token %}
+<!-- <form method=POST action=".">
+    {% csrf_token %} -->
     <p> Are you sure you want to delete your account?</p>
-    <p> <a href= "{% url 'account:confirm_delete' %}">Yes </a>
-        <a href= "{% url 'account:account_details' %}">No </a>
-    </p>
-</form>
+    <div>
+      <form action="{% url 'account:confirm_delete' %}" style="padding-top: 1rem; display: inline-block">
+        <button type="submit" style="outline: none">Yes</button>
+      </form>
+
+      <form action="{% url 'account:account_details' %}" style="padding-top: 1rem; display: inline-block">
+        <button type="submit" style="outline: none; background-color: #ee0000">No</button>
+      </form>
+
+    </div>
+<!-- </form> -->
 </div>
 {% endblock %}

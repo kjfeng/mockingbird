@@ -1,8 +1,11 @@
 {% extends 'base-app.html'%}
+{% load static %}
 {% block content %}
-<div>
-Sorry to see you leave the nest :(
-<br>
-<a href="{% url 'home'%}"> Home </a>
+<div class="col-xs-12 col-sm-6 offset-sm-3" style="text-align: center">
+  <img src="{% static 'img/user-leaves.png' %}" alt="" style="width: 100%; padding-top: 2rem; padding-bottom: 2rem">
+</div>
+<div class="col-xs-12 col-sm-8 offset-sm-2" style="text-align: center">
+  <h2>Sorry to see you leave the nest :(</h2>
+  <p><a href="{% url 'home' %}">Home</a></p>
 </div>
 {% endblock %}
