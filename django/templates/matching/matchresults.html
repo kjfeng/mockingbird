@@ -23,11 +23,11 @@
             <button type='submit' style="height:50px;width:200px">Match Me Again!</button>
         </form><br>
     {% endif %}
+  <p><a href="{% url 'home'%}"> Home </a> </p>
 {% else %}
-    <h4>Aww... it's an empty nest</h4>
-    <p><a href='../match'>Try Another Match</a></p>
+    {% include 'matching/empty-nest.html' %}
 {% endif %}
-<p><a href="{% url 'home'%}"> Home </a> </p>
+
 {% if configured %}
     <p><a href="{% url 'matchlist' %}"> Back </a> </p>
 {% endif %}
