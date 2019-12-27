@@ -130,7 +130,9 @@ button[type=submit], button[type=button] {
   padding: 0.8rem 2rem;
   cursor: pointer;
   border-radius: 8px;
-  outline: none
+  outline: none;
+  height:50px;
+  width:200px;
 }
 
 button[type=submit]:focus, button[type=button]:focus {

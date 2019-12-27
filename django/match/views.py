@@ -69,7 +69,8 @@ def _on_accept(request):
         # logic to create a notification for the target
         NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username))
 
-    return True
+        return True
+    return False
 # Create your views here.
 @login_required(login_url='/login/')
 def match_view(request):
@@ -105,9 +106,9 @@ def match_view(request):
         matchedUser = MatchedUser(username = str(match.username), email = str(match.email),
                     industry1 = str(match_profile.industry_choice_1), industry2 = str(match_profile.industry_choice_2))
         request.session['matchedUser'] = matchedUser.__dict__
-        messages.add_message(request, messages.INFO, str(match.username))
-        messages.add_message(request, messages.INFO, str(match.email))
-        messages.add_message(request, messages.INFO, str(match_profile.industry))
+        # messages.add_message(request, messages.INFO, str(match.username))
+        # messages.add_message(request, messages.INFO, str(match.email))
+        # messages.add_message(request, messages.INFO, str(match_profile.industry))
 
         match_list = dequeue(match_list)
         match_cache.matches = to_user_string(match_list)

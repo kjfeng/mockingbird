@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'base-app.html' %}
 
 {% block content %}
-<div class="col-xs-12 col-md-5 right-side">
+
 {% if matchedUsers|length > 0 %}
     {% if matchedUsers|length == 1 %}
     <h3>Your mock interview match is ready!</h3>
@@ -15,13 +15,13 @@
         <p><b>Email:</b> {{matchedUser.email}}</p>
         <p><b>Industry:</b> {{matchedUser.industry}}</p>
         {% csrf_token %}
-        <input type='submit' value="Accept">
-    </form>
+        <button type='submit' style="height:50px;width:200px">Accept</button>
+    </form><br>
     {% endfor %}
     {% if not configured %}
         <form action='/match/' method='POST'>{% csrf_token %}
-            <input type='submit' value="Match Me Again">
-        </form>
+            <button type='submit' style="height:50px;width:200px">Match Me Again!</button>
+        </form><br>
     {% endif %}
 {% else %}
     <h4>Aww... it's an empty nest</h4>

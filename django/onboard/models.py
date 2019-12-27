@@ -13,6 +13,10 @@ INDUSTRY_CHOICES = [('None', 'None'),
                     ('Technology', 'Technology'),
                     ]
 
+ERROR_MESSAGES = {'Dup Industry':'Industry choice 1 and Industry choice 2 must be distinct.',
+                  'No Industry 1':'You must make a selection for Industry choice 1.',
+                  'Industry Match': 'You do not have a selection for Industry choice 2 so Industry Match must be \'Industry 1\' or \'Not Looking\'.'}
+
 INDUSTRY_MATCH_CHOICE = [('Industry 1', 'Industry 1'),
                         ('Industry 2', 'Industry 2'),
                         ('Both', 'Both'),

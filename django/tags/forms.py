@@ -29,10 +29,15 @@ class TagForm(UserChangeForm):
             return valid
 
         if (self.cleaned_data['industry_choice_1'] == self.cleaned_data['industry_choice_2']):
-            return False
+            return 'Dup Industry'
 
         if (self.cleaned_data['industry_choice_1'] == 'None' or self.cleaned_data['industry_choice_1'] == None):
-            return False
+            return 'No Industry 1'
  
+        if (self.cleaned_data['industry_choice_2'] == 'None' and (self.cleaned_data['industry_match'] == 'Industry 2' or self.cleaned_data['industry_match'] == 'Both')):
+            return 'Industry Match'
+
+        
+       
         # all good
-        return True
+        return 1
