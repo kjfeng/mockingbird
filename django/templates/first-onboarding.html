@@ -1,7 +1,10 @@
 {% load static %}
 {% block content %}
 <div class="col-xs-12 col-sm-6 offset-sm-3" style="text-align: center">
-  <img src="{% static 'img/forest.png' %}" alt="" style="width: 100%; padding-top: 2rem">
+  <div>
+    <h1 class="title">Hi, {{user.first_name}}!</h1>
+  </div>
+  <img src="{% static 'img/forest.png' %}" alt="" style="width: 100%; padding-top: 1rem">
 
   <form action="../tags" style="padding-top: 1rem; padding-bottom: 1rem">
     <button type="submit" style="outline: none">Complete My Profile</button>

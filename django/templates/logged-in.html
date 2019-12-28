@@ -4,13 +4,13 @@
 
 <div>
 
-  <div>
+  <!-- <div>
     <h1 class="title">Hi, {{user.first_name}}!</h1>
-  </div>
+  </div> -->
 
   <div class="">
     {% if not user.profile.onboard_confirmed %}
-    
+
     {% include 'first-onboarding.html' %}
     {% else %}
     <a href="{% url 'account:account_details' %}"> Account Details </a>
