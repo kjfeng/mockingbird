@@ -1,9 +1,9 @@
 {% extends 'base-app.html' %}
  {% block content %}
   <body>
-    <div class="col-xs-12 col-md-5 right-side">
-        <h2>Hi, {{user.username}}!</h2>
-        <h3>Which industry(s) are you currently interviewing for or are interested in?</h3>
+    <div class="">
+        <!-- <h2>Hi, {{user.username}}!</h2> -->
+        <h3>{{user.first_name}}, which industry(s) are you currently interviewing for or are interested in?</h3>
         <p style="color: red">{{error_message}}</p> <!-- rgb(243, 241, 241)-->
         <br>
         <form method="post">
@@ -18,7 +18,6 @@
                 <p style="color: red">{{ error }}</p>
               {% endfor %}
           {% endfor %}
-          <br>
           <br>
           <button type="submit">Let's Go!</button>
         </form>
