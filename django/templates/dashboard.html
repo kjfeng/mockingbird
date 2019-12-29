@@ -1,0 +1,98 @@
+{% load static %}
+<div>
+  <h1 class="title" style="padding-top: 1rem">Hi, {{user.first_name}}!</h1>
+
+  <div class="module-wrapper-left">
+    <div class="module-blue-title">
+      <h3 style="color: white; font-weight: 600">Your recommended match</h3>
+      <p style="color: white">Based on <a href="{% url 'account:account_details' %}" style="color: #FFC933">your profile</a></p>
+    </div>
+
+    <div class="module-blue">
+      <h1 style="font-weight: 600">match_name</h1>
+      <p>@username</p>
+      <div class="recommended-match-info">
+        <div class="row">
+          <div class="col-md-12 col-lg-6">
+            <h6><strong>Year</strong></h6>
+            <p>Junior</p>
+          </div>
+          <div class="col-md-12 col-lg-6">
+            <h6><strong>Major</strong></h6>
+            <p>Computer Science</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-lg-6">
+            <h6><strong>Desied Role</strong></h6>
+            <p>Software Engineer</p>
+          </div>
+          <div class="col-md-12 col-lg-6">
+            <h6><strong>Industry</strong></h6>
+            <p>Technology</p>
+          </div>
+        </div>
+      </div>
+      <form action="#" style="padding-top: 1rem; padding-bottom: 1rem">
+        <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Send a match request!</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="module-wrapper-right">
+
+    <div class="module">
+      <h3 style="font-weight: 600">Discover similar users</h3>
+      <a href="#" class="profile-card-link">
+        <div class="profile-card">
+          <h5><strong>Name</strong> (@username)</h5>
+          <span><strong>Desired role: </strong>software engineering</span>
+        </div>
+      </a>
+      <a href="#" class="profile-card-link">
+        <div class="profile-card">
+          <h5><strong>Name</strong> (@username)</h5>
+          <span><strong>Desired role: </strong>software engineering</span>
+        </div>
+      </a>
+
+      <a href="#" style="margin-bottom: 1rem">See all</a>
+    </div>
+
+    <div class="module">
+      <h3 style="font-weight: 600; padding-bottom: 1rem">Upcoming mock interviews</h3>
+      <div class="">
+        <h5><strong>Name</strong> (@username)</h5>
+        <span><strong>Desired role: </strong>software engineering</span><br>
+        <a href="#">Contact {name}</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="">
+
+  <a href="{% url 'account:account_details' %}"> Account Details </a>
+  <!-- <form action="." method='POST'>{% csrf_token %}
+    <input type='submit' value="Get Me Matched!">
+  </form> -->
+
+  {% if user.profile.is_matched %} <!-- should be not -->
+    <p>Get Me Matched!****</p>
+    <p><a href='survey'>Finish Survey </a> </p>
+
+    <p> **** this feature is disabled until you complete all surveys</p>
+  {% elif user.profile.has_request %}
+    <p><a href='request_info'>Pending Match Request</a> </p>
+  {% elif user.profile.is_waiting %}
+    <p><a href='request_info'>Current Match Request</a> </p>
+  {% else %}
+    <p><a href='match'> Get Me Matched!</a></p>
+    <p><a href='matchconfig'> Find Matches!</a></p>
+  {% endif %}
+
+  <p> <a href="{% url 'feedback:feedback' %}">Leave Feedback</a></p>
+  <p><a href="{% url 'logout' %}">Log Out</a></p>
+</div>

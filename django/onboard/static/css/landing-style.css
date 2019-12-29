@@ -51,8 +51,6 @@ button[type=submit]:focus, button[type=button]:focus {
   padding: 2rem 3rem 2rem 3rem;
   float: left;
   position: fixed;
-  /* top: 0;
-  bottom: 0; */
 }
 
 .right-side {
@@ -112,4 +110,10 @@ button[type=submit]:focus, button[type=button]:focus {
 .password-recovery-confirmation {
   display: none;
   margin-top: 2rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .left-side {
+    position: static;
+  }
 }
