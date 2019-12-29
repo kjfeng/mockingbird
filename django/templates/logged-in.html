@@ -1,42 +1,21 @@
-{% extends 'base-app.html' %}
+{% extends user.profile.onboard_confirmed|yesno:'dash-template.html,base-app.html' %}
 {% load static %}
 {% block content %}
 
-<div>
 
-  <!-- <div>
-    <h1 class="title">Hi, {{user.first_name}}!</h1>
-  </div> -->
+  {% if not user.profile.onboard_confirmed %}
 
   <div class="">
-    {% if not user.profile.onboard_confirmed %}
 
     {% include 'first-onboarding.html' %}
-    {% else %}
-    <a href="{% url 'account:account_details' %}"> Account Details </a>
-    <!-- <form action="." method='POST'>{% csrf_token %}
-      <input type='submit' value="Get Me Matched!">
-    </form> -->
-      {% if user.profile.is_matched %} <!-- should be not -->
-        <p>Get Me Matched!****</p>
-        <p><a href='survey'>Finish Survey </a> </p>
-
-        <p> **** this feature is disabled until you complete all surveys</p>
-      {% elif user.profile.has_request %}
-        <p><a href='request_info'>Pending Match Request</a> </p>
-      {% elif user.profile.is_waiting %}
-        <p><a href='request_info'>Current Match Request</a> </p>
-      {% else %}
-        <p><a href='match'> Get Me Matched!</a></p>
-        <p><a href='matchconfig'> Find Matches!</a></p>
-      {% endif %}
-
-      <p> <a href="{% url 'feedback:feedback' %}">Leave Feedback</a></p>
-      <p><a href="{% url 'logout' %}">Log Out</a></p>
-    {% endif%}
   </div>
-</div>
+
+  {% else %}
+    {% include 'dashboard.html' %}
+  {% endif%}
+
+
+
 
 <script src="{% static 'js/base-app.js' %}"></script>
-
 {% endblock %}

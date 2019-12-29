@@ -20,6 +20,10 @@ h1 {
   margin-top: 0;
 }
 
+h6 {
+  font-weight: 600;
+}
+
 .header-wrapper {
   background-color: #efefef;
   margin: -3rem -3rem 2rem -3rem;
@@ -93,6 +97,7 @@ h1 {
   margin-left: 2rem;
   margin-right: 2rem;
   margin-bottom: 2rem;
+  height: auto;
 }
 
 .card-contents {
@@ -132,4 +137,76 @@ button[type=submit], button[type=button] {
 
 button[type=submit]:focus, button[type=button]:focus {
   background-color: #6275D8;
+}
+
+.module-wrapper-left {
+  /* display: flex; */
+  float: left;
+  width: 50%;
+  height: 100%;
+  padding-right: 1rem;
+}
+
+.module-wrapper-right {
+  /* display: flex; */
+  float: left;
+  width: 50%;
+  padding-left: 1rem;
+  height: 100%;
+  margin-bottom: 2rem;
+}
+
+.module-blue-title {
+  background-color: #3850E2;
+  padding: 1.5rem;
+  border-radius: 15px;
+  margin-bottom: -1.5rem
+}
+
+.module-blue {
+  background-color: #132ECE;
+  color: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+}
+
+.module {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+}
+
+.recommended-match-info {
+  padding-top: 1rem;
+}
+
+.profile-card-link {
+  color: #3f3f3f;
+}
+
+.profile-card-link:hover {
+  color: #3f3f3f;
+  text-decoration: none;
+}
+
+.profile-card {
+  padding: 1rem;
+  background-color: white;
+  border-radius: 15px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.profile-card:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+@media only screen and (max-width: 768px) {
+  .module-wrapper-left, .module-wrapper-right {
+    width: 100%;
+    padding: 0;
+  }
 }

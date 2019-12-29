@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %} Mockingbird {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base-app.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+    <link rel='icon' href="{% static 'img/favicon.ico' %}" type='image/x-icon'>
+
+  </head>
+
+  <body style="background-color: #efefef; font-family: 'Poppins', sans-serif;">
+    <!-- Navigation -->
+    <div style="background-color: white">
+      <nav class="navbar navbar-light navbar-expand-md navbar-custom">
+        <div class="logo-wrapper">
+          <!-- CHANGE PATH TO RELATIVE PATH -->
+            <a href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt="" style="width: 10em; padding: 0.5em"></a>
+        </div>
+        <!-- Header and button for mobile view -->
+        <button class="navbar-toggler ml-auto custom-toggler" data-toggle="collapse" data-target="#mainNav" style="border: none;">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- The actual navigation menu -->
+        <div class="collapse navbar-collapse" id="mainNav">
+          <!-- Navigation options on the left (site related) -->
+
+          <!-- Navigation options on the right (user related) -->
+          <ul class="nav navbar-nav ml-auto">
+
+            <li class="dropdown nav-item">
+
+              <a href="#Alerts" class="nav-link"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                <div class="notif-icon-container" >
+                  <i class="material-icons">notifications</i>
+                  {% if has_unread %}
+                  <span class="dot"></span>
+                  {% endif %}
+                </div>
+
+            </a>
+
+              <div class="dropdown-menu dropdown-menu-right" id="notif-panel">
+                {% if notif %}
+                {% for n in notif %}
+                 {% if n.type == "MR" %}
+                    <div class="notif" id="notif">
+                      <div class="notif-container">
+                        <a href="#">{{n.match_name}}</a> sent you a mock interview invite! <a href="{% url 'request_info' %}">View it here.</a>
+                        <p class="notif-detail"> {{n.created_at}} </p>
+                      </div>
+                    </div>
+                  {% elif n.type == "MC" %}
+                    <div class="notif" id="notif">
+                      <div class="notif-container">
+                        <a href="#">{{n.match_name}}</a> has canceled their match request :(
+                        <p class="notif-detail"> {{n.created_at}} </p>
+                      </div>
+                    </div>
+                  {% elif n.type == "MD" %}
+                    <div class="notif" id="notif">
+                      <div class="notif-container">
+                        <a href="#">{{n.match_name}}</a> has rejected your match request :(
+                        <p class="notif-detail"> {{n.created_at}} </p>
+                      </div>
+                    </div>
+                  {% elif n.type == "MA" %}
+                    <div class="notif" id="notif">
+                      <div class="notif-container">
+                        <a href="#">{{n.match_name}}</a> has accepted your match request! Find out how to contact them <a href="{% url 'request_info' %}">here </a>.
+                        <p class="notif-detail"> {{n.created_at}} </p>
+                      </div>
+                    </div>
+                  {% else %}
+                    <div class="notif" id="notif">
+                      <div class="notif-container">
+                        Please complete your survey with <a href="#">{{n.match_name}}</a>!<a href="survey"> View it here</a>
+                        <p class="notif-detail"> {{n.created_at}} </p>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+                <div class="dropdown-divider"></div>
+                <form method="post">
+                  {% csrf_token %}
+                <button class="dropdown-item notif-footer" type="submit" style="color: #d10000; text-align: center; background-color: white;" name="markread">Mark all as read</>
+                </form>
+                {% else %}
+                <div class="notif" id="notif">
+                      <div class="notif-container">
+                        No Notifications
+                      </div>
+                </div>
+                {% endif %}
+
+
+              </div>
+            </li>
+            <li class="dropdown nav-item">
+              <a href="#UserMenu" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+
+                <i class="material-icons user-icon">person</i>
+                <span class="nav-username" style="padding-left: 5px; display: inline-block; position: relative; top: -5px">{{user.first_name}}</span>
+
+              </a>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="{% url 'account:account_details' %}">Profile</a>
+                <a class="dropdown-item" href="{% url 'settings:settings' %}">Settings</a>
+                <!-- <a class="dropdown-item" href="#">My Activity</a> -->
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'feedback:feedback' %}">Send Feedback</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+              </div>
+            </li>
+            <!-- dropdown -->
+          </ul>
+          <!-- ml-auto -->
+        </div>
+        <!-- #mainNav -->
+      </nav>
+    </div>
+
+    <div class="stuff-under-navbar" style="margin: 2rem 1rem 2rem 1rem;">
+      <div class="col-sm-12 col-md-10 offset-md-1 col-lg-10 offset-lg-1">
+
+        {% block content %}
+        {% endblock %}
+      </div>
+
+    </div>
+
+    <script src="{% static 'js/base-app.js' %}">
+
+    </script>
+
+  </body>
+
+
+</html>
