@@ -1,17 +1,16 @@
 {% extends 'base-app.html'%}
 {% block content %}
 <div>
-    <h1><b>{{user.first_name}}</b>(@{{user.username}}) </h1>
+    <h1><b>{{user.first_name}}</b></h1>
+    <h5> (@{{user.username}}) </h5>
     {% if user.profile.email_confirmed %}
-          <p><span class="glyphicon glyphicon-ok"></span> Email is Confirmed</p>
+          <p><i class="material-icons">check_box</i> Email is Confirmed</p>
 
     {% else %}
-        <p><span class="glyphicon glyphicon-remove"></span> Email not Confirmed</p>
+        <p><i class="material-icons">check_box_outline</i> Email not Confirmed</p>
 
     {% endif %}
     Overall Score:
-    <br>
-    Lateness Rate: {{ user.statistics.late }}
     <br>
     Year: {{user.profile.year_in_school}}
     <br>
