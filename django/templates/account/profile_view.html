@@ -1,13 +1,17 @@
 {% extends 'base-app.html'%}
 {% block content %}
 <div>
+    {% if user.firstname %}
     <h1><b>{{user.first_name}}</b></h1>
+    {% else %}
+    <h1><i> Name unknown</i></h1>
+    {% endif %}
     <h5> (@{{user.username}}) </h5>
     {% if user.profile.email_confirmed %}
           <p><i class="material-icons">check_box</i> Email is Confirmed</p>
 
     {% else %}
-        <p><i class="material-icons">check_box_outline</i> Email not Confirmed</p>
+        <p><i class="material-icons"> check_box_outline_blank</i> Email not Confirmed</p>
 
     {% endif %}
     Overall Score:
