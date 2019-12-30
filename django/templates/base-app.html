@@ -46,77 +46,69 @@
                   <span class="dot"></span>
                   {% endif %}
                 </div>
-
-            </a>
+              </a>
 
               <div class="dropdown-menu dropdown-menu-right" id="notif-panel">
-                {% if notif %}
-                {% for n in notif %}
-                 {% if n.type == "MR" %}
-                    <div class="notif" id="notif">
-                      <div class="notif-container">
-                        <a href="#">{{n.match_name}}</a> sent you a mock interview invite! <a href="{% url 'request_info' %}">View it here.</a>
-                        <p class="notif-detail"> {{n.created_at}} </p>
-                      </div>
-                    </div>
-                  {% elif n.type == "MC" %}
-                    <div class="notif" id="notif">
-                      <div class="notif-container">
-                        <a href="#">{{n.match_name}}</a> has canceled their match request :(
-                        <p class="notif-detail"> {{n.created_at}} </p>
-                      </div>
-                    </div>
-                  {% elif n.type == "MD" %}
-                    <div class="notif" id="notif">
-                      <div class="notif-container">
-                        <a href="#">{{n.match_name}}</a> has rejected your match request :(
-                        <p class="notif-detail"> {{n.created_at}} </p>
-                      </div>
-                    </div>
-                  {% elif n.type == "MA" %}
-                    <div class="notif" id="notif">
-                      <div class="notif-container">
-                        <a href="#">{{n.match_name}}</a> has accepted your match request! Find out how to contact them <a href="{% url 'request_info' %}">here </a>.
-                        <p class="notif-detail"> {{n.created_at}} </p>
-                      </div>
-                    </div>
-                  {% else %}
-                    <div class="notif" id="notif">
-                      <div class="notif-container">
-                        Please complete your survey with <a href="#">{{n.match_name}}</a>!<a href="survey"> View it here</a>
-                        <p class="notif-detail"> {{n.created_at}} </p>
-                      </div>
-                    </div>
-                  {% endif %}
-                {% endfor %}
-                <div class="dropdown-divider"></div>
-                <form method="post">
-                  {% csrf_token %}
-                <button class="dropdown-item notif-footer" type="submit" style="color: #d10000; text-align: center; background-color: white;" name="markread">Mark all as read</>
-                </form>
+                {% if not notif %}
+                   <!-- case where there are no notifications -->
+                  <div class="notif" id="notif">
+                        <div class="notif-container">
+                          No Notifications
+                        </div>
+                  </div>
                 {% else %}
-                <div class="notif" id="notif">
-                      <div class="notif-container">
-                        No Notifications
-                      </div>
-                </div>
+
+                  {% for n in notif %}
+                   {% if n.type == "MR" %}
+                       <!-- Match request notification -->
+                       <div class="notif" id="notif">
+                         <div class="notif-container">
+                           <a href="{% url 'account:profile_view' n.match_name %}">{{n.match_name}}</a> sent you a mock interview invite! <a href="{% url 'request_info' %}">View it here.</a>
+                           <p class="notif-detail"> {{n.created_at}} </p>
+                         </div>
+                       </div>
+                     {% elif n.type == "MC" %}
+                     <!-- Match cancel notification -->
+                       <div class="notif" id="notif">
+                         <div class="notif-container">
+                           <a href="{% url 'account:profile_view' n.match_name %}">{{n.match_name}}</a> has canceled their match request :(
+                           <p class="notif-detail"> {{n.created_at}} </p>
+                         </div>
+                       </div>
+                     {% elif n.type == "MD" %}
+                     <!-- Match Declined notification -->
+                       <div class="notif" id="notif">
+                         <div class="notif-container">
+                           <a href="{% url 'account:profile_view' n.match_name %}">{{n.match_name}}</a> has rejected your match request :(
+                           <p class="notif-detail"> {{n.created_at}} </p>
+                         </div>
+                       </div>
+                     {% elif n.type == "MA" %}
+                     <!-- Match accept notification -->
+                       <div class="notif" id="notif">
+                         <div class="notif-container">
+                           <a href="{% url 'account:profile_view' n.match_name %}">{{n.match_name}}</a> has accepted your match request! Find out how to contact them <a href="{% url 'request_info' %}">here </a>.
+                           <p class="notif-detail"> {{n.created_at}} </p>
+                         </div>
+                       </div>
+                     {% else %}
+                     <!-- Finish survey notification -->
+                       <div class="notif" id="notif">
+                         <div class="notif-container">
+                           Please complete your survey with <a href="{% url 'account:profile_view' n.match_name %}">{{n.match_name}}</a>!<a href="{% url 'survey:survey' %}"> View it here</a>
+                           <p class="notif-detail"> {{n.created_at}} </p>
+                         </div>
+                       </div>
+                     {% endif %}
+
+                  {% endfor %}
+                  <div class="dropdown-divider"></div>
+                  <form method="post">
+                    {% csrf_token %}
+                  <button class="dropdown-item notif-footer" type="submit" style="color: #d10000; text-align: center; background-color: white;" name="markread">Mark all as read</>
+                  </form>
+
                 {% endif %}
-                <!--
-                <div class="notif" id="notif">
-                  <div class="notif-container">
-                    <a href="#">{{username}}</a> sent you a mock interview invite! <a href="#">View it here.</a>
-                    <p class="notif-detail">10:09am on 10/10/2019</p>
-                  </div>
-                </div>
-
-                <div class="notif" id="notif">
-                  <div class="notif-container">
-                    <a href="#">{{username}}</a> sent you a mock interview invite! <a href="#">View it here.</a>
-                    <p class="notif-detail">10:09am on 10/10/2019</p>
-                  </div>
-                </div>
-
-                -->
 
               </div>
             </li>
