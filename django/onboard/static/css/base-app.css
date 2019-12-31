@@ -145,6 +145,7 @@ button[type=submit]:focus, button[type=button]:focus {
   width: 50%;
   height: 100%;
   padding-right: 1rem;
+  padding-bottom: 2rem;
 }
 
 .module-wrapper-right {
@@ -168,7 +169,7 @@ button[type=submit]:focus, button[type=button]:focus {
   color: white;
   padding: 1.5rem;
   border-radius: 15px;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .module {
@@ -176,6 +177,10 @@ button[type=submit]:focus, button[type=button]:focus {
   padding: 1.5rem;
   border-radius: 15px;
   margin-bottom: 1rem;
+}
+
+.adventurous {
+  background-color: #FFD357;
 }
 
 .recommended-match-info {

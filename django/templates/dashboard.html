@@ -3,6 +3,8 @@
   <h1 class="title" style="padding-top: 1rem">Hi, {{user.first_name}}!</h1>
 
   <div class="module-wrapper-left">
+
+    <!-- LEFT SIDE -->
     <div class="module-blue-title">
       <h3 style="color: white; font-weight: 600">Your recommended match</h3>
       <p style="color: white">Based on <a href="{% url 'account:account_details' %}" style="color: #FFC933">your profile</a></p>
@@ -37,12 +39,35 @@
         <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Send a match request!</button>
       </form>
     </div>
+
+    <div class="module last-left">
+      <h3 style="font-weight: 600; padding-bottom: 1rem">Upcoming mock interviews</h3>
+      <div class="">
+        <h5><strong>Name</strong> (@username)</h5>
+        <span><strong>Desired role: </strong>software engineering</span><br>
+        <a href="#">Contact {name}</a>
+      </div>
+    </div>
+
+    <!-- END LEFT SIDE -->
   </div>
 
   <div class="module-wrapper-right">
+    <!-- RIGHT SIDE -->
+
+    <div class="module adventurous">
+      <h3 style="font-weight: 600; padding-bottom: 1rem">I'm feeling adventurous</h3>
+      <div class="">
+        <p>Click below to be matched with a random user in similar roles and/or industries!</p>
+        <form action="#">
+          <button type="submit" style="outline: none">Match me!</button>
+        </form>
+      </div>
+    </div>
 
     <div class="module">
       <h3 style="font-weight: 600">Discover similar users</h3>
+      <p>Based on <a href="#">your preferences</a></p>
       <a href="#" class="profile-card-link">
         <div class="profile-card">
           <h5><strong>Name</strong> (@username)</h5>
@@ -59,14 +84,9 @@
       <a href="#" style="margin-bottom: 1rem">See all</a>
     </div>
 
-    <div class="module">
-      <h3 style="font-weight: 600; padding-bottom: 1rem">Upcoming mock interviews</h3>
-      <div class="">
-        <h5><strong>Name</strong> (@username)</h5>
-        <span><strong>Desired role: </strong>software engineering</span><br>
-        <a href="#">Contact {name}</a>
-      </div>
-    </div>
+
+
+    <!-- END RIGHT SIDE -->
 
   </div>
 </div>
@@ -75,11 +95,8 @@
 <div class="">
 
   <a href="{% url 'account:account_details' %}"> Account Details </a>
-  <!-- <form action="." method='POST'>{% csrf_token %}
-    <input type='submit' value="Get Me Matched!">
-  </form> -->
 
-  {% if user.profile.is_matched %} <!-- should be not -->
+  {% if user.profile.is_matched %}
     <p>Get Me Matched!****</p>
     <p><a href='survey'>Finish Survey </a> </p>
 
