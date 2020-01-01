@@ -28,6 +28,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -36,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # borrowed
-    'multiselectfield',
-    'phone_field',
+   'multiselectfield',
+   'phone_field',
 
     # created
+    'chat',
     'onboard',
     'match',
     'tags',
@@ -77,7 +79,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'mockingbird.wsgi.application'
+ASGI_APPLICATION = "mockingbird.routing.application"
+#WSGI_APPLICATION = 'mockingbird.wsgi.application'
+
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -147,7 +151,7 @@ CHANNEL_LAYERS = {
         "CONFIG": {
             "hosts": [(redis_host, 22949)],
         },
-        "ROUTING": "multichat.routing.channel_routing",
+        "ROUTING": "my_project.routing.channel_routing",
     },
 }
 
