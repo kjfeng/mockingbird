@@ -68,6 +68,9 @@ def account_edit(request):
             formB.save()
             return redirect('account:account_details')
         else:
+            formB.fields['role'].label = "Desired Role"
+            formB.fields['industry_match'].label = "What industry would you prefer to be matched on?"
+
             error_message = 'You can\'t fly just yet! ' + ERROR_MESSAGES[isBValidReturn]
             pulled = pull_notif(request.user)
             args = {'form': form,
@@ -79,6 +82,10 @@ def account_edit(request):
     else:
         form = EditAccountForm(instance=request.user)
         formB = EditProfileForm(instance=request.user.profile, initial=initial_data)
+
+        formB.fields['role'].label = "Desired Role"
+        formB.fields['industry_match'].label = "What industry would you prefer to be matched on?"
+
         pulled = pull_notif(request.user)
         args = {'form': form,
                 'formB': formB,
