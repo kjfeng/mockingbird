@@ -34,14 +34,14 @@ class EditProfileForm(UserChangeForm):
 
     class Meta:
         model = Profile
-        fields = {
+        fields = [
             'year_in_school',
             'major',
             'role',
             'industry_choice_1',
             'industry_choice_2',
             'industry_match',
-        }
+        ]
     
     def is_valid(self):
          

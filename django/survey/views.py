@@ -13,6 +13,7 @@ from account.pull_notif import pull_notif
 def survey(request):
     pulled = pull_notif(request.user)
 
+    # if not matched
     if not request.user.profile.is_matched:
         context = {
             'has_unread': pulled[0],
@@ -25,9 +26,10 @@ def survey(request):
 
         return render(request, 'survey/no_survey.html', context)
 
+    # if submitted
     if request.method == 'POST' and 'markread' not in request.POST:
         form = SurveyForm(request.POST)
-
+        # if valid form
         if form.is_valid():
             target = User.objects.filter(username=request.user.profile.match_name)[0]
 
@@ -68,26 +70,29 @@ def survey(request):
                         fail_silently=True,
                     )
             return redirect('survey:survey_complete')
+
+    # if first time loading
     else:
         form = SurveyForm()
-        form.fields['did_meet'].label = "Did you meet with your match?"
-        form.fields['on_time'].label = "Was your match on time?"
-        form.fields['friendly'].label = "How friendly or rude was your match?"
-        form.fields['comment'].label = "If you have any additional comments or concern you would like to mention about" \
-                                       "your partner, please add below."
 
-        if request.method == 'POST' and 'markread' in request.POST:
-            for x in pulled[1]:
-                x.read = True
-                x.save()
+    form.fields['did_meet'].label = "Did you meet with your match?"
+    form.fields['on_time'].label = "Was your match on time?"
+    form.fields['friendly'].label = "How friendly or rude was your match?"
+    form.fields['comment'].label = "If you have any additional comments or concern you would like to mention about " \
+                                        "your partner, please add below."
 
-        args = {
-            'form': form,
-            'username': str(request.user.profile.match_name),
-            'has_unread': pulled[0],
-            'notif': pulled[1]
-        }
-        return render(request, 'survey/survey.html', args)
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
+
+    args = {
+        'form': form,
+        'username': str(request.user.profile.match_name),
+        'has_unread': pulled[0],
+        'notif': pulled[1]
+    }
+    return render(request, 'survey/survey.html', args)
 
 
 @login_required(login_url='/login/')

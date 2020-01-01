@@ -15,7 +15,7 @@
         <p><b>Email:</b> {{matchedUser.email}}</p>
         <p><b>Industry:</b> {{matchedUser.industry}}</p>
         {% csrf_token %}
-        <button type='submit' style="height:50px;width:200px">Accept</button>
+        <button type='submit' style="height:50px;width:200px">Send Request</button>
     </form><br>
     {% endfor %}
     {% if not configured %}

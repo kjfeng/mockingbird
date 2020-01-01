@@ -5,10 +5,10 @@
 </div>
 <div class="col-xs-12 col-sm-8 offset-sm-2" style="text-align: center">
   <h2>Aww... it's an empty nest :(</h2>
-  <p>It seems like no one else is available to match with you at this time. Check back later to see if anyone's availability opens up, or try matching again.</p>
+  <p>It seems like no one else is available to match with you at this time. Check back later to see if anyone's availability opens up, or try modifying your profile.</p>
 
-  <form action="../match" style="padding-top: 1rem; padding-bottom: 1rem">
-    <button type="submit" style="outline: none">Try Another Match</button>
+  <form action="{% url 'account:account_details' %}" style="padding-top: 1rem; padding-bottom: 1rem">
+    <button type="submit" style="outline: none">Go to profile</button>
   </form>
 
   <p><a href="{% url 'home' %}">Home</a></p>

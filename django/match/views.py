@@ -71,16 +71,15 @@ def _on_accept(request):
 
         return True
     return False
-# Create your views here.
+
 @login_required(login_url='/login/')
 def match_view(request):
     L_SIZE = 10
 
-
-    # clear messages
-    storage = messages.get_messages(request)
-    for message in storage:
-         str(message)
+    # # clear messages
+    # storage = messages.get_messages(request)
+    # for message in storage:
+    #      str(message)
 
     my_profile = Profile.objects.get(id=request.user.id)
 
@@ -116,6 +115,14 @@ def match_view(request):
         print("cache after matching: " + match_cache.matches, file=stderr)
 
     return redirect('../matchresults/')
+
+# @login_required
+# def matchagain_view(request):
+#     my_profile = Profile.objects.get(id=request.user.id)
+
+#     match_cache = Cached_Matches.objects.get(user=my_profile.user)
+#     match_cache_list = to_user_list(match_cache.matches)
+
 
 @login_required(login_url='/login/')
 def matchresults_view(request):

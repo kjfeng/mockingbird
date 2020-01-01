@@ -21,7 +21,7 @@ from django.conf.urls import url
 from onboard import views as onboard_views
 from match import views as match_views
 from tags import views as tags_views
-
+from chat import views as chat_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
@@ -32,6 +32,7 @@ urlpatterns = [
     path('tags/', tags_views.tags_view),
     path('', onboard_views.login, name='home'),
 
+    path('chat/', chat_views.index, 'chat'),
     # matching urls
     path('match/', match_views.match_view, name='match'),
     path('matchresults/', match_views.matchresults_view),

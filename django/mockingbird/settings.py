@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # borrowed
    'multiselectfield',
    'phone_field',
+   'widget_tweaks',
 
     # created
     'chat',
