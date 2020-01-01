@@ -56,6 +56,7 @@ def signup(request):
 def account_activation_sent(request):
     return render(request, 'registration/account_activation_sent.html')
 
+
 def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
@@ -97,6 +98,16 @@ def login(request):
         form = LoginForm()
 
     return render(request, '../templates/home.html', {'form': form, 'has_unread': pulled[0], 'notif': pulled[1]})
+
+
+def default_view(request, extra):
+    pulled = pull_notif(request.user)
+
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
+    return render(request, '../templates/broken_page.html', {'has_unread': pulled[0], 'notif': pulled[1]})
 '''
 def forgotPassword(request):
     # print(request.method)

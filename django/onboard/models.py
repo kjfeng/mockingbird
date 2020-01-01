@@ -84,7 +84,6 @@ class Profile(models.Model):
     is_waiting = models.BooleanField(default=False)
 
     # Contact Information Settings
-    phone = PhoneField(blank=True, help_text='Contact phone number', default="(None)")
     receive_email = models.BooleanField(default=True, choices=BOOL_CHOICES)
 
     def __str__(self):

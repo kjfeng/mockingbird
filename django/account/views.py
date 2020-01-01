@@ -141,3 +141,10 @@ def profile_view(request, username):
         'notif': pulled[1]
     }
     return render(request, 'account/profile_view.html', context)
+
+
+''' to be implemented once multiple request sent
+@login_required(login_url='/login')
+def send_request(request, username):
+    u = User.object.get(username=username)
+'''
