@@ -37,7 +37,6 @@ def survey(request):
             request.user.profile.match_name = ""
             request.user.profile.is_matched = False
             request.user.profile.is_sender = False
-            request.user.profile.has_request = False
             request.user.profile.is_waiting = False
             request.user.profile.save()
 
