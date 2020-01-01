@@ -13,6 +13,7 @@ from account.pull_notif import pull_notif
 def survey(request):
     pulled = pull_notif(request.user)
 
+
     # if not matched
     if not request.user.profile.is_matched:
         context = {
@@ -79,6 +80,8 @@ def survey(request):
     form.fields['friendly'].label = "How friendly or rude was your match?"
     form.fields['comment'].label = "If you have any additional comments or concern you would like to mention about " \
                                         "your partner, please add below."
+
+    form.fields['did_meet'].initial = 'n/a'
 
     if request.method == 'POST' and 'markread' in request.POST:
         for x in pulled[1]:
