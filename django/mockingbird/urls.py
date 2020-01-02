@@ -54,6 +54,6 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
 
 
-    #url(r'^(.*)', onboard_views.default_view, name='default'),
+    url(r'^(.*)', onboard_views.default_view, name='default'),
 
 ]
