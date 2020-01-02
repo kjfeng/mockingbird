@@ -44,9 +44,9 @@
         {% endif %}
 
     </div>
-    <br>
-
-    <p> <a href="{% url 'settings:edit_settings' %}">Edit Settings</a></p>
+     <form action="{% url 'settings:edit_settings' %}" style="padding-top: 1rem; padding-bottom: 1rem">
+        <button type="submit" style="outline: none">Edit Settings</button>
+    </form>
 </div>
 
 {% endblock %}
