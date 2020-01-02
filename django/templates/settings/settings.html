@@ -4,7 +4,7 @@
 <div>
     <h2 class="title">Settings</h2>
     <div class="row">
-         {% if request.user.profile.email_confirmed %}
+         {% if request.user.profile.receive_email %}
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
 
           <p><i class="material-icons">check_box</i>
@@ -13,14 +13,35 @@
               You are all set to receive email notifications from MockingBird.</p>
         </div>
 
-    {% else %}
+        {% else %}
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                <p><i class="material-icons"> check_box_outline_blank</i>
+            </div>
+            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                You have chosen not to receive email notifications from MockingBird.</p>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <div class="row">
+         {% if request.user.profile.is_idle %}
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-            <p><i class="material-icons"> check_box_outline_blank</i>
+
+          <p><i class="material-icons">check_box</i>
         </div>
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-            You have chosen not to receive email notifications from MockingBird.</p>
+              You are currently open to receive match requests.</p>
         </div>
-    {% endif %}
+
+        {% else %}
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                <p><i class="material-icons"> check_box_outline_blank</i>
+            </div>
+            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                You are currently not open to receive match requests.</p>
+            </div>
+        {% endif %}
 
     </div>
     <br>
