@@ -29,15 +29,15 @@ urlpatterns = [
     url(r'^signup/$', onboard_views.signup, name='signup'),
     url(r'^login/$', onboard_views.login, name='login'),
 
-    path('tags/', tags_views.tags_view),
+    url(r'^tags/$', tags_views.tags_view),
     path('', onboard_views.login, name='home'),
 
     # matching urls
-    path('match/', match_views.match_view, name='match'),
-    path('matchresults/', match_views.matchresults_view),
-    path('matchlist/', match_views.matchlist_view, name='matchlist'),
-    path('matchlistresults/', match_views.matchlistresults_view),
-    path('matchconfig/', match_views.matchconfig_view, name='matchconfig'),
+    url(r'^match/$', match_views.match_view, name='match'),
+    url(r'^matchresults/$', match_views.matchresults_view),
+    url(r'^matchlist/$', match_views.matchlist_view, name='matchlist'),
+    url(r'^matchlistresults/$', match_views.matchlistresults_view),
+    url(r'^matchconfig/$', match_views.matchconfig_view, name='matchconfig'),
     url(r'^request_info/', match_views.request_info, name='request_info'),
     url(r'^accept_request/', match_views.accept_request, name='accept_request'),
     url(r'^confirm_cancel_request/', match_views.confirm_cancel_request, name='confirm_cancel_request'),
@@ -52,6 +52,8 @@ urlpatterns = [
     url(r'^settings/', include(('settings.urls', 'settings'), namespace='settings')),
 
     url('^', include('django.contrib.auth.urls')),
+
+
     url(r'^(.*)', onboard_views.default_view, name='default'),
 
 ]
