@@ -54,7 +54,7 @@ urlpatterns = [
     url(r'^feedback/', include(('feedback.urls', 'feedback'), namespace='feedback')),
     url(r'^settings/', include(('settings.urls', 'settings'), namespace='settings')),
 
-
     url('^', include('django.contrib.auth.urls')),
+    url(r'^(.*)', onboard_views.default_view, name='default'),
 
 ]

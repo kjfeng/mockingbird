@@ -41,6 +41,7 @@ INSTALLED_APPS = [
    'multiselectfield',
    'phone_field',
 
+
     # created
     'chat',
     'onboard',
