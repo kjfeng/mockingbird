@@ -13,7 +13,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.views.generic.base import TemplateView
 from django.contrib.auth import views as auth_views
 
@@ -32,7 +32,9 @@ urlpatterns = [
     path('tags/', tags_views.tags_view),
     path('', onboard_views.login, name='home'),
 
-    path('chat/', chat_views.index, 'chat'),
+    path('chat/', chat_views.index, name='chat'),
+    path('chat/<str:room_name>/', chat_views.room, name='room'),
+    # re_path(r'^(?P<room_name>[^/]+)/$', chat_views.room, name='room'),
     # matching urls
     path('match/', match_views.match_view, name='match'),
     path('matchresults/', match_views.matchresults_view),

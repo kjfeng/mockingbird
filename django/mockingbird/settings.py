@@ -28,6 +28,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Application definition
 
 INSTALLED_APPS = [
+    'widget_tweaks',
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     # borrowed
    'multiselectfield',
    'phone_field',
-   'widget_tweaks',
 
     # created
     'chat',
@@ -81,7 +81,7 @@ TEMPLATES = [
 ]
 
 ASGI_APPLICATION = "mockingbird.routing.application"
-#WSGI_APPLICATION = 'mockingbird.wsgi.application'
+WSGI_APPLICATION = 'mockingbird.wsgi.application'
 
 
 # Database
@@ -152,7 +152,7 @@ CHANNEL_LAYERS = {
         "CONFIG": {
             "hosts": [(redis_host, 22949)],
         },
-        "ROUTING": "my_project.routing.channel_routing",
+        #"BACKEND": "channels_redis.core.RedisChannelLayer",
     },
 }
 
