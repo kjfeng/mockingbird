@@ -10,7 +10,7 @@ def tags_view(request):
     my_profile = Profile.objects.filter(pk=request.user.id)
     # create a form instance and populate it with data from the request:
     form = TagForm(request.POST, instance=request.user.profile)
-    formB = BasicForm(request.Post, instance=request.user.profile)
+    formB = BasicForm(request.POST, instance=request.user.profile)
 
     isValidReturn = form.is_valid()
     # check whether it's valid:
