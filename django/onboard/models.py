@@ -19,8 +19,7 @@ ERROR_MESSAGES = {'Dup Industry':'Industry choice 1 and Industry choice 2 must b
 
 INDUSTRY_MATCH_CHOICE = [('Industry 1', 'Industry 1'),
                         ('Industry 2', 'Industry 2'),
-                        ('Both', 'Both'),
-                        ('Not Looking', 'Not Looking')]
+                        ('Both', 'Both')]
 
 RANK_CHOICES = [('Industry', 'Industry'),
                   ('Role', 'Role'),

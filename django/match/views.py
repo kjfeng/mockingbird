@@ -309,10 +309,10 @@ def accept_request(request):
 
         # make notification item for target
         NotificationItem.objects.create(type="MA", user=target, match_name=str(request.user.username))
+        current_site = get_current_site(request)
 
         # logic to send email to the target
         if target.profile.receive_email:
-            current_site = get_current_site(request)
             subject = '[MockingBird] Your Match has been confirmed!'
             message = render_to_string('matching/match_confirmed.html', {
                 'user': target,
@@ -392,11 +392,6 @@ def done_cancel(request):
         'username': target.username,
         'has_unread': pulled[0],
         'notif': pulled[1]
-    }
-    return render(request, 'matching/done_cancel.html', context)
-
-    context = {
-        'username': target.username,
     }
     return render(request, 'matching/done_cancel.html', context)
 

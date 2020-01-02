@@ -315,8 +315,8 @@ def quick_match_prototype(profile):
     return matchesList[randomMatch]
 
 def list_match(profile, rankers, industryChoice):
-    if (industryChoice == 'Not Looking'):
-        return []
+    #if (industryChoice == 'Not Looking'):
+    #    return []
         
     matchesList = _getProfiles(profile, industryChoice)
     matchList = []
