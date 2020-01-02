@@ -30,7 +30,7 @@ class TagForm(UserChangeForm):
 
         if (self.cleaned_data['industry_choice_1'] == 'None' or self.cleaned_data['industry_choice_1'] == None):
             return 'No Industry 1'
-            
+
         if (self.cleaned_data['industry_choice_1'] == self.cleaned_data['industry_choice_2']):
             return 'Dup Industry'
 
