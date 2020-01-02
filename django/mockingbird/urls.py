@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^signup/$', onboard_views.signup, name='signup'),
     url(r'^login/$', onboard_views.login, name='login'),
 
-    url(r'^tags/$', tags_views.tags_view),
+    url(r'^tags/$', tags_views.tags_view, name='tags'),
     path('', onboard_views.login, name='home'),
 
     # matching urls
