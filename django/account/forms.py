@@ -46,7 +46,7 @@ class EditProfileForm(UserChangeForm):
     def is_valid(self):
 
         # run the parent validation first
-        valid = super(TagForm, self).is_valid()
+        valid = super(EditProfileForm, self).is_valid()
 
         # we're done now if not valid
         if not valid:
