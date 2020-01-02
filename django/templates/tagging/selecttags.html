@@ -1,12 +1,43 @@
 {% extends 'base-app.html' %}
+{% load widget_tweaks %}
+
  {% block content %}
+
   <body>
     <div class="">
-        <!-- <h2>Hi, {{user.username}}!</h2> -->
-        <h3>{{user.first_name}}, which industry(s) are you currently interviewing for or are interested in?</h3>
-        <p style="color: red">{{error_message}}</p> <!-- rgb(243, 241, 241)-->
-        <br>
         <form method="post">
+            <h2> Tell us about yourself, {{user.first_name }} </h2>
+            <br>
+
+          {% csrf_token %}
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {{ formB.year_in_school.label_tag }}
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {{ formB.year_in_school }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {{ formB.major.label_tag }}
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {{ formB.major }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {{ formB.role.label_tag }}
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {{ formB.role }}
+                </div>
+            </div>
+            <br>
+            <h3> Which industry(s) are you currently interviewing for or are interested in?</h3>
+            <p style="color: red">{{error_message}}</p> <!-- rgb(243, 241, 241)-->
+            <br>
           {% csrf_token %}
           {% for field in form %}
               {{ field.label_tag }}

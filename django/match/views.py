@@ -17,6 +17,7 @@ from .forms import MatchConfigurationForm
 
 from account.models import NotificationItem
 from account.pull_notif import pull_notif
+from mockingbird.decorators import onboard_only
 
 class MatchedUser(object):
     def __init__(self, username: str, email: str, industry1: str, industry2: str):
@@ -73,6 +74,7 @@ def _on_accept(request):
 
 # Create your views here.
 @login_required(login_url='/login/')
+@onboard_only
 def match_view(request):
     L_SIZE = 10
 
@@ -114,6 +116,7 @@ def match_view(request):
     return redirect('../matchresults/')
 
 @login_required(login_url='/login/')
+@onboard_only
 def matchresults_view(request):
     '''
     storage = messages.get_messages(request)
@@ -165,6 +168,7 @@ def matchresults_view(request):
     return render(request, 'matching/matchresults.html', context)
 
 @login_required(login_url='/login/')
+@onboard_only
 def matchlist_view(request):
     if request.method == 'POST':
         my_profile = Profile.objects.get(id=request.user.id)
@@ -191,6 +195,8 @@ def matchlist_view(request):
 
     return redirect('../matchlistresults/')
 
+@login_required(login_url='/login/')
+@onboard_only
 def matchlistresults_view(request):
     matchedUsers = request.session.get('matchedUsers', None)
     pulled = pull_notif(request.user)
@@ -211,6 +217,8 @@ def matchlistresults_view(request):
         return redirect('request_info')
     return render(request, 'matching/matchresults.html', context)
 
+@login_required(login_url='/login/')
+@onboard_only
 def matchconfig_view(request):
     initial_data = {
         'industry_match': request.user.profile.industry_match,
@@ -234,6 +242,7 @@ def matchconfig_view(request):
                                                    'notif': pulled[1]})
 
 @login_required(login_url='/login/')
+@onboard_only
 def request_info(request):
     pulled = pull_notif(request.user)
 
@@ -276,6 +285,7 @@ def request_info(request):
 
 
 @login_required(login_url='/login/')
+@onboard_only
 def accept_request(request):
     if not request.user.profile.has_request:
         pulled = pull_notif(request.user)
@@ -325,6 +335,7 @@ def accept_request(request):
         return redirect('request_info')
 
 @login_required(login_url='/login/')
+@onboard_only
 def confirm_cancel_request(request):
     target = User.objects.filter(username=request.user.profile.match_name)[0]
     pulled = pull_notif(request.user)
@@ -343,6 +354,7 @@ def confirm_cancel_request(request):
 
 
 @login_required(login_url='/login/')
+@onboard_only
 def done_cancel(request):
 
     # update target's info

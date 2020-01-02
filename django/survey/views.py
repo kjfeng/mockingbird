@@ -7,9 +7,10 @@ from decimal import *
 
 from .forms import SurveyForm
 from account.pull_notif import pull_notif
-
+from mockingbird.decorators import onboard_only
 
 @login_required(login_url='/login/')
+@onboard_only
 def survey(request):
     pulled = pull_notif(request.user)
 
@@ -96,8 +97,8 @@ def survey(request):
     }
     return render(request, 'survey/survey.html', args)
 
-
 @login_required(login_url='/login/')
+@onboard_only
 def survey_complete(request):
     pulled = pull_notif(request.user)
 

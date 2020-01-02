@@ -2,9 +2,25 @@ from django.contrib.auth.forms import UserChangeForm
 from django import forms
 from django.contrib.auth.models import User
 
-from onboard.models import Profile, INDUSTRY_CHOICES, INDUSTRY_MATCH_CHOICE
+from onboard.models import Profile, INDUSTRY_CHOICES, INDUSTRY_MATCH_CHOICE, YEAR_IN_SCHOOL_CHOICES
 
 
+class BasicForm(UserChangeForm):
+    year_in_school = forms.ChoiceField(choices=YEAR_IN_SCHOOL_CHOICES)
+    major = forms.CharField(required=False, widget=forms.Textarea(
+        attrs={"rows": 1, "cols": 50}))
+
+    role = forms.CharField(required=False, widget=forms.Textarea(
+        attrs={"rows": 1, "cols": 50}))
+    password = None
+
+    class Meta:
+        model = Profile
+        fields = {
+            'year_in_school',
+            'major',
+            'role'
+        }
 
 class TagForm(UserChangeForm):
   industry_choice_1 = forms.ChoiceField(choices=INDUSTRY_CHOICES, help_text="Choose your preferred/primary industry.")
