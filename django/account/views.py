@@ -133,7 +133,6 @@ def show_statistics(request):
 @login_required(login_url='/login')
 def profile_view(request, username):
     u = User.objects.filter(username=username)
-    print(u[0])
     pulled = pull_notif(request.user)
 
     context = {
@@ -143,6 +142,7 @@ def profile_view(request, username):
     }
     if len(u) == 0:
         return render(request, 'broken_page.html', context)
+
     context['user'] = u[0]
     return render(request, 'account/profile_view.html', context)
 
