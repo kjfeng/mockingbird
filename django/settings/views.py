@@ -28,7 +28,8 @@ def edit_settings(request):
         form = SettingsForm(instance=request.user.profile)
 
     form['receive_email'].label = "Do you want to receive email notifications from Mockingbird?"
-    form['is_idle'].label = "Do you want to be able to be requested by other users?"
+    form['is_idle'].label = "Do you want to be inactive?"
+    form['is_idle'].help_text = "(You will not show up in the matching process.)"
 
 
     if request.method == 'POST' and 'markread' in request.POST:
