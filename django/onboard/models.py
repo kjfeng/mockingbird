@@ -86,7 +86,7 @@ class Profile(models.Model):
     receive_email = models.BooleanField(default=True, choices=BOOL_CHOICES)
 
     # whether or not they are to be matched
-    is_idle = models.BooleanField(default=True, choices=BOOL_CHOICES)
+    is_idle = models.BooleanField(default=False, choices=BOOL_CHOICES)
 
     def __str__(self):
         return self.user.username
