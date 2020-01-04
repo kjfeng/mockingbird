@@ -1,8 +1,12 @@
 {% load static %}
 <div>
-  {% if user.profile.is_matched %}
+  {% if not user.profile.is_matched %}
   <div class="modal-backdrop">
-  <div class="col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 survey-card">
+  <div class="col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 survey-card" role="document">
+    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+    <button type="button" class="close">
+          <i class="material-icons">close</i>
+    </button>
     <h3 style="font-weight: 600">{{user.first_name}}, how was your mock interview experience?</h3>
     <p>Tell us about your experience in our quick feedback survey so we can provide great interview experiences for everyone.</p>
     <form action="survey">
