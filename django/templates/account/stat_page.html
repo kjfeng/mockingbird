@@ -11,7 +11,7 @@
     <p> {{ request.user.statistics.tot_interview }}</p>
 
     <h3> On-Time Rate </h3>
-    <p> {{ request.user.statistics.late }}
+    <p> {{ request.user.statistics.late }}%
         {% if request.user.statistics.late >= 0.5 %}
             <b>* needs improvement </b>
         {% endif %}
