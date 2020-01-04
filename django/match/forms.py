@@ -21,12 +21,10 @@ class MatchConfigurationForm(UserChangeForm):
     def __init__(self, *args, **kwargs):
         super(MatchConfigurationForm, self).__init__(*args, **kwargs)
         if (self.instance.industry_choice_2 == 'None'):
-            INDUSTRY_MATCH_CHOICE = [('Industry 1', self.instance.industry_choice_1),
-                        ('Not Looking', 'Not Looking')]
+            INDUSTRY_MATCH_CHOICE = [('Industry 1', self.instance.industry_choice_1)]
         else:
             INDUSTRY_MATCH_CHOICE = [('Industry 1', self.instance.industry_choice_1),
                         ('Industry 2', self.instance.industry_choice_2),
-                        ('Both', 'Both'),
-                        ('Not Looking', 'Not Looking')]
+                        ('Both', 'Both')]
         self.fields['industry_match'] = forms.ChoiceField(choices=INDUSTRY_MATCH_CHOICE)
     

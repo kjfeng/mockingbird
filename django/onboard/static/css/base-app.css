@@ -45,6 +45,11 @@ h6 {
   padding-right: 2em;
 }
 
+.form-control:focus {
+  border: 2px solid #2042F8 !important;
+  box-shadow: none !important;
+}
+
 .user-icon {
   color: #5a5a5a;
   background-color: #b9b9b9;

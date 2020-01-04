@@ -7,11 +7,13 @@ from decimal import *
 
 from .forms import SurveyForm
 from account.pull_notif import pull_notif
-
+from mockingbird.decorators import onboard_only
 
 @login_required(login_url='/login/')
+@onboard_only
 def survey(request):
     pulled = pull_notif(request.user)
+
 
     # if not matched
     if not request.user.profile.is_matched:
@@ -37,16 +39,15 @@ def survey(request):
             request.user.profile.match_name = ""
             request.user.profile.is_matched = False
             request.user.profile.is_sender = False
-            request.user.profile.has_request = False
             request.user.profile.is_waiting = False
             request.user.profile.save()
 
             # update information about user's match
-            if form.cleaned_data['did_meet'] == 'no':
-                #print("did not meet", file=stderr)
+            # if tried to meet but the other person did not show up
+            if form.cleaned_data['did_meet'] == 'yes' and form.cleaned_data['on_time'] == '1':
                 target.statistics.no_show += 1
                 target.statistics.save()
-            else:
+            elif form.cleaned_data['did_meet'] == 'yes':
                 #print("did meet", file=stderr)
 
                 # update the target's statistics
@@ -81,6 +82,8 @@ def survey(request):
     form.fields['comment'].label = "If you have any additional comments or concern you would like to mention about " \
                                         "your partner, please add below."
 
+    form.fields['did_meet'].initial = 'n/a'
+
     if request.method == 'POST' and 'markread' in request.POST:
         for x in pulled[1]:
             x.read = True
@@ -94,8 +97,8 @@ def survey(request):
     }
     return render(request, 'survey/survey.html', args)
 
-
 @login_required(login_url='/login/')
+@onboard_only
 def survey_complete(request):
     pulled = pull_notif(request.user)
 

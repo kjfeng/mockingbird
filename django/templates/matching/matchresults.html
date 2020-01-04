@@ -15,12 +15,12 @@
         <p><b>Email:</b> {{matchedUser.email}}</p>
         <p><b>Industry:</b> {{matchedUser.industry}}</p>
         {% csrf_token %}
-        <button type='submit' style="height:50px;width:200px">Accept</button>
+        <button type='submit'>Accept</button>
     </form><br>
     {% endfor %}
     {% if not configured %}
         <form action='/match/' method='POST'>{% csrf_token %}
-            <button type='submit' style="height:50px;width:200px">Match Me Again!</button>
+            <button type='submit'>Match Me Again!</button>
         </form><br>
     {% endif %}
   <p><a href="{% url 'home'%}"> Home </a> </p>

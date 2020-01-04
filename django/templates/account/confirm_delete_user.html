@@ -7,11 +7,11 @@
     <p> Are you sure you want to delete your account?</p>
     <div>
       <form action="{% url 'account:confirm_delete' %}" style="padding-top: 1rem; display: inline-block">
-        <button type="submit" style="outline: none">Yes</button>
+        <button type="submit" style="outline: none; background-color: #ee0000">Yes</button>
       </form>
 
       <form action="{% url 'account:account_details' %}" style="padding-top: 1rem; display: inline-block">
-        <button type="submit" style="outline: none; background-color: #ee0000">No</button>
+        <button type="submit" style="outline: none;">No</button>
       </form>
 
     </div>

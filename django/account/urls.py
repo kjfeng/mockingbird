@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from . import views
+from onboard import views as onboard_views
 
 app_name = 'account'
 urlpatterns = [
@@ -9,5 +10,5 @@ urlpatterns = [
     url(r'^change_password/$', views.change_password, name='change_password'),
     url(r'^statistics/$', views.show_statistics, name='show_statistics'),
     url(r'^(?P<username>\w+)/$', views.profile_view, name='profile_view'),
-    url(r'', views.account_details, name='account_details')
+    url(r'', views.account_details, name='account_details'),
 ]

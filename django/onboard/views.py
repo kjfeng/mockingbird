@@ -26,9 +26,9 @@ def signup(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False
-            print("hello")
+            # print("hello")
             user.save()
-            print("yay")
+            # print("yay")
             current_site = get_current_site(request)
             subject = 'Activate Your Mockingbird Account'
             message = render_to_string('registration/account_activation_email.html', {
@@ -55,6 +55,7 @@ def signup(request):
 
 def account_activation_sent(request):
     return render(request, 'registration/account_activation_sent.html')
+
 
 def activate(request, uidb64, token):
     try:
@@ -97,6 +98,16 @@ def login(request):
         form = LoginForm()
 
     return render(request, '../templates/home.html', {'form': form, 'has_unread': pulled[0], 'notif': pulled[1]})
+
+
+def default_view(request, extra):
+    pulled = pull_notif(request.user)
+
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
+    return render(request, '../templates/broken_page.html', {'has_unread': pulled[0], 'notif': pulled[1]})
 '''
 def forgotPassword(request):
     # print(request.method)

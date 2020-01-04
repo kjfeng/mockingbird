@@ -3,18 +3,50 @@
 {% block content %}
 <div>
     <h2 class="title">Settings</h2>
+    <div class="row">
+         {% if request.user.profile.receive_email %}
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
 
-    <p>
-    Receive Emails:
-        {% if request.user.profile.receive_email %}
-            Yes
+          <p><i class="material-icons" style="color: #00d111">check</i>
+        </div>
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+              <p>You are all set to receive email notifications from MockingBird.</p>
+        </div>
+
         {% else %}
-            No
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                <p><i class="material-icons" style="color: #d10000"> clear</i>
+            </div>
+            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                <p>You have chosen not to receive email notifications from MockingBird.</p>
+            </div>
         {% endif %}
-    </p>
-    <br>
 
-    <p> <a href="{% url 'settings:edit_settings' %}">Edit Settings</a></p>
+    </div>
+
+    <div class="row">
+         {% if not request.user.profile.is_idle %}
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+
+              <p><i class="material-icons" style="color: #00d111">check</i>
+            </div>
+            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                  <p>You are active and are currently open to receive match requests.</p>
+            </div>
+
+        {% else %}
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                <p><i class="material-icons" style="color: #d10000"> clear</i>
+            </div>
+            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                <p>You are inactive and are currently not open to receive match requests.</p>
+            </div>
+        {% endif %}
+
+    </div>
+     <form action="{% url 'settings:edit_settings' %}" style="padding-top: 1rem; padding-bottom: 1rem">
+        <button type="submit" style="outline: none">Edit Settings</button>
+    </form>
 </div>
 
 {% endblock %}

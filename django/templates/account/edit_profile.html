@@ -1,18 +1,98 @@
 {% extends 'base-app.html' %}
+{% load widget_tweaks %}
 
 {% block content %}
 <div>
-    <h1>Profile</h1>
+    <h1 class="title">Edit Profile</h1>
     <p style="color: red">{{ error_message }}</p>
+    <div class="col-xs-10">
     <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
 
         {% csrf_token %}
-        {{ formB.as_p }}
-        <button type="submit" style="height:75px;width:200px;">Update Information</button>
+
+
+        <div class="form-group row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label> {{form.first_name.label_tag }} </label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% render_field form.first_name class="form-control" %}
+            </div>
+        </div>
+
+         <div class="form-group row">
+             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label> {{form.email.label_tag }} </label>
+             </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% render_field form.email class="form-control" %}
+            </div>
+        </div>
+        {% csrf_token %}
+
+        <div class="form-group row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label> {{formB.year_in_school.label_tag }} </label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% render_field formB.year_in_school class="form-control" %}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label> {{formB.major.label_tag }} </label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% render_field formB.major class="form-control" %}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label> {{formB.role.label_tag }} </label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% render_field formB.role class="form-control" %}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <label> {{formB.industry_choice_1.label_tag }} </label>
+                {% render_field formB.industry_choice_1 class="form-control" %}
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <label> {{formB.industry_choice_2.label_tag }}</label>
+                {% render_field formB.industry_choice_2 class="form-control" %}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-xs-12 col-sm-12 col-md-12 ">
+            <label> {{formB.industry_match.label_tag }} </label>
+                </div>
+            <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% render_field formB.industry_match class="form-control" %}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-xs-12 col-sm-12 col-md-12 ">
+            <label> {{formB.summary.label_tag }} </label>
+                </div>
+            <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% render_field formB.summary class="form-control" %}
+            </div>
+        </div>
+
+        <br>
+
+        <button type="submit">Update Information</button>
     </form>
-    <br>
+    </div>
+
 </div>
 
 {% endblock %}
