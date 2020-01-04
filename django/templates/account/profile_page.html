@@ -35,6 +35,10 @@
     <h6><strong>Industry Match Choice</strong></h6>
     <p>{{user.profile.industry_match}}</p>
 
+    {% if user.profile.summary %}
+        <h6><strong>Description</strong></h6>
+        <p> {{ user.profile.summary}}</p>
+    {% endif %}
 
     <a href="{% url 'account:edit' %}"> Edit Info </a>
     <br>

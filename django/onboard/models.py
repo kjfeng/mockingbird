@@ -88,6 +88,8 @@ class Profile(models.Model):
     # whether or not they are to be matched
     is_idle = models.BooleanField(default=False, choices=BOOL_CHOICES)
 
+    summary = models.CharField(max_length=500, blank=True)
+
     def __str__(self):
         return self.user.username
 
