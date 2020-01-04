@@ -2,29 +2,45 @@
 {% block content %}
 <div>
 
-<h1 class="title"> Current Match</h1>
+<h1 class="title"> Current Matches</h1>
 {% if user.profile.is_matched %}
 <p> Congratulations on getting Matched! Please contact your Match with the contact information below. </p>
 {% elif user.profile.is_sender %}
 <p> Please wait for your match to accept the match and contact you. If you would like to cancel your match request,
 you can do so here. </p>
+<form method="POST" action="{% url 'confirm_cancel_request' %}">
+    {% csrf_token %}
+    <p><input type="submit" value="Cancel Request"></p>
+    <p><input type="hidden" name="requestee" value="{{ requestee.username }}"></p>
+</form>
 {% else %}
 <p> Please review your match request. You may choose to accept or decline. </p>
+<b><hr></b>
 {% endif %}
+{% for match in users %}
 <div>
-    <p> Username: {{ username }} </p>
-    <p> Industry: {{ industry }}</p>
-    <p> Year: {{year}} </p>
-    <p> Desired Role: {{role }}</p>
+    <p> Username: {{ match.username }} </p>
+    <p> Industry 1: {{ match.profile.industry_choice_1 }}</p>
+    <p> Industry 2: {{ match.profile.industry_choice_2 }}</p>
+    <p> Year: {{match.profile.year_in_school}} </p>
+    <p> Desired Role: {{ match.profile.role }}</p>
     {% if user.profile.is_matched %}
-    <p> Contact Info: {{email }}</p>
-    {% elif user.profile.is_sender %}
-    <p> <a href="{% url 'confirm_cancel_request' %}" >Cancel Request</a></p>
+    <p> Contact Info: {{ match.email }}</p>
     {% elif user.profile.has_request %}
-    <p> <a href="{% url 'accept_request' %}" >Accept Request</a></p>
-    <p> <a href="{% url 'confirm_cancel_request' %}" >Reject Request</a></p>
+    <form method="POST" action="{% url 'accept_request' %}">
+        {% csrf_token %}
+        <p><input type="submit" value="Accept Request"></p>
+        <input type="hidden" name="match" value="{{ match.username }}">
+    </form>
+    <form method="POST" action="{% url 'confirm_cancel_request' %}">
+        {% csrf_token %}
+        <p><input type="submit" value="Reject Request"></p>
+        <p><input type="hidden" name="match" value="{{ match.username }}"></p>
+    </form>
     {% endif %}
 </div>
+<b><hr></b>
+{% endfor %}
 <p><a href="{% url 'home' %} ">Back to Home</a> </p>
 </div>
 

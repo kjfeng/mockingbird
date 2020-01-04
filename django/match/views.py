@@ -1,3 +1,4 @@
+from django import template
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -36,6 +37,8 @@ class MatchedUser(object):
     def getIndustry(self):
         return self.industry
 
+register = template.Library()
+
 def _on_accept(request):
     if request.method == 'POST':
             #print(context['username'])
@@ -50,7 +53,7 @@ def _on_accept(request):
         target = User.objects.filter(username=str(t_username))[0]
         #print(target[0],file=stderr)
 
-        target.profile.match_name = request.user.username
+        target.profile.requested_names = target.profile.requested_names + "," + request.user.username
         #target.profile.is_matched = True
         target.profile.is_sender = False
         target.profile.is_waiting = False
@@ -164,6 +167,9 @@ def matchresults_view(request):
     else:
         val_acceptance = _on_accept(request)
         if (val_acceptance):
+            # requested_names = str(request.user.profile.requested_names) + request.POST.get('username') + ","
+            # request.user.profile.requested_names = requested_names
+            # request.user.profile.save()
             return redirect('request_info')
 
     return render(request, 'matching/matchresults.html', context)
@@ -240,25 +246,35 @@ def request_info(request):
 
     if request.user.profile.is_matched or request.user.profile.is_waiting or request.user.profile.has_request:
 
-        target = User.objects.filter(username=request.user.profile.match_name)[0]
+        requested_names = str(request.user.profile.requested_names).split(",")
+        requested_users = []
+
+        for name in requested_names:
+            if name is not '':
+                requested_users.append(User.objects.get(username=name))
+
         if request.method == 'POST' and 'markread' in request.POST:
             for x in pulled[1]:
                 x.read = True
                 x.save()
 
-        
-        if (str(target.profile.industry_choice_2) == 'None'):
-            industry = target.profile.industry_choice_1
-        else:
-            industry = str(target.profile.industry_choice_1) + ', ' + str(target.profile.industry_choice_2)
+        requestee = request.session.get('matchedUser', None)
+
+        # if (str(target.profile.industry_choice_2) == 'None'):
+        #     industry = target.profile.industry_choice_1
+        # else:
+        #     industry = str(target.profile.industry_choice_1) + ', ' + str(target.profile.industry_choice_2)
         context = {
-            'username': target.username,
-            'industry': industry,
-            'year': target.profile.year_in_school,
-            'role': target.profile.role,
-            'email': target.email,
+            'users': requested_users,
+            'requestee': requestee,
+            # 'username': target.username,
+            # 'industry': industry,
+            # 'year': target.profile.year_in_school,
+            # 'role': target.profile.role,
+            # 'email': target.email,
             'has_unread': pulled[0],
-            'notif': pulled[1]
+            'notif': pulled[1],
+            'request': request
         }
 
         return render(request, 'matching/request_info.html', context)
@@ -274,7 +290,6 @@ def request_info(request):
         }
 
         return render(request, 'matching/no_request.html', context)
-
 
 @login_required(login_url='/login/')
 def accept_request(request):
@@ -292,7 +307,7 @@ def accept_request(request):
         }
         return render(request, 'matching/no_request.html')
     else:
-        t_username = request.user.profile.match_name
+        t_username = request.POST.get('match')
 
         # change sender and accepter to matched
         request.user.profile.is_matched = True
@@ -327,7 +342,12 @@ def accept_request(request):
 
 @login_required(login_url='/login/')
 def confirm_cancel_request(request):
-    target = User.objects.filter(username=request.user.profile.match_name)[0]
+    match = None
+    if request.user.profile.is_sender and request.user.profile.is_waiting:
+        match = request.POST.get('requestee')
+    else:
+        match = request.POST.get('match')
+    target = User.objects.get(username=match)
     pulled = pull_notif(request.user)
 
     if request.method == 'POST' and 'markread' in request.POST:
@@ -347,7 +367,8 @@ def confirm_cancel_request(request):
 def done_cancel(request):
 
     # update target's info
-    target = User.objects.filter(username=request.user.profile.match_name)[0]
+    match = request.POST.get('match')
+    target = User.objects.get(username=match)
     target.profile.match_name = ""
     target.profile.is_matched = False
     target.profile.is_waiting = False
@@ -374,8 +395,17 @@ def done_cancel(request):
         target.email_user(subject, message)
 
     # update current user's info
+    requested_names = str(request.user.profile.requested_names).split(",")
+    if match in requested_names:
+        requested_names.remove(match)
+        requested_names_str = ""
+        for name in requested_names:
+            requested_names_str += name + ","
+        request.user.profile.requested_names = requested_names_str
+    else:
+        request.user.profile.match_name = ""
+
     request.user.profile.is_matched = False
-    request.user.profile.match_name = ""
     request.user.profile.is_waiting = False
     request.user.profile.is_sender = False
     request.user.profile.has_request = False
