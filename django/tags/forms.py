@@ -12,6 +12,11 @@ class BasicForm(UserChangeForm):
 
     role = forms.CharField(required=False, widget=forms.Textarea(
         attrs={"rows": 1, "cols": 50}))
+
+    summary = forms.CharField(required=False, widget=forms.Textarea(
+        attrs={"rows":10, "cols": 20}
+    ))
+
     password = None
 
     class Meta:
@@ -19,7 +24,8 @@ class BasicForm(UserChangeForm):
         fields = {
             'year_in_school',
             'major',
-            'role'
+            'role',
+            'summary'
         }
 
 class TagForm(UserChangeForm):

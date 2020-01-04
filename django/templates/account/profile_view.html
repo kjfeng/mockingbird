@@ -42,6 +42,16 @@
             <p>{{user.profile.industry_choice_1}} &  {{user.profile.industry_choice_2}}</p>
           </div>
         </div>
+          {% if user.profile.summary %}
+          <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <h6><strong>Description</strong></h6>
+                    <p>{{user.profile.summary}}</p>
+              </div>
+          </div>
+          {% endif %}
+
+
         <form action="#" style="padding-top: 1rem; padding-bottom: 1rem">
         <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Send a match request!</button>
       </form>

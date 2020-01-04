@@ -28,8 +28,11 @@ class EditProfileForm(UserChangeForm):
         attrs={"rows":1, "cols":50}))
 
     role = forms.CharField(required=False, widget=forms.Textarea(
-        attrs={"rows":1,"cols":50}))
+        attrs={"rows" :1,"cols":50}))
 
+    summary = forms.CharField(required=False, widget=forms.Textarea(
+        attrs={"rows": 10, "cols": 50}
+    ))
     password = None
 
     class Meta:
@@ -41,6 +44,7 @@ class EditProfileForm(UserChangeForm):
             'industry_choice_1',
             'industry_choice_2',
             'industry_match',
+            'summary'
         }
 
     def is_valid(self):

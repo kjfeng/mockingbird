@@ -5,6 +5,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from onboard.models import ERROR_MESSAGES
+from mockingbird.decorators import onboard_only
 from django.urls import reverse
 import sys
 
@@ -14,6 +15,7 @@ from .pull_notif import pull_notif
 
 # Create your views here.
 @login_required(login_url='/login/')
+@onboard_only
 def account_details(request):
     pulled = pull_notif(request.user)
     context = {
@@ -49,6 +51,7 @@ def logout_view(request):
 
 
 @login_required(login_url='/login')
+@onboard_only
 def account_edit(request):
     initial_data = {
         'year_in_school': request.user.profile.year_in_school,
@@ -56,7 +59,8 @@ def account_edit(request):
         'industry_choice_2': request.user.profile.industry_choice_2,
         'industry_match': request.user.profile.industry_match,
         'major': request.user.profile.major,
-        'role': request.user.profile.role
+        'role': request.user.profile.role,
+        'summary': request.user.profile.summary
     }
     obj = request.user.profile
     if request.method == 'POST':
@@ -70,6 +74,7 @@ def account_edit(request):
         else:
             formB.fields['role'].label = "Desired Role"
             formB.fields['industry_match'].label = "What industry would you prefer to be matched on?"
+            formB.fields['summary'].label = "Description"
 
             error_message = 'You can\'t fly just yet! ' + ERROR_MESSAGES[isBValidReturn]
             pulled = pull_notif(request.user)
@@ -85,6 +90,7 @@ def account_edit(request):
 
         formB.fields['role'].label = "Desired Role"
         formB.fields['industry_match'].label = "What industry would you prefer to be matched on?"
+        formB.fields['summary'].label = "Description"
 
         pulled = pull_notif(request.user)
         args = {'form': form,
@@ -119,6 +125,7 @@ def change_password(request):
     return render(request, 'account/change_password.html', context)
 
 @login_required(login_url='/login')
+@onboard_only
 def show_statistics(request):
     total_late = request.user.statistics.late*request.user.statistics.tot_interview
     pulled = pull_notif(request.user)
@@ -131,6 +138,7 @@ def show_statistics(request):
     return render(request, 'account/stat_page.html', context)
 
 @login_required(login_url='/login')
+@onboard_only
 def profile_view(request, username):
     u = User.objects.filter(username=username)
     pulled = pull_notif(request.user)
