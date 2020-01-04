@@ -3,33 +3,45 @@
 <div>
     <h1 class="title"> Profile </h1>
 
+    <h2>{{user.first_name}}</h2>
+    <h6>(@{{user.username}})</h6>
 
-    {{user.first_name}} (@{{user.username}})
+
     <br>
-     Email: {{user.email}}
-    <br>
-    Year: {{user.profile.year_in_school}}
-    <br>
-    Major: {{user.profile.major}}
-    <br>
-    Industry 1: {{user.profile.industry_choice_1}}
-    <br>
-    Industry 2: {{user.profile.industry_choice_2}}
-    <br>
-    Industry Match Choice: {{user.profile.industry_match}}
-    <br>
-    Desired Role:
-    {{user.profile.role}}
-    <br>
+
+    <h6><strong>Email</strong></h6>
+    <p>{{user.email}}</p>
+
+    <h6><strong>Year</strong></h6>
+    <p>{{user.profile.year_in_school}}</p>
+
+    <h6><strong>Major</strong></h6>
+    <p>{{user.profile.major}}</p>
+
+    <h6><strong>Desired Role</strong></h6>
+    <p>{{user.profile.role}}</p>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <h6><strong>Industry 1</strong></h6>
+          <p>{{user.profile.industry_choice_1}}</p>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <h6><strong>Industry 2</strong></h6>
+          <p>{{user.profile.industry_choice_2}}</p>
+        </div>
+    </div>
+
+    <h6><strong>Industry Match Choice</strong></h6>
+    <p>{{user.profile.industry_match}}</p>
+
 
     <a href="{% url 'account:edit' %}"> Edit Info </a>
     <br>
     <a href="{% url 'account:change_password' %}"> Change Password</a>
     <br>
-    <a href="{% url 'account:delete' %}"> Delete Account </a>
-    <br>
-    <a href="{% url 'home'%}"> Home </a>
-    <br>
-    <a href="{% url 'account:show_statistics' %}"> Stats</a>
+    <a href="{% url 'account:show_statistics' %}">My Stats</a>
+    <br><br>
+    <a href="{% url 'account:delete' %}" style="color: #ff0000"> Delete Account </a>
 </div>
 {% endblock %}
