@@ -7,7 +7,7 @@
          {% if request.user.profile.receive_email %}
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
 
-          <p><i class="material-icons">check</i>
+          <p><i class="material-icons" style="color: #00d111">check</i>
         </div>
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
               You are all set to receive email notifications from MockingBird.</p>
@@ -15,7 +15,7 @@
 
         {% else %}
             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                <p><i class="material-icons"> clear</i>
+                <p><i class="material-icons" style="color: #d10000"> clear</i>
             </div>
             <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
                 You have chosen not to receive email notifications from MockingBird.</p>
@@ -28,7 +28,7 @@
          {% if not request.user.profile.is_idle %}
             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
 
-              <p><i class="material-icons">check</i>
+              <p><i class="material-icons" style="color: #00d111">check</i>
             </div>
             <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
                   You are active and are currently open to receive match requests.</p>
@@ -36,7 +36,7 @@
 
         {% else %}
             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                <p><i class="material-icons"> clear</i>
+                <p><i class="material-icons" style="color: #d10000"> clear</i>
             </div>
             <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
                 You are inactive and are currently not open to receive match requests.</p>
