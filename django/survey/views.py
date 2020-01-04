@@ -43,11 +43,11 @@ def survey(request):
             request.user.profile.save()
 
             # update information about user's match
-            if form.cleaned_data['did_meet'] == 'no':
-                #print("did not meet", file=stderr)
+            # if tried to meet but the other person did not show up
+            if form.cleaned_data['did_meet'] == 'yes' and form.cleaned_data['on_time'] == '1':
                 target.statistics.no_show += 1
                 target.statistics.save()
-            else:
+            elif form.cleaned_data['did_meet'] == 'yes':
                 #print("did meet", file=stderr)
 
                 # update the target's statistics
