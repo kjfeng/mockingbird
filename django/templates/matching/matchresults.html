@@ -20,7 +20,7 @@
     {% endfor %}
     {% if not configured %}
         <form action='/match/' method='POST'>{% csrf_token %}
-            <button type='submit' style="height:50px;width:200px">Match Me Again!</button>
+            <button type='submit'>Match Me Again!</button>
         </form><br>
     {% endif %}
   <p><a href="{% url 'home'%}"> Home </a> </p>

@@ -19,8 +19,7 @@ ERROR_MESSAGES = {'Dup Industry':'Industry choice 1 and Industry choice 2 must b
 
 INDUSTRY_MATCH_CHOICE = [('Industry 1', 'Industry 1'),
                         ('Industry 2', 'Industry 2'),
-                        ('Both', 'Both'),
-                        ('Not Looking', 'Not Looking')]
+                        ('Both', 'Both')]
 
 RANK_CHOICES = [('Industry', 'Industry'),
                   ('Role', 'Role'),
@@ -75,6 +74,7 @@ class Profile(models.Model):
     is_matched = models.BooleanField(default=False)
     has_request = models.BooleanField(default=False)
     match_name = models.CharField(max_length=100, blank=False)
+    requested_names = models.CharField(max_length=3000, blank=True)
 
     # is this user  the sender
     is_sender = models.BooleanField(default=False)
@@ -85,6 +85,11 @@ class Profile(models.Model):
 
     # Contact Information Settings
     receive_email = models.BooleanField(default=True, choices=BOOL_CHOICES)
+
+    # whether or not they are to be matched
+    is_idle = models.BooleanField(default=False, choices=BOOL_CHOICES)
+
+    summary = models.CharField(max_length=500, blank=True)
 
     def __str__(self):
         return self.user.username

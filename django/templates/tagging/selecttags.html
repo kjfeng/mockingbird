@@ -1,12 +1,48 @@
 {% extends 'base-app.html' %}
+{% load widget_tweaks %}
+
  {% block content %}
+
   <body>
     <div class="">
-        <!-- <h2>Hi, {{user.username}}!</h2> -->
-        <h3>{{user.first_name}}, which industry(s) are you currently interviewing for or are interested in?</h3>
-        <p style="color: red">{{error_message}}</p> <!-- rgb(243, 241, 241)-->
-        <br>
         <form method="post">
+            <h2> Tell us about yourself, {{user.first_name }}! </h2>
+            <br>
+
+          {% csrf_token %}
+            <div class="form-group row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label> {{ formB.year_in_school.label_tag }}</label>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    {% render_field formB.year_in_school class="form-control" %}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <label> {{ formB.major.label_tag }}</label>
+                    {% render_field  formB.major class="form-control" %}
+
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <label> {{ formB.role.label_tag }}</label>
+                    {% render_field formB.role class="form-control" %}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label> {{ formB.summary.label_tag }}</label>
+                    <br>
+                    <small style="color:gray"> {{formB.summary.help_text}} </small>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {% render_field formB.summary class="form-control" %}
+                </div>
+            </div>
+            <br>
+            <h3> Which industry(s) are you currently interviewing for or are interested in?</h3>
+            <p style="color: red">{{error_message}}</p> <!-- rgb(243, 241, 241)-->
+            <br>
           {% csrf_token %}
           {% for field in form %}
               {{ field.label_tag }}

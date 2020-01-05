@@ -25,14 +25,18 @@ def edit_settings(request):
             form.save()
             return redirect('settings:settings')
     else:
-
-
         form = SettingsForm(instance=request.user.profile)
+
     form['receive_email'].label = "Do you want to receive email notifications from Mockingbird?"
+    form['is_idle'].label = "Do you want to be inactive?"
+    form['is_idle'].help_text = "(You will not show up in the matching process.)"
+
+
     if request.method == 'POST' and 'markread' in request.POST:
         for x in pulled[1]:
             x.read = True
             x.save()
+
     context = {
         'form': form,
         'has_unread': pulled[0],

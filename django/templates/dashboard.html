@@ -2,7 +2,11 @@
 <div>
   {% if user.profile.is_matched %}
   <div class="modal-backdrop">
-  <div class="col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 survey-card">
+  <div class="col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 survey-card" role="document">
+    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+    <button type="button" class="close">
+          <i class="material-icons">close</i>
+    </button>
     <h3 style="font-weight: 600">{{user.first_name}}, how was your mock interview experience?</h3>
     <p>Tell us about your experience in our quick feedback survey so we can provide great interview experiences for everyone.</p>
     <form action="survey">
@@ -113,17 +117,17 @@
 
   {% if user.profile.is_matched %}
     <p>Get Me Matched!****</p>
-    <p><a href='survey'>Finish Survey </a></p>
+    <p><a href="{% url 'survey:survey' %}">Finish Survey </a></p>
 
     <p> **** this feature is disabled until you complete all surveys</p>
     <p><a href='chat/{{user.profile.match_name}}/'>Chat Room</a></p>
   {% elif user.profile.has_request %}
-    <p><a href='request_info'>Pending Match Request</a> </p>
+    <p><a href="{% url 'request_info' %}">Pending Match Request</a> </p>
   {% elif user.profile.is_waiting %}
-    <p><a href='request_info'>Current Match Request</a> </p>
+    <p><a href="{% url 'request_info' %}">Current Match Request</a> </p>
   {% else %}
-    <p><a href='match'> Get Me Matched!</a></p>
-    <p><a href='matchconfig'> Find Matches!</a></p>
+    <p><a href="{% url 'match' %}"> Get Me Matched!</a></p>
+    <p><a href="{% url 'matchconfig' %}"> Find Matches!</a></p>
   {% endif %}
   <p> <a href="{% url 'feedback:feedback' %}">Leave Feedback</a></p>
   <p><a href="{% url 'logout' %}">Log Out</a></p>

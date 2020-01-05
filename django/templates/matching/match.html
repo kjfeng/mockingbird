@@ -1,10 +1,28 @@
 {% extends 'base-app.html' %}
-
+{% load widget_tweaks %}
 {% block content %}
     <h1>Match Configuration</h1>
+    <br>
     <form action="../matchlist/" method="post">
       {% csrf_token %}
-      {{ form.as_p }}
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label> {{form.industry_match.label_tag }} </label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% render_field form.industry_match class="form-control" %}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label> {{form.rank_by.label_tag }} </label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% render_field form.rank_by class="form-control" %}
+            </div>
+        </div>
+        <br>
       <button type="submit">Get Matches!</button>
     </form>
     <br>

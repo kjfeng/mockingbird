@@ -3,7 +3,15 @@
 <div>
 
     <p> Are you sure you want to cancel your match request with <b>{{username}}?</b> </p>
-<p> <a href="{% url 'done_cancel' %}"> Yes </a> <a href="{% url 'request_info' %} ">No </a> </p>
+    <form action="{% url 'done_cancel' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Yes">
+        <input type="hidden" name="match" value="{{ username }}">
+    </form>
+    <form action="{% url 'request_info' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="No">
+    </form>
 
 <p><a href="{% url 'home' %} ">Back to Home</a> </p>
 </div>
