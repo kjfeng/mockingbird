@@ -25,10 +25,10 @@ class MatchedUser(object):
         self.username = username
         self.email = email
         if industry2 == 'None':
-            self.industry = industry1 
+            self.industry = industry1
         else:
             self.industry = industry1 + ', ' + industry2
-    
+
     def getUsername(self):
         return self.username
 
@@ -75,27 +75,21 @@ def _on_accept(request):
         return True
     return False
 
-<<<<<<< HEAD
-=======
 
 # Create your views here.
->>>>>>> 9d3f5cb1899b1dd5bbda56afbe23306bd6756849
 @login_required(login_url='/login/')
 @onboard_only
 def match_view(request):
     L_SIZE = 10
 
-<<<<<<< HEAD
     # # clear messages
     # storage = messages.get_messages(request)
     # for message in storage:
     #      str(message)
-=======
     # clear messages
     storage = messages.get_messages(request)
     for message in storage:
          str(message)
->>>>>>> 9d3f5cb1899b1dd5bbda56afbe23306bd6756849
 
     my_profile = Profile.objects.get(id=request.user.id)
 

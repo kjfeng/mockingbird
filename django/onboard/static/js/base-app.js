@@ -7,9 +7,7 @@ $(document).ready(function() {
   });
 
   $(".close").on("click", function(event) {
-      // prevents the panel from disappearing when clicked on directly
       $(".survey-card").css("display", "none");
       $(".modal-backdrop").css("display", "none");
-
   });
 });

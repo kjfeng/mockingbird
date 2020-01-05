@@ -22,12 +22,12 @@
             <!-- <div class="row"> -->
             {% block content %}
             {% endblock %}
-            
+
                 <div class="col-xs-12 h-100 col-md-7 left-side">
 
                     <div class="col-xs-6 col-sm-6 col-md-5 logo-wrapper">
                         <div class="logo">
-                        <img src="{% static 'img/logo.png' %}" alt="" style="width: 100%">
+                        <a href="{% url 'login' %}"><img src="{% static 'img/logo.png' %}" alt="" style="width: 100%"></a>
                         </div>
                     </div>
                     <div class="col-xs-12 col-md-12 title-wrapper">
