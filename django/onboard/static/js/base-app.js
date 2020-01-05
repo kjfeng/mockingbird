@@ -10,6 +10,5 @@ $(document).ready(function() {
       // prevents the panel from disappearing when clicked on directly
       $(".survey-card").css("display", "none");
       $(".modal-backdrop").css("display", "none");
-
   });
 });
