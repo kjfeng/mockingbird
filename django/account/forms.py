@@ -37,7 +37,7 @@ class EditProfileForm(UserChangeForm):
 
     class Meta:
         model = Profile
-        fields = {
+        fields = [
             'year_in_school',
             'major',
             'role',
@@ -45,7 +45,7 @@ class EditProfileForm(UserChangeForm):
             'industry_choice_2',
             'industry_match',
             'summary'
-        }
+        ]
 
     def is_valid(self):
 

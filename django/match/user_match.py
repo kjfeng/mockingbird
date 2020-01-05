@@ -126,6 +126,8 @@ def _scoreIndustries(profile, match):
     MATCH_ADD = 2.0
     GOOD_MATCH_BASE = 4.0
     OKAY_MATCH_BASE = 3.0
+
+
     # Must be the case that profile.industry_choice_1 == match.industry_choice_1
     if match.industry_match == 'Industry 1' and profile.industry_match == 'Industry 1':
         score = GREAT_MATCH_BASE
@@ -199,7 +201,9 @@ def _scoreIndustries(profile, match):
             score = GOOD_MATCH_BASE
             if profile.industry_choice_2 == match.industry_choice_1:
                     score = GOOD_MATCH_BASE + MATCH_ADD
-        
+    
+    # print(profile.industry_match + ', ' + match.industry_match + ', ' + str(score))
+
     return score
             
         
@@ -240,7 +244,7 @@ def _getProfiles(profile, industryChoice):
             # if (otherProfile.id != profile.id)
                 # if (profile.industry2 == otherProfile.industry1 && otherProfile.industryMatch == 'Industry 1' or 'Both' OR
                 #     profile.industry2 == otherProfile.industry2 && otherProfile.industryMatch == 'Industry 2' or 'Both')
-            ~Q(id=profile.id), Q(is_matched=False),   Q(is_idle=False),
+            ~Q(id=profile.id), Q(is_matched=False), Q(is_idle=False),
             Q(Q(Q(industry_choice_1=profile.industry_choice_2), Q(Q(industry_match='Industry 1') | Q(industry_match='Both'))) |
              Q(Q(industry_choice_2=profile.industry_choice_2), Q(Q(industry_match='Industry 2') | Q(industry_match='Both'))))
 
@@ -257,7 +261,7 @@ def _getProfiles(profile, industryChoice):
 
              Q(Q(Q(industry_choice_1=profile.industry_choice_1), Q(Q(industry_match='Industry 1') | Q(industry_match='Both'))) |
              Q(Q(industry_choice_2=profile.industry_choice_1), Q(Q(industry_match='Industry 2') | Q(industry_match='Both')))) 
-             ),
+             )
         )
     else:
         matchesList = Profile.objects.filter(

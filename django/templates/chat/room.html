@@ -1,0 +1,203 @@
+<!-- chat/templates/chat/room.html -->
+{% extends 'base-app.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<head>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+
+
+
+<!-- <script src="//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js"></script><script src="//production-assets.codepen.io/assets/editor/live/events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js"></script><script src="//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js"></script><meta charset="UTF-8"><meta name="robots" content="noindex"><link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico"><link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111"><link rel="canonical" href="https://codepen.io/emilcarlsson/pen/ZOQZaV?limit=all&amp;page=74&amp;q=contact+"> -->
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300" rel="stylesheet" type="text/css">
+
+<script src="https://use.typekit.net/hoy3lrg.js"></script>
+<script>try{Typekit.load({ async: true });}catch(e){}</script>
+<link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"><link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/chat.css' %}" />
+</head>
+<!-- <textarea id="chat-log" cols="67" rows="20"></textarea><br/>
+<input id="chat-message-input" type="text" size="100"/><br/>
+<input id="chat-message-submit" class="button" type="button" value="Send"/> -->
+
+<div class="container">
+    <h3 class="text-center"><b>@{% if user != object.first %}{{ object.first.username }}{% else %}{{ object.second.username }}{% endif %}</b></h3>
+    <!-- <div id="sidepanel"></div> -->
+
+        <!-- <h3 class="contact-profile"><b>@{% if user != object.first %}{{ object.first.username }}{% else %}{{ object.second.username }}{% endif %}</b></h3> -->
+    <!-- <h3 class="contact-profile"><b>@{% if user != object.first %}{{ object.first.username }}{% else %}{{ object.second.username }}{% endif %}</b></h3> -->
+    <div class="messaging"> 
+        <div class="inbox_msg">  
+            <div class="mesgs">
+                <ul id='chat-items'>
+                    {% for chat in object.chatmessage_set.all %}
+                        {% if chat.user == user %}
+                            <div class="outgoing_msg">
+                                <div class="sent_msg">
+                                    <li>
+                                        <p>{{ chat.message }} via {{ chat.user }}</p>
+                                        <span class="time_date">{{ chat.timestamp }}</span> 
+                                    </li>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="incoming_msg">
+                                <!-- <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div> -->
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                         <li>
+                                            <p>{{ chat.message }} via {{ chat.user }}</p>
+                                            <span class="time_date"> {{ chat.timestamp }}</span>
+                                         </li>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                <div class="type_msg">
+                    <div class="input_msg_write">
+                        <div class='form-group row'>
+                            <form id='form' method='POST' style="width:100%;height:100%"> {% csrf_token %}
+                                <input type='hidden' id='this_user' value='{{ user.username }}' />
+                                {% render_field form.message %} 
+                                <button id='chat-send-button' type='submit'><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+<!-- May not work for future versions of Google Chrome -->
+<script src=https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js></script>
+<script>
+    // window.location.pathname = '/chat/' + {{ room_name_json }} + '/';
+    // var roomName = {{ room_name_json }};
+    var loc = window.location;
+    var formData = $("#form");
+    var msgInput = $("#id_message");
+    var chatHolderSend = $("#chat-send");
+    var chatHolderReceive = $("#chat-receive");
+    // var chatHolder = $("#chat-items").val();
+    var this_user = $("#this_user").val();
+    var chatButton = $("#chat-send-button");
+    // Websocket creation
+    var wsStart = 'ws://';
+    // For production purposes in a secure server
+    if (loc.protocol == 'https:') {
+        wsStart = 'wss://';
+    }
+    var endpoint = wsStart + loc.host + loc.pathname;
+    // Creates a websocket that points to the given url
+    var chatSocket = new ReconnectingWebSocket(endpoint);
+
+    // Action performed when the socket opens
+    chatSocket.onopen = function(e) {
+        console.log('Chat socket opened', e);
+        formData.submit(function(event) {
+            event.preventDefault(); // Prevents default submission is socket not opened
+            var msgText = msgInput.val();
+            if (msgText != '') {
+                // this user sends a message
+                msg = {
+                    "message": msgText
+                }
+                chatSocket.send(JSON.stringify(msg));
+                formData[0].reset();
+            }
+        })
+    }
+
+    // Message that is received
+    chatSocket.onmessage = function(e) {
+        var chatMsg = JSON.parse(e.data);
+        var firstDiv = document.createElement('div');
+        var secondDiv = document.createElement('div');
+        var msgListTag = document.createElement('li');
+        var pTag = document.createElement('p');
+        var timestampSpan = document.createElement('span');
+        
+        timestampSpan.className = 'time_date';
+        timestampSpan.textContent = chatMsg.timestamp;
+        pTag.textContent = chatMsg.message;
+
+        if (this_user === chatMsg.username) {
+            firstDiv.className = 'outgoing_msg';
+            secondDiv.className = 'sent_msg';
+            msgListTag.appendChild(pTag);
+            msgListTag.appendChild(timestampSpan);
+            secondDiv.appendChild(msgListTag);
+            firstDiv.appendChild(secondDiv);
+
+        }
+        else {
+            firstDiv.className = 'incoming_msg';
+            secondDiv.className = 'received_msg';
+            thirdDiv = document.createElement('div');
+            thirdDiv.className = 'received_withd_msg';
+            msgListTag.appendChild(pTag);
+            msgListTag.appendChild(timestampSpan);
+            thirdDiv.appendChild(msgListTag);
+            secondDiv.appendChild(thirdDiv)
+            firstDiv.appendChild(secondDiv);
+        }
+        console.log(chatMsg.message)
+        document.querySelector("#chat-items").appendChild(firstDiv);
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    // function sendForm() {
+    //     formData.submit(function(event) {
+    //         event.preventDefault(); // Prevents default submission is socket not opened
+            
+    //         // this user sends a message
+    //         var msgText = msgInput.val();
+    //         msg = {
+    //             "message": msgText
+    //         }
+    //         chatSocket.send(JSON.stringify(msg));
+    //         formData[0].reset();
+
+    //     })
+    // }
+    //    document.querySelector('#chat-message-input').focus();
+    // document.querySelector('#chat-message-input').onkeyup = function(e) {
+    //     if (e.keyCode === 13) {  // enter, return
+    //         document.querySelector('#chat-message-submit').click();
+    //     }
+    // };
+    // document.querySelector('#chat-send-button')[0].onclick = function(e) {
+    //     formData.submit(function(event) {
+    //         event.preventDefault(); // Prevents default submission is socket not opened
+            
+    //         // this user sends a message
+    //         var msgText = msgInput.val();
+    //         msg = {
+    //             "message": msgText
+    //         }
+    //         chatSocket.send(JSON.stringify(msg));
+    //         formData[0].reset();
+
+    //     })
+    //};
+    // $('#chat-send-button').addEventListener
+    // $('#chat-send-button').onclick = function(e){sendForm();}
+    // document.querySelector('#chat-send-button').onclick = function(e){sendForm();}
+</script>
+
+    
+{% endblock %}

@@ -28,6 +28,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Application definition
 
 INSTALLED_APPS = [
+    'widget_tweaks',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -36,12 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # borrowed
-    'multiselectfield',
-    #'phone_field',
-    'widget_tweaks',
+   'multiselectfield',
+   'phone_field',
 
 
     # created
+    'chat',
     'onboard',
     'match',
     'tags',
@@ -79,7 +81,9 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = "mockingbird.routing.application"
 WSGI_APPLICATION = 'mockingbird.wsgi.application'
+
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -129,7 +133,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Celery stuff
 # CELERY_BROKER_URL=os.environ.get('REDIS_URL', '')
 # CELERY_RESULT_BACKEND=os.environ.get('REDIS_URL', '')
@@ -139,17 +142,19 @@ CELERY_ACCEPT_CONTENT = ['pickle']
 CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_TIMEZONE = TIME_ZONE
 
-redis_host = os.environ.get('REDIS_HOST', 'ec2-54-164-134-74.compute-1.amazonaws.com')
+# redis_host = os.environ.get('REDIS_HOST', 'ec2-54-164-134-74.compute-1.amazonaws.com')
+# redis_host = os.environ.get('REDIS_HOST', 'redis://localhost:6379')
+redis_host = os.environ.get('REDIS_HOST', '127.0.0.1')
 # Channel layer definitions
 # http://channels.readthedocs.org/en/latest/deploying.html#setting-up-a-channel-backend
 CHANNEL_LAYERS = {
     "default": {
         # This example app uses the Redis channel layer implementation asgi_redis
-        "BACKEND": "asgi_redis.RedisChannelLayer",
+        # "BACKEND": "asgi_redis.RedisChannelLayer",
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(redis_host, 22949)],
+            "hosts": [(redis_host, 6379)],
         },
-        "ROUTING": "multichat.routing.channel_routing",
     },
 }
 

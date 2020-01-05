@@ -13,10 +13,10 @@ class MatchConfigurationForm(UserChangeForm):
 
     class Meta():
         model = Profile
-        fields = {
+        fields = [
             'industry_match',
             'rank_by',
-        }
+        ]
 
     def __init__(self, *args, **kwargs):
         super(MatchConfigurationForm, self).__init__(*args, **kwargs)

@@ -12,6 +12,10 @@
     <form action="{% url 'survey' %}">
       <button type="submit" style="outline: none">Complete survey</button>
     </form>
+    <!-- <form action='chat/{{user.profile.match_name}}/'>
+      <button type="submit" style="outline: none">Chat Room</button>
+    </form> -->
+    <p><a href='chat/{{user.profile.match_name}}/'>Chat Room</a></p>
   </div>
   </div>
   {% endif %}
@@ -116,6 +120,7 @@
     <p><a href="{% url 'survey:survey' %}">Finish Survey </a></p>
 
     <p> **** this feature is disabled until you complete all surveys</p>
+    <p><a href='chat/{{user.profile.match_name}}/'>Chat Room</a></p>
   {% elif user.profile.has_request %}
     <p><a href="{% url 'request_info' %}">Pending Match Request</a> </p>
   {% elif user.profile.is_waiting %}
@@ -124,7 +129,6 @@
     <p><a href="{% url 'match' %}"> Get Me Matched!</a></p>
     <p><a href="{% url 'matchconfig' %}"> Find Matches!</a></p>
   {% endif %}
-
   <p> <a href="{% url 'feedback:feedback' %}">Leave Feedback</a></p>
   <p><a href="{% url 'logout' %}">Log Out</a></p>
 </div>

@@ -75,17 +75,27 @@ def _on_accept(request):
         return True
     return False
 
+<<<<<<< HEAD
+=======
 
 # Create your views here.
+>>>>>>> 9d3f5cb1899b1dd5bbda56afbe23306bd6756849
 @login_required(login_url='/login/')
 @onboard_only
 def match_view(request):
     L_SIZE = 10
 
+<<<<<<< HEAD
+    # # clear messages
+    # storage = messages.get_messages(request)
+    # for message in storage:
+    #      str(message)
+=======
     # clear messages
     storage = messages.get_messages(request)
     for message in storage:
          str(message)
+>>>>>>> 9d3f5cb1899b1dd5bbda56afbe23306bd6756849
 
     my_profile = Profile.objects.get(id=request.user.id)
 
@@ -118,6 +128,14 @@ def match_view(request):
         print("cache after matching: " + match_cache.matches, file=stderr)
 
     return redirect('../matchresults/')
+
+# @login_required
+# def matchagain_view(request):
+#     my_profile = Profile.objects.get(id=request.user.id)
+
+#     match_cache = Cached_Matches.objects.get(user=my_profile.user)
+#     match_cache_list = to_user_list(match_cache.matches)
+
 
 @login_required(login_url='/login/')
 @onboard_only
@@ -318,19 +336,34 @@ def accept_request(request):
         return render(request, 'matching/no_request.html')
     else:
         t_username = request.POST.get('match')
+        requested_users = str(request.user.profile.requested_names).split(",")
+        print("t_username: " + t_username, file=stderr)
+
+        # change target's settings
+        for name in requested_users:
+            if name == "":
+                continue
+            print("requested user: " + name, file=stderr)
+            target = User.objects.get(username=name)
+            if t_username == name:
+                target.profile.is_matched = True
+                target.profile.match_name = request.user.username
+                print("this user is a match", file=stderr)
+            else:
+                target.profile.is_matched = False
+                target.profile.match_name = ""
+                print("this user is not a match", file=stderr)
+            target.profile.is_waiting = False
+            target.profile.is_sender = False
+            target.profile.save()
 
         # change sender and accepter to matched
         request.user.profile.is_matched = True
         request.user.profile.has_request = False
+        request.user.profile.requested_names = ""
+        request.user.profile.match_name = t_username
         request.user.profile.save()
 
-        # change target's settings
-        target = User.objects.filter(username=str(t_username))[0]
-
-        target.profile.is_waiting = False
-        target.profile.is_sender = False
-        target.profile.is_matched = True
-        target.profile.save()
 
         # make notification item for target
         NotificationItem.objects.create(type="MA", user=target, match_name=str(request.user.username))
@@ -420,10 +453,13 @@ def done_cancel(request):
     else:
         request.user.profile.match_name = ""
 
+    requested_names = str(request.user.profile.requested_names).split(",")
+    if len(requested_names) is 1 and requested_names[0] is "":
+        request.user.profile.has_request = False
+
     request.user.profile.is_matched = False
     request.user.profile.is_waiting = False
     request.user.profile.is_sender = False
-    request.user.profile.has_request = False
     request.user.profile.save()
 
     pulled = pull_notif(request.user)
