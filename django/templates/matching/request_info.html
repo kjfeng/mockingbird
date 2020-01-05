@@ -17,16 +17,16 @@ you can do so here. </p>
 <p> Please review your match request. You may choose to accept or decline. </p>
 <b><hr></b>
 {% endif %}
-{% for match in users %}
 <div>
+    {% if user.profile.is_matched %}
+    <p> Contact Info: {{ requestee.email }}</p>
+    {% elif user.profile.has_request %}
+    {% for match in users %}
     <p> Username: {{ match.username }} </p>
     <p> Industry 1: {{ match.profile.industry_choice_1 }}</p>
     <p> Industry 2: {{ match.profile.industry_choice_2 }}</p>
     <p> Year: {{match.profile.year_in_school}} </p>
     <p> Desired Role: {{ match.profile.role }}</p>
-    {% if user.profile.is_matched %}
-    <p> Contact Info: {{ match.email }}</p>
-    {% elif user.profile.has_request %}
     <form method="POST" action="{% url 'accept_request' %}">
         {% csrf_token %}
         <p><input type="submit" value="Accept Request"></p>
@@ -37,10 +37,10 @@ you can do so here. </p>
         <p><input type="submit" value="Reject Request"></p>
         <p><input type="hidden" name="match" value="{{ match.username }}"></p>
     </form>
+    <b><hr></b>
+    {% endfor %}
     {% endif %}
 </div>
-<b><hr></b>
-{% endfor %}
 <p><a href="{% url 'home' %} ">Back to Home</a> </p>
 </div>
 
