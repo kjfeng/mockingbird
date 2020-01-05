@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from sys import stderr
 from decimal import *
-
+from chat.models import Thread
+from django.db.models import Q
 from .forms import SurveyForm
 from account.pull_notif import pull_notif
 
@@ -58,6 +59,7 @@ def survey(request):
                 target.statistics.late += (current_total_late + Decimal(form.cleaned_data['friendly'])/Decimal(5.0))/target.statistics.tot_interview
                 target.statistics.save()
 
+
                 # send email if there is feedback
                 if form.cleaned_data['comment'] != "":
                     subject = 'Comment Left'
@@ -69,6 +71,8 @@ def survey(request):
                         ['teammockingbird333@gmail.com'],
                         fail_silently=True,
                     )
+                
+            Thread.objects.filter(Q(first=request.user) | Q(second=request.user)).delete()
             return redirect('survey:survey_complete')
 
     # if first time loading

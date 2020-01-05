@@ -133,7 +133,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Celery stuff
 # CELERY_BROKER_URL=os.environ.get('REDIS_URL', '')
 # CELERY_RESULT_BACKEND=os.environ.get('REDIS_URL', '')
@@ -143,17 +142,19 @@ CELERY_ACCEPT_CONTENT = ['pickle']
 CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_TIMEZONE = TIME_ZONE
 
-redis_host = os.environ.get('REDIS_HOST', 'ec2-54-164-134-74.compute-1.amazonaws.com')
+# redis_host = os.environ.get('REDIS_HOST', 'ec2-54-164-134-74.compute-1.amazonaws.com')
+# redis_host = os.environ.get('REDIS_HOST', 'redis://localhost:6379')
+redis_host = os.environ.get('REDIS_HOST', '127.0.0.1')
 # Channel layer definitions
 # http://channels.readthedocs.org/en/latest/deploying.html#setting-up-a-channel-backend
 CHANNEL_LAYERS = {
     "default": {
         # This example app uses the Redis channel layer implementation asgi_redis
-        "BACKEND": "asgi_redis.RedisChannelLayer",
+        # "BACKEND": "asgi_redis.RedisChannelLayer",
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(redis_host, 22949)],
+            "hosts": [(redis_host, 6379)],
         },
-        #"BACKEND": "channels_redis.core.RedisChannelLayer",
     },
 }
 

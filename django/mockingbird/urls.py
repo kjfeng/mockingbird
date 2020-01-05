@@ -22,6 +22,7 @@ from onboard import views as onboard_views
 from match import views as match_views
 from tags import views as tags_views
 from chat import views as chat_views
+from chat.views import ThreadView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
@@ -32,8 +33,9 @@ urlpatterns = [
     path('tags/', tags_views.tags_view),
     path('', onboard_views.login, name='home'),
 
-    path('chat/', chat_views.index, name='chat'),
-    path('chat/<str:room_name>/', chat_views.room, name='room'),
+    path('chat/<str:username>/', ThreadView.as_view()),
+    path('chat/<str:username>/', ThreadView.post, name='chat-post'),
+    #path('chat/<str:room_name>/', chat_views.room, name='room'),
     # re_path(r'^(?P<room_name>[^/]+)/$', chat_views.room, name='room'),
     # matching urls
     path('match/', match_views.match_view, name='match'),
