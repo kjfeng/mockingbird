@@ -71,7 +71,7 @@ def _on_accept(request):
             target.email_user(subject, message)
 
         # logic to create a notification for the target
-        NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username))
+        NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username)) 
         return True
     return False
 
