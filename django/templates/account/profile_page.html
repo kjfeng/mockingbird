@@ -4,8 +4,11 @@
     <h1 class="title"> Profile </h1>
 
     <h2>{{user.first_name}}</h2>
-    <h6>(@{{user.username}})</h6>
-
+    {% if user.profile.is_idle %}
+      <h6>(@{{user.username}}) <b>(Idle)</b></h6>
+    {% else %}
+      <h6>(@{{user.username}}) <b>(Active)</b></h6>
+    {% endif %}
 
     <br>
 

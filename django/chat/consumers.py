@@ -13,10 +13,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         other_user = self.scope['url_route']['kwargs']['room_name']
         this_user = self.scope['user']
-        print(other_user, this_user)
         thread_obj = await self.get_thread(this_user, other_user)
         self.thread_obj = thread_obj
-        print(thread_obj)
         chat_room = f"thread_{thread_obj.id}"
         self.chat_room = chat_room
 
@@ -37,14 +35,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        print('hello')
-        # text_data_json = json.loads(text_data)
-        # message = text_data_json['message']
-        print(text_data)
         if text_data is not None:
             loaded_dict_data = json.loads(text_data)
             msg = loaded_dict_data.get('message')
-            print(msg)
             user = self.scope['user']
             username = 'default'
             if user.is_authenticated:

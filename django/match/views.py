@@ -246,7 +246,7 @@ def matchconfig_view(request):
 
     form = MatchConfigurationForm(instance=request.user.profile, initial=initial_data)
     form.fields['industry_match'].label = "Which industry or industries are you looking to be matched on?"
-    form.fields['rank_by'].label = "Which additional fields do you want to be matched on?"
+    form.fields['rank_by'].label = "Which fields do you want to rank your matches by?"
 
 
     pulled = pull_notif(request.user)

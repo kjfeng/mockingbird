@@ -8,8 +8,24 @@
         <form method="post">
             <h2> Tell us about yourself, {{user.first_name }}! </h2>
             <br>
-
+            <h4> Which industry(s) are you currently interviewing for or are interested in?</h4>
+            <p style="color: red">{{error_message}}</p> <!-- rgb(243, 241, 241)-->
           {% csrf_token %}
+          {% for field in form %}
+              {{ field.label_tag }}
+              <br>
+              {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+              {% endif %}
+              <br>
+              {{ field }} <br><br>
+              {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+              {% endfor %}
+          {% endfor %}
+            <br>
+            <h4>Let us know a bit more!</h4>
+            {% csrf_token %}
             <div class="form-group row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <label> {{ formB.year_in_school.label_tag }}</label>
@@ -40,23 +56,6 @@
                 </div>
             </div>
             <br>
-            <h3> Which industry(s) are you currently interviewing for or are interested in?</h3>
-            <p style="color: red">{{error_message}}</p> <!-- rgb(243, 241, 241)-->
-            <br>
-          {% csrf_token %}
-          {% for field in form %}
-              {{ field.label_tag }}
-              <br>
-              {% if field.help_text %}
-                <small style="color: grey">{{ field.help_text }}</small>
-              {% endif %}
-              <br>
-              {{ field }} <br><br>
-              {% for error in field.errors %}
-                <p style="color: red">{{ error }}</p>
-              {% endfor %}
-          {% endfor %}
-          <br>
           <button type="submit">Let's Go!</button>
         </form>
     </div>
