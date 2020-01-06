@@ -9,7 +9,7 @@
     </button>
     <h3 style="font-weight: 600">{{user.first_name}}, how was your mock interview experience?</h3>
     <p>Tell us about your experience in our quick feedback survey so we can provide great interview experiences for everyone.</p>
-    <form action="{% url 'survey' %}">
+    <form action="{% url 'survey:survey' %}">
       <button type="submit" style="outline: none">Complete survey</button>
     </form>
     <!-- <form action='chat/{{user.profile.match_name}}/'>
