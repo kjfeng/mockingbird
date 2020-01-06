@@ -8,7 +8,11 @@
     {% endif %}
     <div class="row">
           <div class="col-md-12 col-lg-6">
-      <p>@{{user.username}}</p>
+          {% if user.profile.is_idle %}
+            <p>(@{{user.username}}) (Idle)</p>
+          {% else %}
+            <p>(@{{user.username}}) (Active)</p>
+          {% endif %}
           </div>
 
           <div class="col-md-12 col-lg-6">

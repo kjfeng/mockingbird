@@ -24,9 +24,6 @@
 <link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"><link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css">
 <link rel="stylesheet" href="{% static 'css/chat.css' %}" />
 </head>
-<!-- <textarea id="chat-log" cols="67" rows="20"></textarea><br/>
-<input id="chat-message-input" type="text" size="100"/><br/>
-<input id="chat-message-submit" class="button" type="button" value="Send"/> -->
 
 <div class="container">
     <h3 class="text-center"><b>@{% if user != object.first %}{{ object.first.username }}{% else %}{{ object.second.username }}{% endif %}</b></h3>
@@ -40,26 +37,30 @@
                 <ul id='chat-items'>
                     {% for chat in object.chatmessage_set.all %}
                         {% if chat.user == user %}
+                        <li>
                             <div class="outgoing_msg">
                                 <div class="sent_msg">
-                                    <li>
-                                        <p>{{ chat.message }} via {{ chat.user }}</p>
-                                        <span class="time_date">{{ chat.timestamp }}</span> 
-                                    </li>
+                                    
+                                        <p>{{ chat.message }}</p>
+                                        <span class="time_date">{{ chat.timestamp }} ET</span> 
+                                   
                                 </div>
                             </div>
+                        </li>
                         {% else %}
+                        <li>
                             <div class="incoming_msg">
                                 <!-- <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div> -->
                                 <div class="received_msg">
                                     <div class="received_withd_msg">
-                                         <li>
-                                            <p>{{ chat.message }} via {{ chat.user }}</p>
-                                            <span class="time_date"> {{ chat.timestamp }}</span>
-                                         </li>
+                                         
+                                            <p>{{ chat.message }}</p>
+                                            <span class="time_date"> {{ chat.timestamp }} ET</span>
+                                         
                                     </div>
                                 </div>
                             </div>
+                        </li>
                         {% endif %}
                     {% endfor %}
                 </ul>
@@ -82,8 +83,7 @@
 <!-- May not work for future versions of Google Chrome -->
 <script src=https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js></script>
 <script>
-    // window.location.pathname = '/chat/' + {{ room_name_json }} + '/';
-    // var roomName = {{ room_name_json }};
+    var months = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.']
     var loc = window.location;
     var formData = $("#form");
     var msgInput = $("#id_message");
@@ -129,7 +129,7 @@
         var timestampSpan = document.createElement('span');
         
         timestampSpan.className = 'time_date';
-        timestampSpan.textContent = chatMsg.timestamp;
+        timestampSpan.textContent = timedate();
         pTag.textContent = chatMsg.message;
 
         if (this_user === chatMsg.username) {
@@ -152,7 +152,6 @@
             secondDiv.appendChild(thirdDiv)
             firstDiv.appendChild(secondDiv);
         }
-        console.log(chatMsg.message)
         document.querySelector("#chat-items").appendChild(firstDiv);
     };
 
@@ -160,43 +159,34 @@
         console.error('Chat socket closed unexpectedly');
     };
 
-    // function sendForm() {
-    //     formData.submit(function(event) {
-    //         event.preventDefault(); // Prevents default submission is socket not opened
-            
-    //         // this user sends a message
-    //         var msgText = msgInput.val();
-    //         msg = {
-    //             "message": msgText
-    //         }
-    //         chatSocket.send(JSON.stringify(msg));
-    //         formData[0].reset();
+    function timedate() {
+        var date_obj = changeTimezone(new Date(), "America/New_York")
+        var time = date_obj.toTimeString().split(':')
+        // var time = timeStr.split(':')
+        if (time[0] > 12) {
+            time = (parseInt(time[0], 10) - 12) + ':' + time[1] + ' p.m.'
+        }
+        else if (time[0] < 12) {
+            time = time[0] + ':' + time[1] + ' a.m.'
+        }
+        else {
+            time = time[0] + ':' + time[1] + ' p.m.'
+        }
+        var time_date = months[date_obj.getMonth()] + ' ' + date_obj.getDate() + ', ' + date_obj.getFullYear() + ', ' + time + ' ET'
+        return time_date
+    }
 
-    //     })
-    // }
-    //    document.querySelector('#chat-message-input').focus();
-    // document.querySelector('#chat-message-input').onkeyup = function(e) {
-    //     if (e.keyCode === 13) {  // enter, return
-    //         document.querySelector('#chat-message-submit').click();
-    //     }
-    // };
-    // document.querySelector('#chat-send-button')[0].onclick = function(e) {
-    //     formData.submit(function(event) {
-    //         event.preventDefault(); // Prevents default submission is socket not opened
-            
-    //         // this user sends a message
-    //         var msgText = msgInput.val();
-    //         msg = {
-    //             "message": msgText
-    //         }
-    //         chatSocket.send(JSON.stringify(msg));
-    //         formData[0].reset();
+    // Sets the timezone to whatever is prescribed by ianatz
+    function changeTimezone(date, ianatz) {
+        var invdate = new Date(date.toLocaleString('en-US', {
+        timeZone: ianatz
+        }));
 
-    //     })
-    //};
-    // $('#chat-send-button').addEventListener
-    // $('#chat-send-button').onclick = function(e){sendForm();}
-    // document.querySelector('#chat-send-button').onclick = function(e){sendForm();}
+        var diff = Math.abs(date.getTime() - invdate.getTime());
+
+        return new Date(date.getTime() + diff);
+
+    }
 </script>
 
     

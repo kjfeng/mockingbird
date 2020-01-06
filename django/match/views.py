@@ -25,10 +25,10 @@ class MatchedUser(object):
         self.username = username
         self.email = email
         if industry2 == 'None':
-            self.industry = industry1 
+            self.industry = industry1
         else:
             self.industry = industry1 + ', ' + industry2
-    
+
     def getUsername(self):
         return self.username
 
@@ -71,31 +71,25 @@ def _on_accept(request):
             target.email_user(subject, message)
 
         # logic to create a notification for the target
-        NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username))
+        NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username)) 
         return True
     return False
 
-<<<<<<< HEAD
-=======
 
 # Create your views here.
->>>>>>> 9d3f5cb1899b1dd5bbda56afbe23306bd6756849
 @login_required(login_url='/login/')
 @onboard_only
 def match_view(request):
     L_SIZE = 10
 
-<<<<<<< HEAD
     # # clear messages
     # storage = messages.get_messages(request)
     # for message in storage:
     #      str(message)
-=======
     # clear messages
     storage = messages.get_messages(request)
     for message in storage:
          str(message)
->>>>>>> 9d3f5cb1899b1dd5bbda56afbe23306bd6756849
 
     my_profile = Profile.objects.get(id=request.user.id)
 
@@ -252,7 +246,7 @@ def matchconfig_view(request):
 
     form = MatchConfigurationForm(instance=request.user.profile, initial=initial_data)
     form.fields['industry_match'].label = "Which industry or industries are you looking to be matched on?"
-    form.fields['rank_by'].label = "Which additional fields do you want to be matched on?"
+    form.fields['rank_by'].label = "Which fields do you want to rank your matches by?"
 
 
     pulled = pull_notif(request.user)
