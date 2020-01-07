@@ -37,7 +37,7 @@ def enqueue(my_list, next_elem, max_size):
 
 #----------------------------------------------------------------#
 
-def to_user_list(user_string):
+def to_user_list(user_string, profile_or_user):
     user_list = []
 
     if user_string is not None:
@@ -53,8 +53,11 @@ def to_user_list(user_string):
     while i < len(user_list):
         username = user_list[i]
         user = User.objects.get(username=username)
-        user_profile = Profile.objects.get(user=user)
-        user_list[i] = user_profile
+        if (profile_or_user == 'p'):
+            user_profile = Profile.objects.get(user=user)
+            user_list[i] = user_profile
+        else:
+            user_list[i] = user
         i += 1
 
     return user_list

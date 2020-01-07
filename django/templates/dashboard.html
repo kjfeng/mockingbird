@@ -20,6 +20,7 @@
   </div>
   {% endif %}
   <h1 class="title" style="padding-top: 1rem; position: relative;">Hi, {{user.first_name}}!</h1>
+  
 
   <div class="module-wrapper-left">
 
@@ -31,9 +32,11 @@
       {% elif user.profile.is_sender %}
       <h3 style="color: white; font-weight: 600">You sent a match request to:</h3>
 
+      {% elif user.profile.is_idle %}
+      <h3 style="color: white; font-weight: 600">Your status is "idle" so this is hidden.</h3>
       {% else %}
       <h3 style="color: white; font-weight: 600">Your recommended match</h3>
-      <p style="color: white">Based on <a href="{% url 'account:account_details' %}" style="color: #FFC933">your profile</a></p>
+      <p style="color: white">Based on <a href="{% url 'matchconfig' %}" style="color: #FFC933">your configurations</a></p> 
 
       {% endif %}
     </div>
@@ -56,7 +59,7 @@
         </div>
         <div class="row">
           <div class="col-md-12 col-lg-6">
-            <h6><strong>Desied Role</strong></h6>
+            <h6><strong>Desired Role</strong></h6>
             <p>{{match.profile.role}}</p>
           </div>
           <div class="col-md-12 col-lg-6">
@@ -86,7 +89,7 @@
         </div>
         <div class="row">
           <div class="col-md-12 col-lg-6">
-            <h6><strong>Desied Role</strong></h6>
+            <h6><strong>Desired Role</strong></h6>
             <p>{{requestee.profile.role}}</p>
           </div>
           <div class="col-md-12 col-lg-6">
@@ -98,7 +101,44 @@
       <p>You will receive a notification once this person responds to your request.</p>
 
       {% else %}
-      <!-- run the match algorithm and display the output -->
+        {% if not user.profile.is_idle %}
+          {% if recommended == None %}
+            <p>You currently have an empty nest of similar users so we don't have a recommended match for you!</p>
+          {% else %}
+          <h1 style="font-weight: 600">{{recommended.first_name}}</h1>
+          <p>@{{recommended.username}} ({{recommended.email}})</p>
+          <div class="recommended-match-info">
+            <div class="row">
+              <div class="col-md-12 col-lg-6">
+                <h6><strong>Year</strong></h6>
+                <p>{{recommended.profile.year_in_school}}</p>
+              </div>
+              <div class="col-md-12 col-lg-6">
+                <h6><strong>Major</strong></h6>
+                <p>{{recommended.profile.major}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 col-lg-6">
+                <h6><strong>Desired Role</strong></h6>
+                <p>{{recommended.profile.role}}</p>
+              </div>
+              <div class="col-md-12 col-lg-6">
+                <h6><strong>Industry(s)</strong></h6>
+                {% if recommended.profile.industry_choice_2 != "None" %}
+                <p>{{ recommended.profile.industry_choice_1 }}, {{ recommended.profile.industry_choice_2 }}</p>
+                {% else %}
+                <p>{{ recommended.profile.industry_choice_1 }}</p>
+                {% endif %}
+              </div>
+              <br>
+              <form method='POST' style='padding: 5px 10px 10px 10px;outline: none;'>
+                <button type="submit" style="outline: none">Send Request</button>
+              </form>
+            </div>
+          </div>
+          {% endif %}
+        {% endif %}
 
       {% endif %}
     </div>
@@ -121,47 +161,60 @@
 
   <div class="module-wrapper-right">
     <!-- RIGHT SIDE -->
-
     <div class="module adventurous">
-      <h3 style="font-weight: 600; padding-bottom: 1rem">I'm feeling adventurous</h3>
-      {% if user.profile.is_matched %}
-      <div class="">
-        <p>You've already been matched. That's enough adventure for now!</p>
-      </div>
+    {% if user.profile.is_idle %}
+    <h3 style="font-weight: 600">Your status is "idle" so this is hidden.</h3>
+    {% else %}
+        <h3 style="font-weight: 600; padding-bottom: 1rem">I'm feeling adventurous</h3>
+        {% if user.profile.is_matched %}
+        <div class="">
+          <p>You've already been matched. That's enough adventure for now!</p>
+        </div>
 
-      {% elif user.profile.is_sender %}
-      <div class="">
-        <p>You've already sent a match request, and you can only send one match request at a time. That's enough adventure for now!</p>
-      </div>
+        {% elif user.profile.is_sender %}
+        <div class="">
+          <p>You've already sent a match request, and you can only send one match request at a time. That's enough adventure for now!</p>
+        </div>
 
-      {% else %}
-      <div class="">
-        <p>Click below to be matched with a random user in similar roles and/or industries!</p>
-        <form action="{% url 'match' %}">
-          <button type="submit" style="outline: none">Match me!</button>
-        </form>
-      </div>
-      {% endif %}
+        {% else %}
+        <div class="">
+          <p>Click below to be matched with a random user in a similar industry!</p>
+          <form action="{% url 'match' %}">
+            <button type="submit" style="outline: none">Match me!</button>
+          </form>
+        </div>
+        {% endif %}
+    {% endif %}
     </div>
 
     <div class="module">
-      <h3 style="font-weight: 600">Discover similar users</h3>
-      <p>Based on <a href="{% url 'matchconfig' %}">your preferences</a></p>
-      <!-- pull first couple matches from list view and display here -->
-      <a href="#" class="profile-card-link">
-        <div class="profile-card">
-          <h5><strong>Name</strong> (@username)</h5>
-          <span><strong>Desired role: </strong>software engineering</span>
-        </div>
-      </a>
-      <a href="#" class="profile-card-link">
-        <div class="profile-card">
-          <h5><strong>Name</strong> (@username)</h5>
-          <span><strong>Desired role: </strong>software engineering</span>
-        </div>
-      </a>
-
+      {% if user.profile.is_idle %}
+        <h3 style="font-weight: 600">Your status is "idle" so this is hidden.</h3>
+      {% else %}
+        <h3 style="font-weight: 600">Discover similar users</h3>
+        <p>Based on <a href="{% url 'matchconfig' %}">your configurations</a></p>
+        <!-- pull first couple matches from list view and display here -->
+        {% if discover_users|length == 0 and recommended == None %}
+          <p>You currently have an empty nest of similar users. Adjust your match configurations or check back later to find more matches!</p>
+        {% elif discover_users|length == 1 %}
+          <p>You have one similar user and that is your recommended match! Adjust your match configurations or check back later to find more matches!</p>
+        {% else %}
+          {% for users in discover_users %}
+          <a href="#" class="profile-card-link">
+            <div class="profile-card">
+              <h5><strong>Name:</strong> (@{{ users.username }})</h5>
+              <span><strong>Email:</strong> {{ users.email }} </span><br>
+              {% if users.profile.industry_choice_2 != "None" %}
+              <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}, {{ users.profile.industry_choice_2 }}</span>
+              {% else %}
+              <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}</span>
+              {% endif %}
+            </div>
+          </a>
+      {% endfor %}
       <a href="#" style="margin-bottom: 1rem">See all</a>
+        {% endif %}
+      {% endif %}
     </div>
 
 

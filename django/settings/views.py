@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from account.pull_notif import pull_notif
 from .forms import SettingsForm
+from match.views import matchlist_create
 
 # Create your views here.
 def settings(request):

@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 
 from onboard.models import Profile, ERROR_MESSAGES
 from .forms import TagForm, BasicForm
+from match.views import matchlist_create
 
 # Create your views here.
 def tags_view(request):
@@ -18,6 +19,7 @@ def tags_view(request):
       request.user.profile.onboard_confirmed = True
       form.save()
       formB.save()
+      matchlist_create(request)
       return redirect('home')
     else:
       error_message = 'You can\'t fly just yet! ' + ERROR_MESSAGES[isValidReturn]

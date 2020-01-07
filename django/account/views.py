@@ -12,6 +12,7 @@ import sys
 
 from .forms import EditAccountForm, EditProfileForm
 from .pull_notif import pull_notif
+from match.views import matchlist_create
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -70,6 +71,7 @@ def account_edit(request):
         if form.is_valid() and isBValidReturn == 1:
             form.save()
             formB.save()
+            matchlist_create(request)
             return redirect('account:account_details')
         else:
             formB.fields['role'].label = "Desired Role"

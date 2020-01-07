@@ -63,16 +63,21 @@
                         </li>
                         {% endif %}
                     {% endfor %}
+                    <br>
                 </ul>
                 <div class="type_msg">
                     <div class="input_msg_write">
-                        <div class='form-group row'>
-                            <form id='form' method='POST' style="width:100%;height:100%"> {% csrf_token %}
+                        <!-- <div class='form-group row'> -->
+                            <form id='form' method='POST' style="width:100%;height:100%;padding:8px 0px 0px 0px;"> {% csrf_token %}
                                 <input type='hidden' id='this_user' value='{{ user.username }}' />
-                                {% render_field form.message %} 
-                                <button id='chat-send-button' type='submit'><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                                <div class='form-group row'>
+                                    {% render_field form.message %}
+                                    <div style="padding-left: 5px;">
+                                        <button id='chat-send-button' type='submit'><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                                    </div> 
+                                </div>
                             </form>
-                        </div>
+                        <!-- </div> -->
                     </div>
                 </div>
             </div>
@@ -162,12 +167,16 @@
     function timedate() {
         var date_obj = changeTimezone(new Date(), "America/New_York")
         var time = date_obj.toTimeString().split(':')
-        // var time = timeStr.split(':')
         if (time[0] > 12) {
             time = (parseInt(time[0], 10) - 12) + ':' + time[1] + ' p.m.'
         }
         else if (time[0] < 12) {
-            time = time[0] + ':' + time[1] + ' a.m.'
+            if (time[0] == 0) {
+                time = 12 + ':' + time[1] + ' a.m.'
+            }
+            else {
+                time = time[0] + ':' + time[1] + ' a.m.'
+            }
         }
         else {
             time = time[0] + ':' + time[1] + ' p.m.'

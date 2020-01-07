@@ -17,7 +17,7 @@ from sys import stderr
 
 from .tokens import account_activation_token
 from .forms import SignUpForm, ForgotPasswordForm, LoginForm
-from match.views import match_view
+from match.views import match_view, matchlist_get
 
 
 def signup(request):
@@ -76,7 +76,8 @@ def activate(request, uidb64, token):
 
 def login(request):
     pulled = pull_notif(request.user)
-
+    discover_users = []
+    recommended = None
     if request.method == 'POST' and 'markread' in request.POST:
         for x in pulled[1]:
             x.read = True
@@ -97,7 +98,19 @@ def login(request):
     else:
         form = LoginForm()
 
-    return render(request, '../templates/home.html', {'form': form, 'has_unread': pulled[0], 'notif': pulled[1]})
+    if request.user.id is not None:
+        matchlist = matchlist_get(request)
+        length = len(matchlist)
+        length = 3 if length > 3 else length
+        
+        if length > 0: 
+            for x in range(length):
+                if not matchlist[x].profile.is_idle:
+                    discover_users.append(matchlist[x])
+            
+            if len(discover_users) > 0: recommended = matchlist[0]
+
+    return render(request, '../templates/home.html', {'form': form, 'has_unread': pulled[0], 'notif': pulled[1], 'discover_users': discover_users, 'recommended': recommended})
 
 
 def default_view(request, extra):

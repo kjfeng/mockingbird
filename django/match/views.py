@@ -6,7 +6,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from onboard.models import Profile
-from .models import Cached_Matches, Recent_Matches
+from .models import Cached_Matches, Recent_Matches, Cached_List_Matches
 from .user_match import quick_match_prototype, get_match_list, list_match
 from .user_match import to_user_list, to_user_string, dequeue, enqueue
 from sys import stderr
@@ -97,7 +97,7 @@ def match_view(request):
     recent_list = to_user_list(recent.matches)
 
     match_cache = Cached_Matches.objects.get(user=my_profile.user)
-    match_cache_list = to_user_list(match_cache.matches)
+    match_cache_list = to_user_list(match_cache.matches, 'p')
 
     match_list = match_cache_list
     if len(match_list) is 0:
@@ -193,14 +193,14 @@ def matchlist_view(request):
         my_profile = Profile.objects.get(id=request.user.id)
         form = MatchConfigurationForm(request.POST, instance=request.user.profile)
 
-        filters = []
+        rankers = []
         industryChoice = 'Industry 1'
         if form.is_valid():
             form.save()
-            filters = request.POST.getlist('rank_by')
+            rankers = request.POST.getlist('rank_by')
             industryChoice = request.POST.get('industry_match')
 
-        matches = list_match(my_profile, filters, industryChoice)
+        matches = list_match(my_profile, rankers, industryChoice)
 
         matchedUsers = []
         for match in matches:
@@ -213,6 +213,36 @@ def matchlist_view(request):
         return redirect('../matchconfig/')
 
     return redirect('../matchlistresults/')
+
+# Creats a list match caching
+def matchlist_create(request):
+    my_profile = Profile.objects.get(id=request.user.id)
+    rankersString = str(my_profile.rank_by)
+
+    rankers = []
+    if (rankersString is not None):
+        rankers = rankersString.split(',')
+    
+    if "" in rankers:
+        rankers.remove("")
+    match_list = list_match(my_profile, rankers, my_profile.industry_match)
+    matches = to_user_string(match_list)
+    match_cache = Cached_List_Matches.objects.filter(user=my_profile.user)
+    if (len(match_cache) == 0):
+        match_cache = Cached_List_Matches.objects.create(user=my_profile.user, matches=matches)
+    else:
+        match_cache = list(match_cache)[0]
+        match_cache.matches = matches
+    
+    match_cache.save()
+
+
+# Grabs the cache match list for the given user
+def matchlist_get(request):
+    my_profile = Profile.objects.get(id=request.user.id)
+    match_cache = Cached_List_Matches.objects.get(user=my_profile.user)
+    match_cache_list = to_user_list(match_cache.matches, 'u')
+    return match_cache_list
 
 @login_required(login_url='/login/')
 @onboard_only
@@ -246,7 +276,7 @@ def matchconfig_view(request):
 
     form = MatchConfigurationForm(instance=request.user.profile, initial=initial_data)
     form.fields['industry_match'].label = "Which industry or industries are you looking to be matched on?"
-    form.fields['rank_by'].label = "Which fields do you want to rank your matches by?"
+    form.fields['rank_by'].label = "Which fields do you want to rank your matches by? (Ctrl or Cmd + Click) to select multiple."
 
 
     pulled = pull_notif(request.user)
