@@ -29,7 +29,7 @@
       <h3 style="color: white; font-weight: 600">Your current match:</h3>
 
       {% elif user.profile.is_sender %}
-      <h3 style="color: white; font-weight: 600">You sent a match request to:</h3>
+      <h3 style="color: white; font-weight: 600">You sent a match request to: {{ user.profile.match_name }} </h3>
 
       {% else %}
       <h3 style="color: white; font-weight: 600">Your recommended match</h3>
