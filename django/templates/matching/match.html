@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Match Configuration</h1>
     <br>
-    <form action="../matchlist/" method="post">
+    <form action="{% url 'update_config' %}" method="post">
       {% csrf_token %}
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -23,7 +23,7 @@
             </div>
         </div>
         <br>
-      <button type="submit">Get Matches!</button>
+      <button type="submit">Update</button>
     </form>
     <br>
   <p><a href="{% url 'home'%}">Home</a></p>

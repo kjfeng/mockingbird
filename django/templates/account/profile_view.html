@@ -27,9 +27,9 @@
     <div class="row">
           <div class="col-md-12 col-lg-6">
           {% if user.profile.is_idle %}
-            <p>(@{{user.username}}) (Idle)</p>
+            <p>(@{{user.username}}) <b>(Idle)</b></p>
           {% else %}
-            <p>(@{{user.username}}) (Active)</p>
+            <p>(@{{user.username}}) <b>(Active)</b></p>
           {% endif %}
           </div>
 
