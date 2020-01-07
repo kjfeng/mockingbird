@@ -110,7 +110,7 @@
       </div>
       <p>You will receive a notification once this person responds to your request.</p>
       <form action="{% url 'confirm_cancel_request' %}" style='padding: 5px 10px 10px 10px;outline: none;'>
-                <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none"  ">Cancel Request</button>
+                <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none;" >Cancel Request</button>
       </form>
       {% else %}
         {% if not user.profile.is_idle %}
@@ -144,9 +144,10 @@
                 {% endif %}
               </div>
               <br>
-              <form method='POST' style='padding: 5px 10px 10px 10px;outline: none;'>
+              <form method='POST' action='/matchresults/' style='padding: 5px 10px 10px 10px;outline: none;'>
                 {% csrf_token %}
-
+                <input type="hidden" id="username" name="username" value={{recommended.username}}>
+                <input type="hidden" id="origin" value="home">
                 <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none"  name="send_request">Send Request</button>
               </form>
             </div>
