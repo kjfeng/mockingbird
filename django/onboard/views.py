@@ -91,10 +91,11 @@ def login(request):
         if length > 0:
             for x in range(length):
                 if not matchlist[x].profile.is_idle:
-                    discover_users.append(matchlist[x])
+                    if recommended is not None:
+                        discover_users.append(matchlist[x])
+                    else:
+                        recommended = matchlist[x]
 
-            if len(discover_users) > 0:
-                recommended = matchlist[0]
 
     match = ""
     requestee = ""

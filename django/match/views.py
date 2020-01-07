@@ -128,7 +128,7 @@ def match_view(request):
     my_profile = Profile.objects.get(id=request.user.id)
 
     recent = Recent_Matches.objects.get(user=my_profile.user)
-    recent_list = to_user_list(recent.matches)
+    recent_list = to_user_list(recent.matches, 'p')
 
     match_cache = Cached_Matches.objects.get(user=my_profile.user)
     match_cache_list = to_user_list(match_cache.matches, 'p')
@@ -224,27 +224,46 @@ def matchresults_view(request):
 @onboard_only
 def matchlist_view(request):
     if request.method == 'POST':
+        # my_profile = Profile.objects.get(id=request.user.id)
+        # form = MatchConfigurationForm(request.POST, instance=request.user.profile)
+
+        # rankers = []
+        # industryChoice = 'Industry 1'
+        # if form.is_valid():
+        #     form.save()
+        #     rankers = request.POST.getlist('rank_by')
+        #     industryChoice = request.POST.get('industry_match')
+
+        # matches = list_match(my_profile, rankers, industryChoice)
         my_profile = Profile.objects.get(id=request.user.id)
-        form = MatchConfigurationForm(request.POST, instance=request.user.profile)
+        rankersString = str(my_profile.rank_by)
 
         rankers = []
-        industryChoice = 'Industry 1'
-        if form.is_valid():
-            form.save()
-            rankers = request.POST.getlist('rank_by')
-            industryChoice = request.POST.get('industry_match')
-
-        matches = list_match(my_profile, rankers, industryChoice)
+        if (rankersString is not None):
+            rankers = rankersString.split(',')
+        
+        if "" in rankers:
+            rankers.remove("")
+        match_list = list_match(my_profile, rankers, my_profile.industry_match)
+        matches = to_user_string(match_list)
+        match_cache = Cached_List_Matches.objects.filter(user=my_profile.user)
+        if (len(match_cache) == 0):
+            match_cache = Cached_List_Matches.objects.create(user=my_profile.user, matches=matches)
+        else:
+            match_cache = list(match_cache)[0]
+            match_cache.matches = matches
+        
+        match_cache.save()
 
         matchedUsers = []
-        for match in matches:
+        for match in match_list:
             matchedUser = MatchedUser(username = str(match.user.username), email = str(match.user.email),
                     industry1 = str(match.industry_choice_1), industry2 = str(match.industry_choice_2))
             matchedUsers.append(matchedUser.__dict__)
 
         request.session['matchedUsers'] = matchedUsers
     else:
-        return redirect('../matchconfig/')
+        return redirect('home')
 
     return redirect('../matchlistresults/')
 
@@ -330,6 +349,21 @@ def matchconfig_view(request):
     return render(request, 'matching/match.html', {'form': form,
                                                    'has_unread': pulled[0],
                                                    'notif': pulled[1]})
+
+@login_required(login_url='/login/')
+@onboard_only
+def update_matchconfig(request):
+    if request.method == 'POST':
+        my_profile = Profile.objects.get(id=request.user.id)
+        form = MatchConfigurationForm(request.POST, instance=request.user.profile)
+    
+        if form.is_valid():
+            form.save()
+            matchlist_create(request)
+        else:
+            return redirect('matchconfig')
+    
+    return redirect('home')
 
 @login_required(login_url='/login/')
 @onboard_only

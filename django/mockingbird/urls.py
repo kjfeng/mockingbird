@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^tags/$', tags_views.tags_view, name='tags'),
     path('', onboard_views.login, name='home'),
 
-    path('chat/<str:username>/', ThreadView.as_view()),
+    path('chat/<str:username>/', ThreadView.as_view(), name='chat-open'),
     path('chat', chat_views.open_chat, name='open-chat'),
     #path('chat/<str:room_name>/', chat_views.room, name='room'),
     # re_path(r'^(?P<room_name>[^/]+)/$', chat_views.room, name='room'),
@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^match/$', match_views.match_view, name='match'),
     url(r'^matchresults/$', match_views.matchresults_view),
     url(r'^matchlist/$', match_views.matchlist_view, name='matchlist'),
+    url(r'^update_config/$', match_views.update_matchconfig, name='update_config'),
     url(r'^matchlistresults/$', match_views.matchlistresults_view),
     url(r'^matchconfig/$', match_views.matchconfig_view, name='matchconfig'),
     url(r'^request_info/', match_views.request_info, name='request_info'),
