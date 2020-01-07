@@ -14,10 +14,6 @@
 
       <button type="submit" style="outline: none">Complete survey</button>
     </form>
-    <!-- <form action='chat/{{user.profile.match_name}}/'>
-      <button type="submit" style="outline: none">Chat Room</button>
-    </form> -->
-    <p><a href='chat/{{user.profile.match_name}}/'>Chat Room</a></p>
   </div>
   </div>
   {% endif %}
@@ -70,7 +66,7 @@
           </div>
         </div>
       </div>
-      <p>Enjoy your mock interview! Please take the following survey once you're done. Feel free to also chat with your match.</p>
+      <p>Enjoy your mock interview! Please take the following survey once you're done. You can also now chat with your match.</p>
       <div class="row">
         <div class="col-md-12 col-lg-6">
           <form action="{% url 'survey:survey' %}" style="padding-top: 1rem; padding-bottom: 1rem;">
@@ -79,10 +75,10 @@
           </form>
         </div>
         <div class="col-md-12 col-lg-6">
-          <form href='chat/{{user.profile.match_name}}/' style="padding-top: 1rem; padding-bottom: 1rem">
+          <form method="POST" action="{% url 'open-chat' %}" style="padding-top: 1rem; padding-bottom: 1rem">
             {% csrf_token %}
-
-            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Chat Room</button>
+            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Chat With Match</button>
+            <input type="hidden" id="username" name="username" value="{{ user.profile.match_name }}">
           </form>
         </div>
       </div>
@@ -165,9 +161,16 @@
       <h3 style="font-weight: 600; padding-bottom: 1rem">Upcoming mock interviews</h3>
       {% if user.profile.is_matched %}
       <div class="">
-        <h5><strong>Name</strong> (@username)</h5>
-        <span><strong>Desired role: </strong>software engineering</span><br>
-        <a href="#">Contact {name}</a>
+        <h5><strong>Name:</strong> (@{{match.username}})</h5>
+        {% if match.profile.industry_choice_2 != "None" %}
+        <span><strong>Industry Choices:</strong> {{ match.profile.industry_choice_1 }}, {{ match.profile.industry_choice_2 }}</span>
+        {% else %}
+        <span><strong>Industry Choices:</strong> {{ match.profile.industry_choice_1 }}</span>
+        {% endif %}
+        <br>
+        <span><strong>Contact:</strong> {{match.email}}<span>
+        <br>
+        <a href="#">View Profile</a>
       </div>
       {% else %}
       <p>You have no upcoming mock interviews.</p>
