@@ -225,7 +225,7 @@
             {% for users in discover_users %}
             <a href="#" class="profile-card-link">
               <div class="profile-card">
-                <h5><strong>Name:</strong> (@{{ users.username }})</h5>
+                <h5><strong>Name:</strong> {{users.first_name}} <a href="{% url 'account:profile_view' users.username %}">(@{{ users.username }})</a></h5>
                 <span><strong>Email:</strong> {{ users.email }} </span><br>
                 {% if users.profile.industry_choice_2 != "None" %}
                 <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}, {{ users.profile.industry_choice_2 }}</span>
