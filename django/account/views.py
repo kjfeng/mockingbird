@@ -129,14 +129,26 @@ def change_password(request):
 @login_required(login_url='/login')
 @onboard_only
 def show_statistics(request):
-    total_late = request.user.statistics.late*request.user.statistics.tot_interview
-    pulled = pull_notif(request.user)
+    ranking = 1
+    if request.user.statistics.tot_interview >= 25 and request.user.statistics.overall_rating >= 4:
+        ranking = 4
+    elif request.user.statistics.tot_interview >= 10 and request.user.statistics.overall_rating >= 4:
+        ranking = 3
+    elif request.user.statistics.tot_interview >= 5 and request.user.statistics.overall_rating >= 4:
+        ranking = 2
 
+    total_late = request.user.statistics.late * request.user.statistics.tot_interview
+    pulled = pull_notif(request.user)
     context = {
         'tot_late': total_late,
         'has_unread': pulled[0],
-        'notif': pulled[1]
+        'notif': pulled[1],
+        'ranking': ranking
     }
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
     return render(request, 'account/stat_page.html', context)
 
 @login_required(login_url='/login')

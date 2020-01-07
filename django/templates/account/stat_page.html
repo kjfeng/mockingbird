@@ -1,21 +1,146 @@
 {% extends 'base-app.html' %}
 
 {% block content %}
+<style>
+    .progress-wrapper {
+        height: 100%;
+        min-height:400px;
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+    .progress-bar-wrapper {
+        display: flex;
+        align-items: flex-end;
+        width: 50px;
+        height: 100%;
+        margin-right: 24px;
+    }
+    .statistics-label-wrapper {
+        width: 120px;
+        position:relative;
+        display:flex;
+        justify-content: flex-end;
+    }
+    .statistics-label{
+        position: absolute;
+        max-width: 120px;
+        width: 100%;
+        line-height: 30px;
+        height: 30px;
+        box-sizing: border-box;
+        font-weight:700;
+        font-size: 12px;
+        color: white;
+        border-radius: 10px;
+        text-align: center;
+        white-space: nowrap;
+    }
+    #badge-bottom {
+        margin-bottom: 0%
+    }
+    .progress-bar {
+        width: 100%;
+        bottom:0;
+        box-shadow: inset 0px 4px 6px rgba(100,100,100,0.6);
+    }
+}
+</style>
 <div>
     <h1 class="title">My Statistics</h1>
     <!-- <h1> Profile </h1> -->
 
     <h5>{{user.first_name}}, you're doing great!</h5>
-    <br>
-    <h3> Completed Interviews</h3>
-    <p> {{ request.user.statistics.tot_interview }}</p>
-
-    <h3> On-Time Rate </h3>
-    <p> {{ request.user.statistics.late }}%
-        {% if request.user.statistics.late >= 0.5 %}
-            <b>* needs improvement </b>
-        {% endif %}
-    </p>
 </div>
+
+    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <!-- Bar + Label -->
+        <div class="wrapper column col-xs-12 col-md-6">
+            <!--
+            <div class="container col-xs-6">
+            <div class="progress vertical">
+              <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+              </div>
+            </div>
+            -->
+            <div class="row progress-wrapper">
+                <!-- Bar --->
+                <div class="">
+                    <div class="progress progress-bar-wrapper ">
+                        <div class="progress-bar" role="progressbar" style="height: calc({{ ranking }} * 25%)"></div>
+                    </div>
+
+                </div>
+                <!-- Labels --->
+                <div class="statistics-label-wrapper">
+                    <div class="statistics-label" style="background-color: green; top: 0%">
+                        <p>expert flyer </p>
+                    </div>
+
+                    <div class="statistics-label" style="background-color: blue; top: 25%">
+                        <p>flyer-in-training </p>
+                    </div>
+
+                    <div class="statistics-label" style="background-color:orange; top: 50%">
+                        <p>fledgling</p>
+                    </div>
+                    <div class="statistics-label" style="background-color:red; top: 75%">
+                        <p>baby bird</p>
+                    </div>
+
+                    </font>
+                    <!-- <div>
+                            <center>
+                                rating system logic
+                                {% if user.statistics.tot_interview >= 25 and user.statistics.overall_rating >= 4 %}
+                                    <p style="border-radius:5px; background-color: green"> <font color="white"> expert flyer</font></p>
+                                {% elif user.statistics.tot_interview >= 10 and user.statistics.overall_rating >= 4 %}
+                                <p style="border-radius:5px; background-color: blue;"> <font color="white"> flyer-in-training </font></p>
+                                {% elif user.statistics.tot_interview >= 5 and user.statistics.overall_rating >= 4 %}
+                                <p style="border-radius:5px; background-color: yellow"> <font color="white">fledgling</font></p>
+                                {% else %}
+                                <p style="border-radius:5px; background-color: red"> <font color="white">baby bird </font></p>
+                                {% endif %}
+                            </center>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        <div class="column col-xs-12 col-md-6">
+            <div>
+                <h1><b>Overall Rating</b></h1>
+                <small style="color:grey" data-toggle="tooltip"> This rating takes into account all of the below statistics and is used in conjuction with the
+                number of completed interviews in order to determine your rank.</small>
+                <h4> <b>{{request.user.statistics.overall_rating }}</b> <small>/5.00</small></h4>
+                <h3> Completed Interviews</h3>
+                <p> {{ request.user.statistics.tot_interview }}</p>
+
+                <h3> Lateness Rate </h3>
+                <p> {{ request.user.statistics.late }}%
+                    {% if request.user.statistics.late >= 0.5 %}
+                        <b>* needs improvement </b>
+                    {% endif %}
+                </p>
+
+                <h3> Average User Rating</h3>
+                <p> <b>{{request.user.statistics.rate }}</b> <small>/ 5.00</small></p>
+                {% if request.user.statistics.rate < 2.5 %}
+                        <b>* needs improvement </b>
+                    {% endif %}
+
+                <h3> Cumulative # of No-Shows</h3>
+                <p> {{ request.user.statistics.no_show }} </p>
+            </div>
+        </div>
+    </div>
+<script>
+     $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
+    $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
 
 {% endblock %}
