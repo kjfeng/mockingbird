@@ -185,8 +185,8 @@ def profile_view(request, username):
             x.read = True
             x.save()
     elif request.method == 'POST' and 'send_request' in request.POST:
-        _on_accept_home(request, u[0])
-        return redirect('account/profile_view.html', context)
+        _on_accept_home(request, u[0].username)
+        return render('account/profile_view.html', context)
 
     return render(request, 'account/profile_view.html', context)
 
