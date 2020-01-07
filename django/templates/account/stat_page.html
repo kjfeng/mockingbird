@@ -51,6 +51,7 @@
     <!-- <h1> Profile </h1> -->
 
     <h5>{{user.first_name}}, you're doing great!</h5>
+    <p> To learn more about any statistics and how it is calculated, hover over the statistics' name for a couple of seconds!</p>
 </div>
 
     <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -109,27 +110,30 @@
         </div>
         <div class="column col-xs-12 col-md-6">
             <div>
-                <h1><b>Overall Rating</b></h1>
-                <small style="color:grey" data-toggle="tooltip"> This rating takes into account all of the below statistics and is used in conjuction with the
-                number of completed interviews in order to determine your rank.</small>
+                <h1 rel="tooltip" title="This rating takes into account all of the below statistics and is used in conjuction with the number of completed interviews in order to determine your rank.">
+                    <b>Overall Rating</b>
+                </h1>
                 <h4> <b>{{request.user.statistics.overall_rating }}</b> <small>/5.00</small></h4>
-                <h3> Completed Interviews</h3>
+
+                <hr>
+                <h3 rel="tooltip" title="This is the total number of interviews you have completed. This is only incremented once your partner has finished their survey for you."> Completed Interviews</h3>
                 <p> {{ request.user.statistics.tot_interview }}</p>
 
-                <h3> Lateness Rate </h3>
+                <h3 rel="tooltip" title="This is the percentage of times that you have been late to a mock interview."> Lateness Rate </h3>
                 <p> {{ request.user.statistics.late }}%
-                    {% if request.user.statistics.late >= 0.5 %}
+                    {% if request.user.statistics.late >= 50 %}
                         <b>* needs improvement </b>
                     {% endif %}
                 </p>
 
-                <h3> Average User Rating</h3>
+                <h3 rel="tooltip" title="This is the averaged rating that other users have rated you."> Average User Rating</h3>
                 <p> <b>{{request.user.statistics.rate }}</b> <small>/ 5.00</small></p>
                 {% if request.user.statistics.rate < 2.5 %}
                         <b>* needs improvement </b>
                     {% endif %}
 
-                <h3> Cumulative # of No-Shows</h3>
+                <h3 rel="tooltip" title="This is the number of times you have not shown up to a scheduled meeting.">
+                    Cumulative No-Shows</h3>
                 <p> {{ request.user.statistics.no_show }} </p>
             </div>
         </div>
@@ -138,8 +142,6 @@
      $(function () {
         $("[rel='tooltip']").tooltip();
     });
-    $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
 
