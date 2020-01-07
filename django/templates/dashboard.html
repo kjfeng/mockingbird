@@ -109,7 +109,9 @@
         </div>
       </div>
       <p>You will receive a notification once this person responds to your request.</p>
-
+      <form action="{% url 'confirm_cancel_request' %}" style='padding: 5px 10px 10px 10px;outline: none;'>
+                <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none"  ">Cancel Request</button>
+      </form>
       {% else %}
         {% if not user.profile.is_idle %}
           {% if recommended == None %}
@@ -154,7 +156,7 @@
 
       {% endif %}
     </div>
-
+<
     <div class="module last-left">
       <h3 style="font-weight: 600; padding-bottom: 1rem">Upcoming mock interviews</h3>
       {% if user.profile.is_matched %}

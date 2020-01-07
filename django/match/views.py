@@ -490,11 +490,14 @@ def accept_request(request):
 def confirm_cancel_request(request):
     match = None
     if request.user.profile.is_sender and request.user.profile.is_waiting:
-        match = request.POST.get('requestee')
+        match = request.user.profile.match_name
     else:
         match = request.POST.get('match')
+
+    print(match)
     target = User.objects.get(username=match)
     pulled = pull_notif(request.user)
+
 
     if request.method == 'POST' and 'markread' in request.POST:
         for x in pulled[1]:
@@ -504,7 +507,8 @@ def confirm_cancel_request(request):
     context = {
         'username': target.username,
         'has_unread': pulled[0],
-        'notif': pulled[1]
+        'notif': pulled[1],
+        'match': match,
     }
     return render(request, 'matching/confirm_cancel.html', context)
 

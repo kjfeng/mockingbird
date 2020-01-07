@@ -76,6 +76,10 @@ def activate(request, uidb64, token):
 
 def login(request):
     pulled = pull_notif(request.user)
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
     discover_users = []
     recommended = None
 
@@ -117,11 +121,6 @@ def login(request):
     if request.method == 'POST' and 'send_request' in request.POST:
         _on_accept_home(request, discover_users[0])
         return redirect('home')
-    if request.method == 'POST' and 'markread' in request.POST:
-        for x in pulled[1]:
-            x.read = True
-            x.save()
-        form = LoginForm()
 
     elif request.method == 'POST':
         form = LoginForm(request.POST)
