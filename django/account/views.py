@@ -12,7 +12,7 @@ import sys
 
 from .forms import EditAccountForm, EditProfileForm
 from .pull_notif import pull_notif
-from match.views import matchlist_create
+from match.views import matchlist_create, _on_accept_home
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -178,8 +178,16 @@ def profile_view(request, username):
     }
     if len(u) == 0:
         return render(request, 'broken_page.html', context)
-
     context['user'] = u[0]
+
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
+    elif request.method == 'POST' and 'send_request' in request.POST:
+        _on_accept_home(request, u[0])
+        return redirect('account/profile_view.html', context)
+
     return render(request, 'account/profile_view.html', context)
 
 
