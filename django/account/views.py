@@ -12,7 +12,7 @@ import sys
 
 from .forms import EditAccountForm, EditProfileForm
 from .pull_notif import pull_notif
-from match.views import matchlist_create
+from match.views import matchlist_create, _on_accept_home
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -129,31 +129,65 @@ def change_password(request):
 @login_required(login_url='/login')
 @onboard_only
 def show_statistics(request):
-    total_late = request.user.statistics.late*request.user.statistics.tot_interview
-    pulled = pull_notif(request.user)
+    ranking = 1
+    if request.user.statistics.tot_interview >= 25 and request.user.statistics.overall_rating >= 4:
+        ranking = 4
+    elif request.user.statistics.tot_interview >= 10 and request.user.statistics.overall_rating >= 4:
+        ranking = 3
+    elif request.user.statistics.tot_interview >= 5 and request.user.statistics.overall_rating >= 4:
+        ranking = 2
 
+    total_late = request.user.statistics.late * request.user.statistics.tot_interview
+    pulled = pull_notif(request.user)
     context = {
         'tot_late': total_late,
         'has_unread': pulled[0],
-        'notif': pulled[1]
+        'notif': pulled[1],
+        'ranking': ranking
     }
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
     return render(request, 'account/stat_page.html', context)
 
 @login_required(login_url='/login')
 @onboard_only
 def profile_view(request, username):
+    has_sent = False
+    is_matched = False
+    match_name = request.user.profile.match_name
+
+    if request.user.profile.is_matched and match_name == username:
+        is_matched = True
+        has_sent = True
+    elif match_name == username:
+        has_sent = True
+    elif match_name != "None":
+        is_matched = True
     u = User.objects.filter(username=username)
+
     pulled = pull_notif(request.user)
 
     context = {
         'user': u,
         'has_unread': pulled[0],
-        'notif': pulled[1]
+        'notif': pulled[1],
+        'has_sent': has_sent,
+        'is_matched': is_matched
     }
     if len(u) == 0:
         return render(request, 'broken_page.html', context)
-
     context['user'] = u[0]
+
+    if request.method == 'POST' and 'markread' in request.POST:
+        for x in pulled[1]:
+            x.read = True
+            x.save()
+    elif request.method == 'POST' and 'send_request' in request.POST:
+        _on_accept_home(request, u[0])
+        return redirect('account/profile_view.html', context)
+
     return render(request, 'account/profile_view.html', context)
 
 

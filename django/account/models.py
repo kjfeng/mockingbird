@@ -31,6 +31,8 @@ class Statistics(models.Model):
     late = models.DecimalField(max_digits=5, decimal_places=2, default=0, null=True)
     no_show = models.IntegerField(default=0, null=True)
 
+    overall_rating = models.DecimalField(max_digits=5, decimal_places=2, default=5.00)
+
     def __str__(self):
         return self.user.username
 
