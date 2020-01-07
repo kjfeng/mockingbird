@@ -76,7 +76,7 @@ def survey(request):
                     target.statistics.overall_rating -= 0.2
 
                 # positive updates (capped at 5)
-                if target.statistics.rating < 5:
+                if target.statistics.overall_rating < 5:
                     if form.cleaned_data['on_time'] == "4" and form.cleaned_data['friendly'] == "4":
                         target.statistics.overall_rating += 0.1
                     elif form.cleaned_data['on_time'] == "4" and form.cleaned_data['friendly'] == "5":
