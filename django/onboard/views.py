@@ -76,7 +76,15 @@ def activate(request, uidb64, token):
 
 def login(request):
     pulled = pull_notif(request.user)
+    match = ""
+    if request.user.profile.match_name:
+        name = request.user.profile.match_name
+        match = User.objects.filter(username=name)[0]
 
+    requestee = ""
+    if request.user.profile.request_name:
+        name = request.user.profile.request_name
+        requestee = User.objects.filter(username=name)[0]
     if request.method == 'POST' and 'markread' in request.POST:
         for x in pulled[1]:
             x.read = True
@@ -93,11 +101,11 @@ def login(request):
                 auth_login(request, user)
             else:
                 # return invalid login error message
-                return render(request, '../templates/home.html', {'form': form, 'error_message': "Incorrect username and/or password"})
+                return render(request, '../templates/home.html', {'form': form, 'error_message': "Incorrect username and/or password", 'match': match, 'requestee': requestee})
     else:
         form = LoginForm()
 
-    return render(request, '../templates/home.html', {'form': form, 'has_unread': pulled[0], 'notif': pulled[1]})
+    return render(request, '../templates/home.html', {'form': form, 'has_unread': pulled[0], 'notif': pulled[1], 'match': match, 'requestee': requestee})
 
 
 def default_view(request, extra):

@@ -49,6 +49,7 @@ def _on_accept(request):
         request.user.profile.match_name = str(t_username)
         request.user.profile.is_sender = True
         request.user.profile.save()
+        request.user.profile.request_name = str(t_username)
 
         # change target's info
         target = User.objects.filter(username=str(t_username))[0]

@@ -91,6 +91,8 @@ class Profile(models.Model):
 
     summary = models.CharField(max_length=500, blank=True)
 
+    request_name = models.CharField(max_length=500, default="")
+
     def __str__(self):
         return self.user.username
 
