@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponseForbidden
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic.edit import FormMixin
+from mockingbird.decorators import onboard_only
 
 from django.views.generic import DetailView, ListView
 
@@ -12,6 +13,18 @@ from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.contrib.auth.decorators import login_required
 import json
+
+@login_required(login_url='/login/')
+@onboard_only
+def open_chat(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        print(username)
+        url = 'chat/' + username + "/"
+        return redirect(url)
+    else:
+        print("not post")
+
 class InboxView(LoginRequiredMixin, ListView):
     template_name = 'chat/inbox.html'
     def get_queryset(self):

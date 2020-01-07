@@ -34,7 +34,7 @@ urlpatterns = [
     path('', onboard_views.login, name='home'),
 
     path('chat/<str:username>/', ThreadView.as_view()),
-    path('chat/<str:username>/', ThreadView.post, name='chat-post'),
+    path('chat', chat_views.open_chat, name='open-chat'),
     #path('chat/<str:room_name>/', chat_views.room, name='room'),
     # re_path(r'^(?P<room_name>[^/]+)/$', chat_views.room, name='room'),
     # matching urls
