@@ -18,7 +18,7 @@ nav {
 }
 
 .modal-backdrop {
-  z-index: 2 !important;
+  z-index: 1000;
   background: rgba(0, 0, 0, 0.7) !important;
 }
 
@@ -179,7 +179,7 @@ button[type=submit]:focus, button[type=button]:focus {
   padding-right: 1rem;
   padding-bottom: 2rem;
   position: relative;
-  z-index: 100
+  z-index: -1
 }
 
 .module-wrapper-right {
@@ -190,7 +190,7 @@ button[type=submit]:focus, button[type=button]:focus {
   height: 100%;
   margin-bottom: 2rem;
   position: relative;
-  z-index: 100
+  z-index: -1
 }
 
 .module-blue-title {
@@ -250,9 +250,4 @@ button[type=submit]:focus, button[type=button]:focus {
     width: 100%;
     padding: 0;
   }
-
-  .modal-backdrop {
-    padding-right: 4rem;
-  }
-
 }
