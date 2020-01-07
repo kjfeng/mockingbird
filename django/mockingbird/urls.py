@@ -47,6 +47,7 @@ urlpatterns = [
     url(r'^accept_request/', match_views.accept_request, name='accept_request'),
     url(r'^confirm_cancel_request/', match_views.confirm_cancel_request, name='confirm_cancel_request'),
     url(r'^done_cancel/', match_views.done_cancel, name='done_cancel'),
+    url(r'^send_request/$', match_views.send_request_home, name='send_request_home'),
 
     url(r'^account_activation_sent/$', onboard_views.account_activation_sent, name='account_activation_sent'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',

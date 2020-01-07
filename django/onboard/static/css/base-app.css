@@ -179,7 +179,7 @@ button[type=submit]:focus, button[type=button]:focus {
   padding-right: 1rem;
   padding-bottom: 2rem;
   position: relative;
-  z-index: -1
+  z-index: 100
 }
 
 .module-wrapper-right {
@@ -190,7 +190,7 @@ button[type=submit]:focus, button[type=button]:focus {
   height: 100%;
   margin-bottom: 2rem;
   position: relative;
-  z-index: -1
+  z-index: 100
 }
 
 .module-blue-title {

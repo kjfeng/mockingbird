@@ -10,6 +10,8 @@
     <h3 style="font-weight: 600">{{user.first_name}}, how was your mock interview experience?</h3>
     <p>Tell us about your experience in our quick feedback survey so we can provide great interview experiences for everyone.</p>
     <form action="{% url 'survey:survey' %}">
+      {% csrf_token %}
+
       <button type="submit" style="outline: none">Complete survey</button>
     </form>
     <!-- <form action='chat/{{user.profile.match_name}}/'>
@@ -72,11 +74,14 @@
       <div class="row">
         <div class="col-md-12 col-lg-6">
           <form action="{% url 'survey:survey' %}" style="padding-top: 1rem; padding-bottom: 1rem">
+            {% csrf_token %}
             <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Take the survey</button>
           </form>
         </div>
         <div class="col-md-12 col-lg-6">
           <form href='chat/{{user.profile.match_name}}/' style="padding-top: 1rem; padding-bottom: 1rem">
+            {% csrf_token %}
+
             <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Chat Room</button>
           </form>
         </div>
@@ -142,7 +147,9 @@
               </div>
               <br>
               <form method='POST' style='padding: 5px 10px 10px 10px;outline: none;'>
-                <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Send Request</button>
+                {% csrf_token %}
+
+                <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none"  name="send_request">Send Request</button>
               </form>
             </div>
           </div>
@@ -189,6 +196,8 @@
         <div class="">
           <p>Click below to be matched with a random user in a similar industry!</p>
           <form action="{% url 'match' %}">
+            {% csrf_token %}
+
             <button type="submit" style="outline: none">Match me!</button>
           </form>
         </div>
@@ -239,6 +248,7 @@
   </div>
 </div>
 
+<!--
 
 <div class="">
 
@@ -261,3 +271,4 @@
   <p> <a href="{% url 'feedback:feedback' %}">Leave Feedback</a></p>
   <p><a href="{% url 'logout' %}">Log Out</a></p>
 </div>
+-->

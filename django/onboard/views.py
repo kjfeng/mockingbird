@@ -17,7 +17,7 @@ from sys import stderr
 
 from .tokens import account_activation_token
 from .forms import SignUpForm, ForgotPasswordForm, LoginForm
-from match.views import match_view, matchlist_get
+from match.views import match_view, matchlist_get, _on_accept_home
 
 
 def signup(request):
@@ -78,6 +78,44 @@ def login(request):
     pulled = pull_notif(request.user)
     discover_users = []
     recommended = None
+
+    if request.user.id is not None:
+        matchlist = matchlist_get(request)
+        length = len(matchlist)
+        length = 3 if length > 3 else length
+
+        if length > 0:
+            for x in range(length):
+                if not matchlist[x].profile.is_idle:
+                    discover_users.append(matchlist[x])
+
+            if len(discover_users) > 0:
+                recommended = matchlist[0]
+
+    match = ""
+    requestee = ""
+
+    if not request.user.is_anonymous:
+        if request.user.profile.match_name != "" and request.user.profile.match_name != "None":
+            name = request.user.profile.match_name
+            match = User.objects.filter(username=name)[0]
+
+        #if request.user.profile.request_name != "":
+        #    name = request.user.profile.request_name
+        #    requestee = User.objects.filter(username=name)[0]
+
+    context = {
+        'has_unread': pulled[0],
+        'notif': pulled[1], 
+        'discover_users': discover_users, 
+        'recommended': recommended, 
+        'match': match, 
+        'requestee': requestee,
+    }
+
+    if request.method == 'POST' and 'send_request' in request.POST:
+        _on_accept_home(request, discover_users[0])
+        return redirect('home')
     if request.method == 'POST' and 'markread' in request.POST:
         for x in pulled[1]:
             x.read = True
@@ -97,40 +135,7 @@ def login(request):
                 return render(request, '../templates/home.html', {'form': form, 'error_message': "Incorrect username and/or password"})
     else:
         form = LoginForm()
-
-    if request.user.id is not None:
-        matchlist = matchlist_get(request)
-        length = len(matchlist)
-        length = 3 if length > 3 else length
-        
-        if length > 0: 
-            for x in range(length):
-                if not matchlist[x].profile.is_idle:
-                    discover_users.append(matchlist[x])
-            
-            if len(discover_users) > 0: recommended = matchlist[0]
-
-    match = ""
-    requestee = ""
-
-    if not request.user.is_anonymous:
-        if request.user.profile.match_name:
-            name = request.user.profile.match_name
-            match = User.objects.filter(username=name)[0]
-
-        if request.user.profile.request_name:
-            name = request.user.profile.request_name
-            requestee = User.objects.filter(username=name)[0]
-
-    context = {
-        'form': form, 
-        'has_unread': pulled[0], 
-        'notif': pulled[1], 
-        'discover_users': discover_users, 
-        'recommended': recommended, 
-        'match': match, 
-        'requestee': requestee
-    }
+    context['form'] = form
     return render(request, '../templates/home.html', context=context)
 
 def default_view(request, extra):

@@ -40,6 +40,41 @@ class MatchedUser(object):
 
 register = template.Library()
 
+def _on_accept_home(request, username):
+    if request.method == 'POST':
+        t_username = username
+        print(t_username)
+        # change sender to blocked
+        request.user.profile.is_waiting = True
+        request.user.profile.match_name = str(t_username)
+        request.user.profile.is_sender = True
+        request.user.profile.save()
+        request.user.profile.request_name = str(t_username)
+
+        # change target's info
+        target = User.objects.filter(username=str(t_username))[0]
+
+        target.profile.requested_names = target.profile.requested_names + "," + request.user.username
+        #target.profile.is_matched = True
+        target.profile.is_sender = False
+        target.profile.is_waiting = False
+        target.profile.has_request = True
+        target.profile.save()
+
+        current_site = get_current_site(request)
+        # logic to send email to the target if user accepts emails
+        if target.profile.receive_email:
+            subject = '[MockingBird] You have a Match!'
+            message = render_to_string('matching/matching_email.html', {
+                'user': target,
+                'domain': current_site.domain,
+            })
+            target.email_user(subject, message)
+
+        # logic to create a notification for the target
+        NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username))
+        return True
+
 def _on_accept(request):
     if request.method == 'POST':
         t_username = request.POST.get('username')
@@ -74,8 +109,6 @@ def _on_accept(request):
         # logic to create a notification for the target
         NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username)) 
         return True
-    return False
-
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -241,7 +274,14 @@ def matchlist_create(request):
 # Grabs the cache match list for the given user
 def matchlist_get(request):
     my_profile = Profile.objects.get(id=request.user.id)
-    match_cache = Cached_List_Matches.objects.get(user=my_profile.user)
+    match_cache = Cached_List_Matches.objects.filter(user=my_profile.user)
+
+    # in the case that the user doesn't have a cached match list yet
+    if not match_cache:
+        matchlist_create(request)
+
+    match_cache = Cached_List_Matches.objects.filter(user=my_profile.user)[0]
+
     match_cache_list = to_user_list(match_cache.matches, 'u')
     return match_cache_list
 
@@ -500,3 +540,7 @@ def done_cancel(request):
         'notif': pulled[1]
     }
     return render(request, 'matching/done_cancel.html', context)
+
+def send_request_home(request):
+    _on_accept(request)
+    return redirect('home')
