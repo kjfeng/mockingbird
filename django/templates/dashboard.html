@@ -9,7 +9,7 @@
     </button>
     <h3 style="font-weight: 600">{{user.first_name}}, how was your mock interview experience?</h3>
     <p>Tell us about your experience in our quick feedback survey so we can provide great interview experiences for everyone.</p>
-    <form action="survey">
+    <form action="{% url 'survey:survey' %}">
       <button type="submit" style="outline: none">Complete survey</button>
     </form>
     <!-- <form action='chat/{{user.profile.match_name}}/'>
@@ -30,7 +30,7 @@
       <h3 style="color: white; font-weight: 600">Your current match:</h3>
 
       {% elif user.profile.is_sender %}
-      <h3 style="color: white; font-weight: 600">You sent a match request to:</h3>
+      <h3 style="color: white; font-weight: 600">You sent a match request to: {{ user.profile.match_name }} </h3>
 
       {% elif user.profile.is_idle %}
       <h3 style="color: white; font-weight: 600">Your status is "idle" so this is hidden.</h3>
@@ -68,33 +68,42 @@
           </div>
         </div>
       </div>
-      <p>Enjoy your mock interview! Please take the following survey once you're done.</p>
-      <form action="{% url 'survey:survey' %}" style="padding-top: 1rem; padding-bottom: 1rem">
-        <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Take the survey</button>
-      </form>
+      <p>Enjoy your mock interview! Please take the following survey once you're done. Feel free to also chat with your match.</p>
+      <div class="row">
+        <div class="col-md-12 col-lg-6">
+          <form action="{% url 'survey:survey' %}" style="padding-top: 1rem; padding-bottom: 1rem">
+            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Take the survey</button>
+          </form>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <form href='chat/{{user.profile.match_name}}/' style="padding-top: 1rem; padding-bottom: 1rem">
+            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Chat Room</button>
+          </form>
+        </div>
+      </div>
 
       {% elif user.profile.is_sender %}
-      <h1 style="font-weight: 600">{{requestee.first_name}}</h1>
-      <p>@{{requestee.username}}</p>
+      <h1 style="font-weight: 600">{{match.first_name}}</h1>
+      <p>@{{match.username}}</p>
       <div class="recommended-match-info">
         <div class="row">
           <div class="col-md-12 col-lg-6">
             <h6><strong>Year</strong></h6>
-            <p>{{requestee.profile.year_in_school}}</p>
+            <p>{{match.profile.year_in_school}}</p>
           </div>
           <div class="col-md-12 col-lg-6">
             <h6><strong>Major</strong></h6>
-            <p>{{requestee.profile.major}}</p>
+            <p>{{match.profile.major}}</p>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12 col-lg-6">
             <h6><strong>Desired Role</strong></h6>
-            <p>{{requestee.profile.role}}</p>
+            <p>{{match.profile.role}}</p>
           </div>
           <div class="col-md-12 col-lg-6">
             <h6><strong>Primary Industry</strong></h6>
-            <p>{{requestee.profile.industry_choice_1}}</p>
+            <p>{{match.profile.industry_choice_1}}</p>
           </div>
         </div>
       </div>
@@ -106,7 +115,7 @@
             <p>You currently have an empty nest of similar users so we don't have a recommended match for you!</p>
           {% else %}
           <h1 style="font-weight: 600">{{recommended.first_name}}</h1>
-          <p>@{{recommended.username}} ({{recommended.email}})</p>
+          <p>@{{recommended.username}}</p>
           <div class="recommended-match-info">
             <div class="row">
               <div class="col-md-12 col-lg-6">
@@ -133,7 +142,7 @@
               </div>
               <br>
               <form method='POST' style='padding: 5px 10px 10px 10px;outline: none;'>
-                <button type="submit" style="outline: none">Send Request</button>
+                <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Send Request</button>
               </form>
             </div>
           </div>
@@ -191,28 +200,34 @@
       {% if user.profile.is_idle %}
         <h3 style="font-weight: 600">Your status is "idle" so this is hidden.</h3>
       {% else %}
-        <h3 style="font-weight: 600">Discover similar users</h3>
-        <p>Based on <a href="{% url 'matchconfig' %}">your configurations</a></p>
-        <!-- pull first couple matches from list view and display here -->
-        {% if discover_users|length == 0 and recommended == None %}
-          <p>You currently have an empty nest of similar users. Adjust your match configurations or check back later to find more matches!</p>
-        {% elif discover_users|length == 1 %}
-          <p>You have one similar user and that is your recommended match! Adjust your match configurations or check back later to find more matches!</p>
+      <h3 style="font-weight: 600">Discover similar users</h3>
+        {% if user.profile.is_sender %}
+          <p>You've already sent a match request and you can only send one at a time so this is unavailable at this time.</p>
+        {% elif user.profile.is_matched %}
+          <p>You've already been matched so this is unavailable at this time.</p>
         {% else %}
-          {% for users in discover_users %}
-          <a href="#" class="profile-card-link">
-            <div class="profile-card">
-              <h5><strong>Name:</strong> (@{{ users.username }})</h5>
-              <span><strong>Email:</strong> {{ users.email }} </span><br>
-              {% if users.profile.industry_choice_2 != "None" %}
-              <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}, {{ users.profile.industry_choice_2 }}</span>
-              {% else %}
-              <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}</span>
-              {% endif %}
-            </div>
-          </a>
-      {% endfor %}
-      <a href="#" style="margin-bottom: 1rem">See all</a>
+          <p>Based on <a href="{% url 'matchconfig' %}">your configurations</a></p>
+          <!-- pull first couple matches from list view and display here -->
+          {% if discover_users|length == 0 and recommended == None %}
+            <p>You currently have an empty nest of similar users. Adjust your match configurations or check back later to find more matches!</p>
+          {% elif discover_users|length == 1 %}
+            <p>You have one similar user and that is your recommended match! Adjust your match configurations or check back later to find more matches!</p>
+          {% else %}
+            {% for users in discover_users %}
+            <a href="#" class="profile-card-link">
+              <div class="profile-card">
+                <h5><strong>Name:</strong> (@{{ users.username }})</h5>
+                <span><strong>Email:</strong> {{ users.email }} </span><br>
+                {% if users.profile.industry_choice_2 != "None" %}
+                <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}, {{ users.profile.industry_choice_2 }}</span>
+                {% else %}
+                <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}</span>
+                {% endif %}
+              </div>
+            </a>
+            {% endfor %}
+        <a href="#" style="margin-bottom: 1rem">See all</a>
+          {% endif %}
         {% endif %}
       {% endif %}
     </div>

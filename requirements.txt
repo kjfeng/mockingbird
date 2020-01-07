@@ -29,3 +29,4 @@ whitenoise==4.1.4
 zipp==0.6.0
 numpy==1.17.4
 django-widget-tweaks==1.4.5  
+django-channels==0.7.0     

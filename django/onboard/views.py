@@ -110,8 +110,28 @@ def login(request):
             
             if len(discover_users) > 0: recommended = matchlist[0]
 
-    return render(request, '../templates/home.html', {'form': form, 'has_unread': pulled[0], 'notif': pulled[1], 'discover_users': discover_users, 'recommended': recommended})
+    match = ""
+    requestee = ""
 
+    if not request.user.is_anonymous:
+        if request.user.profile.match_name:
+            name = request.user.profile.match_name
+            match = User.objects.filter(username=name)[0]
+
+        if request.user.profile.request_name:
+            name = request.user.profile.request_name
+            requestee = User.objects.filter(username=name)[0]
+
+    context = {
+        'form': form, 
+        'has_unread': pulled[0], 
+        'notif': pulled[1], 
+        'discover_users': discover_users, 
+        'recommended': recommended, 
+        'match': match, 
+        'requestee': requestee
+    }
+    return render(request, '../templates/home.html', context=context)
 
 def default_view(request, extra):
     pulled = pull_notif(request.user)
