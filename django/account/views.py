@@ -154,13 +154,27 @@ def show_statistics(request):
 @login_required(login_url='/login')
 @onboard_only
 def profile_view(request, username):
+    has_sent = False
+    is_matched = False
+    match_name = request.user.profile.match_name
+
+    if request.user.profile.is_matched and match_name == username:
+        is_matched = True
+        has_sent = True
+    elif match_name == username:
+        has_sent = True
+    elif match_name != "None":
+        is_matched = True
     u = User.objects.filter(username=username)
+
     pulled = pull_notif(request.user)
 
     context = {
         'user': u,
         'has_unread': pulled[0],
-        'notif': pulled[1]
+        'notif': pulled[1],
+        'has_sent': has_sent,
+        'is_matched': is_matched
     }
     if len(u) == 0:
         return render(request, 'broken_page.html', context)
