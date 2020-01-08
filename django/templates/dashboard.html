@@ -18,7 +18,7 @@
   </div>
   {% endif %}
   <h1 class="title" style="padding-top: 1rem; position: relative;">Hi, {{user.first_name}}!</h1>
-  
+
 
   <div class="module-wrapper-left">
 
@@ -34,7 +34,7 @@
       <h3 style="color: white; font-weight: 600">Your status is "idle" so this is hidden.</h3>
       {% else %}
       <h3 style="color: white; font-weight: 600">Your recommended match</h3>
-      <p style="color: white">Based on <a href="{% url 'account:account_details' %}" style="color: #FFC933">your profile</a> and <a href="{% url 'matchconfig' %}" style="color: #FFC933">your configurations</a></p> 
+      <p style="color: white">Based on <a href="{% url 'account:account_details' %}" style="color: #FFC933">your profile</a> and <a href="{% url 'matchconfig' %}" style="color: #FFC933">your configurations</a></p>
 
       {% endif %}
     </div>
@@ -115,7 +115,7 @@
       {% else %}
         {% if not user.profile.is_idle %}
           {% if recommended == None %}
-            <p>You currently have an empty nest of similar users so we don't have a recommended match for you!</p>
+            <p>There currently doesn't seem to be any users similar to you so we don't have a recommended match for you!</p>
           {% else %}
           <h1 style="font-weight: 600">{{recommended.first_name}}</h1>
           <p><a href="{% url 'account:profile_view' recommended.username %}" style="color: #FFC933">@{{ recommended.username }}</a></p>
@@ -157,7 +157,7 @@
 
       {% endif %}
     </div>
-<
+
     <div class="module last-left">
       <h3 style="font-weight: 600; padding-bottom: 1rem">Upcoming mock interviews</h3>
       {% if user.profile.is_matched %}
@@ -204,7 +204,7 @@
           <form action="{% url 'match' %}">
             {% csrf_token %}
 
-            <button type="submit" style="outline: none">Match me!</button>
+            <button type="submit" style="outline: none">Match me</button>
           </form>
         </div>
         {% endif %}
@@ -224,7 +224,7 @@
           <p>Based on <a href="{% url 'account:account_details' %}">your profile</a> and <a href="{% url 'matchconfig' %}">your configurations</a></p>
           <!-- pull first couple matches from list view and display here -->
           {% if discover_users|length == 0 and recommended == None %}
-            <p>You currently have an empty nest of similar users. Adjust your match configurations or check back later to find more matches!</p>
+            <p>There currently doesn't seem to be any users similar to you. Adjust your match configurations or check back later to find more matches!</p>
           {% elif discover_users|length == 0 %}
             <p>You have one similar user and that is your recommended match! Adjust your match configurations or check back later to find more matches!</p>
           {% else %}
