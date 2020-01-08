@@ -1,18 +1,7 @@
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #27ae60;
-    font-family: "proxima-nova", "Source Sans Pro", sans-serif;
-    font-size: 1em;
-    letter-spacing: 0.1px;
-    color: #32465a;
-    text-rendering: optimizeLegibility;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
-    -webkit-font-smoothing: antialiased;
+    line-height: 1.5 !important;
   }
-  
+
   #frame {
     width: 100%;
     min-width: 360px;
@@ -669,7 +658,7 @@ body {
   #frame .content .message-input .wrap button:focus {
     outline: none;
   }
-  
+
   .fa {
     font-size: 1.5em !important;
   }
