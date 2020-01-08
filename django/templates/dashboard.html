@@ -43,7 +43,7 @@
 
       {% if user.profile.is_matched %}
       <h1 style="font-weight: 600">{{match.first_name}}</h1>
-      <p>@{{match.username}}</p>
+      <p><a href="{% url 'account:profile_view' match.username %}" style="color: #FFC933">@{{ match.username }}</a></p>
       <div class="recommended-match-info">
         <div class="row">
           <div class="col-md-12 col-lg-6">
@@ -85,7 +85,7 @@
 
       {% elif user.profile.is_sender %}
       <h1 style="font-weight: 600">{{match.first_name}}</h1>
-      <p>@{{match.username}}</p>
+      <p><a href="{% url 'account:profile_view' match.username %}" style="color: #FFC933">@{{ match.username }}</a></p>
       <div class="recommended-match-info">
         <div class="row">
           <div class="col-md-12 col-lg-6">
