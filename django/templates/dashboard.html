@@ -43,7 +43,7 @@
 
       {% if user.profile.is_matched %}
       <h1 style="font-weight: 600">{{match.first_name}}</h1>
-      <p><a href="{% url 'account:profile_view' match.username %}" style="color: #FFC933">@{{ match.username }}</a></p>
+      <p ><a style="color:#Ffd357" href="{% url 'account:profile_view' request.user.profile.match_name %}">@{{match.username}}</a></p>
       <div class="recommended-match-info">
         <div class="row">
           <div class="col-md-12 col-lg-6">
@@ -162,7 +162,7 @@
       <h3 style="font-weight: 600; padding-bottom: 1rem">Upcoming mock interviews</h3>
       {% if user.profile.is_matched %}
       <div class="">
-        <h5><strong>Name:</strong> (@{{match.username}})</h5>
+        <h5><strong>Name:</strong> {{match.first_name }}( <a href="{% url 'account:profile_view' request.user.profile.match_name %}">@{{match.username}}</a>)</h5>
         {% if match.profile.industry_choice_2 != "None" %}
         <span><strong>Industry Choices:</strong> {{ match.profile.industry_choice_1 }}, {{ match.profile.industry_choice_2 }}</span>
         {% else %}

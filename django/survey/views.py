@@ -9,6 +9,7 @@ from django.db.models import Q
 from .forms import SurveyForm
 from account.pull_notif import pull_notif
 from mockingbird.decorators import onboard_only
+from match.views import matchlist_create
 
 
 @login_required(login_url='/login/')
@@ -56,13 +57,13 @@ def survey(request):
 
                 # update the target's statistics
                 target.statistics.tot_interview += 1
-                current_total_rate = Decimal(target.statistics.rate) * target.statistics.tot_interview
+                current_total_rate = Decimal(target.statistics.rate) * Decimal(target.statistics.tot_interview)
                 target.statistics.rate = (current_total_rate + Decimal(form.cleaned_data['friendly']) / Decimal(
                     5.0)) / target.statistics.tot_interview
 
-                current_total_late = Decimal(target.statistics.late) * target.statistics.tot_interview
+                current_total_late = Decimal(target.statistics.late) * Decimal(target.statistics.tot_interview)
                 target.statistics.late += (current_total_late + Decimal(form.cleaned_data['friendly']) / Decimal(
-                    5.0)) / target.statistics.tot_interview
+                    4.0)) / target.statistics.tot_interview
 
                 # updates to ratings
                 if form.cleaned_data['friendly'] == "2":
@@ -98,6 +99,7 @@ def survey(request):
                     )
 
             Thread.objects.filter(Q(first=request.user) | Q(second=request.user)).delete()
+            matchlist_create(request)
             return redirect('survey:survey_complete')
 
     # if first time loading
