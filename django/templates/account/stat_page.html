@@ -119,18 +119,22 @@
                 <h3 rel="tooltip" title="This is the total number of interviews you have completed. This is only incremented once your partner has finished their survey for you."> Completed Interviews</h3>
                 <p> {{ request.user.statistics.tot_interview }}</p>
 
+                <hr>
+
                 <h3 rel="tooltip" title="This is the percentage of times that you have been late to a mock interview."> Lateness Rate </h3>
                 <p> {{ request.user.statistics.late }}%
                     {% if request.user.statistics.late >= 50 %}
                         <b>* needs improvement </b>
                     {% endif %}
                 </p>
+                <hr>
 
                 <h3 rel="tooltip" title="This is the averaged rating that other users have rated you."> Average User Rating</h3>
                 <p> <b>{{request.user.statistics.rate }}</b> <small>/ 5.00</small></p>
                 {% if request.user.statistics.rate < 2.5 %}
                         <b>* needs improvement </b>
                     {% endif %}
+                <hr>
 
                 <h3 rel="tooltip" title="This is the number of times you have not shown up to a scheduled meeting.">
                     Cumulative No-Shows</h3>
