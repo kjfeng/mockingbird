@@ -9,6 +9,7 @@ from django.db.models import Q
 from .forms import SurveyForm
 from account.pull_notif import pull_notif
 from mockingbird.decorators import onboard_only
+from match.views import matchlist_create
 
 
 @login_required(login_url='/login/')
@@ -98,6 +99,7 @@ def survey(request):
                     )
 
             Thread.objects.filter(Q(first=request.user) | Q(second=request.user)).delete()
+            matchlist_create(request)
             return redirect('survey:survey_complete')
 
     # if first time loading
