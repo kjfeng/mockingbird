@@ -10,7 +10,8 @@
 you can do so here. </p>
 <form method="POST" action="{% url 'confirm_cancel_request' %}">
     {% csrf_token %}
-    <p><input type="submit" value="Cancel Request"></p>
+    <!-- <p><input type="submit" value="Cancel Request"></p> -->
+    <button type="submit" style="outline: none; background-color: #ee0000">Cancel request</button>
     <p><input type="hidden" name="requestee" value="{{ requestee.username }}"></p>
 </form>
 {% else %}
@@ -27,14 +28,16 @@ you can do so here. </p>
     <p> Industry 2: {{ match.profile.industry_choice_2 }}</p>
     <p> Year: {{match.profile.year_in_school}} </p>
     <p> Desired Role: {{ match.profile.role }}</p>
-    <form method="POST" action="{% url 'accept_request' %}">
+    <form method="POST" action="{% url 'accept_request' %}" style="padding-top: 1rem; display: inline-block">
         {% csrf_token %}
-        <p><input type="submit" value="Accept Request"></p>
+        <!-- <p><input type="submit" value="Accept Request"></p> -->
+        <button type="submit" style="outline: none;">Accept Request</button>
         <input type="hidden" name="match" value="{{ match.username }}">
     </form>
-    <form method="POST" action="{% url 'confirm_cancel_request' %}">
+    <form method="POST" action="{% url 'confirm_cancel_request' %}" style="padding-top: 1rem; display: inline-block">
         {% csrf_token %}
-        <p><input type="submit" value="Reject Request"></p>
+        <!-- <p><input type="submit" value="Reject Request"></p> -->
+        <button type="submit" style="outline: none; background-color: #ee0000">Reject Request</button>
         <p><input type="hidden" name="match" value="{{ match.username }}"></p>
     </form>
     <b><hr></b>

@@ -10,4 +10,10 @@ $(document).ready(function() {
       $(".survey-card").css("display", "none");
       $(".modal-backdrop").css("display", "none");
   });
+
+  // $(".notif-footer").on("click", function(event) {
+  //   console.log("dot gone?")
+  //   $(".dot").css("display", "none")
+  // });
+
 });

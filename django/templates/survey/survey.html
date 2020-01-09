@@ -9,10 +9,10 @@
         {% csrf_token %}
        <!-- did you meet question-->
 
-        <div class="form-group row">
+        <div class="form-group ">
             <label> {{form.did_meet.label_tag }} </label>
         </div>
-        <div class="form-group row">
+        <div class="form-group ">
             <div>
                 {% render_field form.did_meet class="form-control" %}
                 {% for error in form.did_meet.errors %}
@@ -23,10 +23,10 @@
 
         <!-- if did meet-->
         <div id="form-div-meet">
-            <div class="form-group row">
+            <div class="form-group ">
                 <label>{{ form.on_time.label_tag }}</label>
             </div>
-            <div class="form-group row">
+            <div class="form-group ">
                 <div>
                     {% render_field form.on_time class="form-control" %}
                     {% for error in form.on_time.errors %}
@@ -35,10 +35,10 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group ">
                 <label>{{ form.friendly.label_tag }}</label>
             </div>
-            <div class="form-group row">
+            <div class="form-group ">
                 <div>
                     {% render_field form.friendly class="form-control" %}
                     {% for error in form.friendly.errors %}
@@ -47,27 +47,27 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group ">
                 <label>{{ form.comment.label_tag }}</label>
             </div>
-            <div class="form-group row">
+            <div class="form-group ">
                 <div class="col-xs-12 col-sm-12 col-lg-12">
                     {% render_field form.comment class="form-control" %}
                 </div>
             </div>
-        
+
         </div>
         <!-- if didn't -->
         <div id="form-div-no-meet">
-            <div class="form-group row">
+            <div class="form-group ">
                 <label>{{ form.comment.label_tag }}</label>
             </div>
-            <div class="form-group row">
+            <div class="form-group ">
                 <div class="col-xs-12 col-sm-12 col-lg-12">
                     {% render_field form.comment class="form-control" %}
                 </div>
             </div>
-        </div> 
+        </div>
  <button type="submit">Submit</button>
     </form>
     <br>
@@ -76,7 +76,7 @@
 <script type="text/javascript">
     $('#form-div-meet', '#form-div-no-meet').hide();
     var selected = $('#id_meet option:selected').text();
-   
+
 	$('#id_did_meet').change(function () {
 		var selected = $('#id_did_meet option:selected').text();
 	    $('#form-div-meet').toggle(selected == "Yes, we did try to meet");

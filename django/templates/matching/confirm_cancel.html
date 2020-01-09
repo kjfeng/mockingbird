@@ -3,16 +3,16 @@
 <div>
 
     <p> Are you sure you want to cancel your match request with <b>{{username}}?</b> </p>
-    <form action="{% url 'done_cancel' %}" method="POST">
+    <form action="{% url 'done_cancel' %}" method="POST" style="padding-top: 1rem; display: inline-block">
         {% csrf_token %}
-        <input type="submit" value="Yes">
+        <button type="submit" style="outline: none; background-color: #ee0000">Yes</button>
         <input type="hidden" name="match" value="{{ username }}">
     </form>
-    <form action="{% url 'request_info' %}" method="POST">
+    <form action="{% url 'home' %}" method="POST" style="padding-top: 1rem; display: inline-block">
         {% csrf_token %}
-        <input type="submit" value="No">
+        <button type="submit" style="outline: none;">No</button>
     </form>
 
-<p><a href="{% url 'home' %} ">Back to Home</a> </p>
+<!-- <p><a href="{% url 'home' %} ">Back to Home</a> </p> -->
 </div>
 {% endblock %}
