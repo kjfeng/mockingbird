@@ -57,13 +57,13 @@ def survey(request):
 
                 # update the target's statistics
                 target.statistics.tot_interview += 1
-                current_total_rate = Decimal(target.statistics.rate) * Decimal(target.statistics.tot_interview)
+                current_total_rate = Decimal(target.statistics.rate) * target.statistics.tot_interview
                 target.statistics.rate = (current_total_rate + Decimal(form.cleaned_data['friendly']) / Decimal(
                     5.0)) / target.statistics.tot_interview
 
-                current_total_late = Decimal(target.statistics.late) * Decimal(target.statistics.tot_interview)
+                current_total_late = Decimal(target.statistics.late) * target.statistics.tot_interview
                 target.statistics.late += (current_total_late + Decimal(form.cleaned_data['friendly']) / Decimal(
-                    4.0)) / target.statistics.tot_interview
+                    5.0)) / target.statistics.tot_interview
 
                 # updates to ratings
                 if form.cleaned_data['friendly'] == "2":
