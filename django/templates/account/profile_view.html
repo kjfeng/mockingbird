@@ -62,10 +62,11 @@
           </div>
           <div class="col-md-12 col-lg-6">
             <h6><strong>Industry</strong></h6>
-              <p>{{target_user.profile.industry_choice_1}}</p>
-                {% if target_user.profile.industry_choice_2 != "None" %}
-                <p>&  {{target_user.profile.industry_choice_2}}</p>
-              {%endif%}
+            {% if target_user.profile.industry_choice_2 != "None" %}
+              <p>{{target_user.profile.industry_choice_1}}, {{target_user.profile.industry_choice_2}}</p> 
+            {% else %}
+              <p>{{target_user.profile.industry_choice_1}}</p> 
+            {% endif %}
           </div>
         </div>
           {% if target_user.profile.summary %}

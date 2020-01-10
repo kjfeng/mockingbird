@@ -52,12 +52,15 @@ def to_user_list(user_string, profile_or_user):
     i = 0
     while i < len(user_list):
         username = user_list[i]
-        user = User.objects.get(username=username)
-        if (profile_or_user == 'p'):
-            user_profile = Profile.objects.get(user=user)
-            user_list[i] = user_profile
-        else:
-            user_list[i] = user
+        try:
+            user = User.objects.get(username=username)
+            if (profile_or_user == 'p'):
+                user_profile = Profile.objects.get(user=user)
+                user_list[i] = user_profile
+            else:
+                user_list[i] = user
+        except:
+            return 'Deleted User'
         i += 1
 
     return user_list

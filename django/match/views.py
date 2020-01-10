@@ -307,6 +307,13 @@ def matchlist_get(request):
     match_cache = Cached_List_Matches.objects.filter(user=my_profile.user)[0]
 
     match_cache_list = to_user_list(match_cache.matches, 'u')
+    
+    # If there is a deleted user in the cache, refresh cache then return the new cache list.
+    if match_cache_list == 'Deleted User':
+        matchlist_create(request)
+        match_cache = Cached_List_Matches.objects.filter(user=my_profile.user)[0]
+        match_cache_list = to_user_list(match_cache.matches, 'u')
+    
     return match_cache_list
 
 @login_required(login_url='/login/')
