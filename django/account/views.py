@@ -6,6 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from onboard.models import ERROR_MESSAGES
 from mockingbird.decorators import onboard_only
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from .models import NotificationItem
+
 from django.urls import reverse
 import sys
 
@@ -36,13 +40,49 @@ def account_delete(request):
 
 
 def account_delete_confirm(request):
+    if request.user.profile.match_name or request.user.profile.match_name != "None":
+        target = User.objects.get(request.user.match_name)
+
+        # refreshes the list
+        matchlist_create(target)
+
+        # case where they were actually matched with their partner
+        if request.user.profile.is_matched:
+            # send notification to the target about their partner being deleted
+            NotificationItem.objects.create(type="DA", user=target, match_name=str(request.user.username))
+
+            current_site = get_current_site(request)
+
+            # logic to send email to the target
+            if target.profile.receive_email:
+                subject = '[MockingBird] Your Match has Deleted Their Account :('
+                message = render_to_string('account/deleted_user_email.html', {
+                    'user': target,
+                    'deleted_user': request.user.username,
+                    'domain': current_site.domain,
+                })
+                target.email_user(subject, message)
+
+            # reset target's profile
+            target.profile.is_matched = False
+            target.profile.match_name = "None"
+
+        else:
+            # if they only sent a request, reset the requested info
+            request_names = target.profile.requested_names
+            names_array = request_names.split(",")
+            new_array = []
+            for name in names_array:
+                if name != request.user.username:
+                    new_array.append(name)
+
+            target.profile.requested_names = new_array.join(",")
+
+        # case where the partner only sent a request
+        # logic to unmatch partner
+
     request.user.delete()
 
-    pulled = pull_notif(request.user)
-    context = {
-        'has_unread': pulled[0],
-        'notif': pulled[1]
-    }
     return render(request, 'account/deleted_user.html', context)
 
 

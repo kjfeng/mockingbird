@@ -1,0 +1,6 @@
+{% autoescape off %}
+Hi {{ user.username }},
+
+Your mockingbird mock request partner has left the nest :( Please return back to our site to find another partner.
+http://{{ domain }}{% url 'home' %}
+{% endautoescape %}

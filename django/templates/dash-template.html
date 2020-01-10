@@ -91,6 +91,14 @@
                            <p class="notif-detail"> {{n.created_at}} </p>
                          </div>
                        </div>
+                    {% elif n.type=="DA" %}
+                     <!-- Finish survey notification -->
+                       <div class="notif" id="notif">
+                         <div class="notif-container">
+                           Your partner {{n.match_name}} has deleted their account :(
+                           <p class="notif-detail"> {{n.created_at}} </p>
+                         </div>
+                       </div>
                      {% else %}
                      <!-- Finish survey notification -->
                        <div class="notif" id="notif">
