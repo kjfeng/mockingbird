@@ -1,0 +1,18 @@
+{% extends 'base-app.html' %}
+{% load static %}
+
+{% block content %}
+<div class="col-xs-12 col-sm-4 offset-sm-4" style="text-align: center">
+  <img src="{% static 'img/injured-bird.png' %}" alt="injured-bird" style="width: 100%; padding-top: 2rem; padding-bottom: 2rem">
+</div>
+
+<div>
+   <center> <h1> This user does not exist</h1>
+       <p> This user has deleted their account.</p>
+
+    <a href="{% url 'home' %} "> Back to Home</a>
+          </center>
+
+</div>
+
+{% endblock %}

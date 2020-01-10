@@ -77,7 +77,7 @@ def account_delete_confirm(request):
                 if name != request.user.username:
                     new_array.append(name)
 
-            target.profile.requested_names = new_array.join(",")
+            target.profile.requested_names = (",").join(new_array)
             target.profile.save()
 
         # case where the partner only sent a request
@@ -201,15 +201,16 @@ def profile_view(request, username):
     match_name = request.user.profile.match_name
 
     print(username)
+    print(match_name)
     if request.user.profile.is_matched and match_name == username:
-        #print("both")
+        print("both")
         is_matched = True
         has_sent = True
     elif match_name == username:
-        #print("request")
+        print("request")
         has_sent = True
-    elif match_name != "None":
-        #print("is matched")
+    elif match_name != "" and match_name != "None":
+        print("is matched")
         is_matched = True
     u = User.objects.filter(username=username)
 
@@ -221,7 +222,7 @@ def profile_view(request, username):
         'has_unread': pulled[0],
         'notif': pulled[1],
         'has_sent': has_sent,
-        'is_matched': is_matched
+        'is_matched': is_matched,
     }
     if len(u) == 0:
         return render(request, 'broken_page.html', context)
@@ -231,9 +232,15 @@ def profile_view(request, username):
         for x in pulled[1]:
             x.read = True
             x.save()
+
     elif request.method == 'POST' and 'send_request' in request.POST:
-        _on_accept_home(request, u[0].username)
-        return render('account/profile_view.html', context)
+        print(u[0].username)
+        valid = _on_accept_home(request, u[0].username)
+        context['has_sent'] = True
+        if valid:
+            return render(request, 'account/profile_view.html', context)
+        else:
+            return render(request, 'account/profile_does_not_exist.html', context)
 
     return render(request, 'account/profile_view.html', context)
 

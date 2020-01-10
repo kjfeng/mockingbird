@@ -43,6 +43,10 @@ register = template.Library()
 def _on_accept_home(request, username):
     if request.method == 'POST':
         t_username = username
+
+        target = User.objects.filter(username=str(t_username))[0]
+        if not target: return False
+
         print(t_username)
         # change sender to blocked
         request.user.profile.is_waiting = True
@@ -52,7 +56,7 @@ def _on_accept_home(request, username):
         request.user.profile.request_name = str(t_username)
 
         # change target's info
-        target = User.objects.filter(username=str(t_username))[0]
+
 
         target.profile.requested_names = target.profile.requested_names + "," + request.user.username
         #target.profile.is_matched = True
@@ -62,6 +66,7 @@ def _on_accept_home(request, username):
         target.profile.save()
 
         current_site = get_current_site(request)
+
         # logic to send email to the target if user accepts emails
         if target.profile.receive_email:
             subject = '[MockingBird] You have a Match!'
