@@ -99,7 +99,7 @@ def survey(request):
                     )
 
             Thread.objects.filter(Q(first=request.user) | Q(second=request.user)).delete()
-            matchlist_create(request)
+            matchlist_create(request.user)
             return redirect('survey:survey_complete')
 
     # if first time loading

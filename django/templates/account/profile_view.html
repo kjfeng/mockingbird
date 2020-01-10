@@ -3,8 +3,8 @@
 <div>
     <div class = "row">
         <div class ="col-md-6 col-lg-6">
-            {% if user.first_name %}
-            <h1 style="font-weight: 600">{{user.first_name}} </h1>
+            {% if target_user.first_name %}
+            <h1 style="font-weight: 600">{{target_user.first_name}} </h1>
             {% else %}
                 <h1 style="font-weight: 600">Name Unknown </h1>
             {% endif %}
@@ -12,11 +12,11 @@
         <div class="col-md-2 col-lg-2">
             <center>
                 <!-- rating system logic -->
-                {% if user.statistics.tot_interview >= 25 and user.statistics.overall_rating >= 4 %}
+                {% if target_user.statistics.tot_interview >= 25 and target_user.statistics.overall_rating >= 4 %}
                 <p style="border-radius:5px; background-color:green;"><font color="white"> expert flyer</font></p>
-                {% elif user.statistics.tot_interview >= 10 and user.statistics.overall_rating >= 4 %}
+                {% elif target_user.statistics.tot_interview >= 10 and target_user.statistics.overall_rating >= 4 %}
                 <p style="border-radius:5px; background-color: blue;"<font color="white"> flyer-in-training</font> </p>
-                {% elif user.statistics.tot_interview >= 5 and user.statistics.overall_rating >= 4 %}
+                {% elif target_user.statistics.tot_interview >= 5 and target_user.statistics.overall_rating >= 4 %}
                 <p style="border-radius:5px; background-color: orange;"> <font color="white">fledgling</font></p>
                 {% else %}
                 <p style="border-radius:5px; background-color: red;"><font color="white"> baby bird</font></p>
@@ -26,16 +26,16 @@
     </div>
     <div class="row">
           <div class="col-md-12 col-lg-6">
-          {% if user.profile.is_idle %}
-            <p>(@{{user.username}}) <b>(Idle)</b></p>
+          {% if target_user.profile.is_idle %}
+            <p>(@{{target_user.username}}) <b>(Idle)</b></p>
           {% else %}
-            <p>(@{{user.username}}) <b>(Active)</b></p>
+            <p>(@{{target_user.username}}) <b>(Active)</b></p>
           {% endif %}
           </div>
 
           <div class="col-md-12 col-lg-6">
 
-            {% if user.profile.email_confirmed %}
+            {% if target_user.profile.email_confirmed %}
                   <p><i class="material-icons">check_box</i> Email is Confirmed</p>
 
             {% else %}
@@ -48,43 +48,46 @@
         <div class="row">
           <div class="col-md-12 col-lg-6">
             <h6><strong>Year</strong></h6>
-            <p>{{user.profile.year_in_school}}</p>
+            <p>{{target_user.profile.year_in_school}}</p>
           </div>
           <div class="col-md-12 col-lg-6">
             <h6><strong>Major</strong></h6>
-            <p> {{user.profile.major}}</p>
+            <p> {{target_user.profile.major}}</p>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12 col-lg-6">
             <h6><strong>Desired Role</strong></h6>
-            <p>{{user.profile.role}}</p>
+            <p>{{target_user.profile.role}}</p>
           </div>
           <div class="col-md-12 col-lg-6">
             <h6><strong>Industry</strong></h6>
-            <p>{{user.profile.industry_choice_1}} &  {{user.profile.industry_choice_2}}</p>
+              <p>{{target_user.profile.industry_choice_1}}</p>
+                {% if target_user.profile.industry_choice_2 != "None" %}
+                <p>&  {{target_user.profile.industry_choice_2}}</p>
+              {%endif%}
           </div>
         </div>
-          {% if user.profile.summary %}
+          {% if target_user.profile.summary %}
           <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                   <h6><strong>Description</strong></h6>
-                    <p>{{user.profile.summary}}</p>
+                    <p>{{target_user.profile.summary}}</p>
               </div>
           </div>
           {% endif %}
 
         {% if is_matched and has_sent %}
-          <form style="padding-top: 1rem; padding-bottom: 1rem">
-            {% csrf_token %}
-        <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">You are already requested this user!</button>
-      </form>
+              <form style="padding-top: 1rem; padding-bottom: 1rem">
+                {% csrf_token %}
+            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">You are already requested this user!</button>
+          </form>
           {% elif is_matched %}
-          <form style="padding-top: 1rem; padding-bottom: 1rem">
-            {% csrf_token %}
-        <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">You already have a match!</button>
-              <p><small style="color:gray">You can only be matched with one person at a time so finish up that mock interview and come back!</small></p>
-      </form>
+                  <form style="padding-top: 1rem; padding-bottom: 1rem">
+                    {% csrf_token %}
+                <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">You already have a match!</button>
+                      <p><small style="color:gray">You can only be matched with one person at a time so finish up that mock interview and come back!</small></p>
+              </form>
           {% elif has_sent %}
           <form style="padding-top: 1rem; padding-bottom: 1rem">
             {% csrf_token %}

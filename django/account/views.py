@@ -41,7 +41,7 @@ def account_delete(request):
 
 def account_delete_confirm(request):
     if request.user.profile.match_name or request.user.profile.match_name != "None":
-        target = User.objects.get(request.user.match_name)
+        target = User.objects.get(username=request.user.profile.match_name)
 
         # refreshes the list
         matchlist_create(target)
@@ -66,6 +66,7 @@ def account_delete_confirm(request):
             # reset target's profile
             target.profile.is_matched = False
             target.profile.match_name = "None"
+            target.profile.save()
 
         else:
             # if they only sent a request, reset the requested info
@@ -77,13 +78,14 @@ def account_delete_confirm(request):
                     new_array.append(name)
 
             target.profile.requested_names = new_array.join(",")
+            target.profile.save()
 
         # case where the partner only sent a request
         # logic to unmatch partner
 
     request.user.delete()
 
-    return render(request, 'account/deleted_user.html', context)
+    return render(request, 'account/deleted_user.html')
 
 
 def logout_view(request):
@@ -111,7 +113,7 @@ def account_edit(request):
         if form.is_valid() and isBValidReturn == 1:
             form.save()
             formB.save()
-            matchlist_create(request)
+            matchlist_create(request.user)
             return redirect('account:account_details')
         else:
             formB.fields['role'].label = "Desired Role"
@@ -198,19 +200,24 @@ def profile_view(request, username):
     is_matched = False
     match_name = request.user.profile.match_name
 
+    print(username)
     if request.user.profile.is_matched and match_name == username:
+        #print("both")
         is_matched = True
         has_sent = True
     elif match_name == username:
+        #print("request")
         has_sent = True
     elif match_name != "None":
+        #print("is matched")
         is_matched = True
     u = User.objects.filter(username=username)
 
     pulled = pull_notif(request.user)
 
     context = {
-        'user': u,
+        'user': request.user,
+        'target_user': u,
         'has_unread': pulled[0],
         'notif': pulled[1],
         'has_sent': has_sent,
@@ -218,7 +225,7 @@ def profile_view(request, username):
     }
     if len(u) == 0:
         return render(request, 'broken_page.html', context)
-    context['user'] = u[0]
+    context['target_user'] = u[0]
 
     if request.method == 'POST' and 'markread' in request.POST:
         for x in pulled[1]:

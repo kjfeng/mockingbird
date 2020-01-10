@@ -19,7 +19,7 @@ def tags_view(request):
       request.user.profile.onboard_confirmed = True
       form.save()
       formB.save()
-      matchlist_create(request)
+      matchlist_create(request.user)
       return redirect('home')
     else:
       error_message = 'You can\'t fly just yet! ' + ERROR_MESSAGES[isValidReturn]

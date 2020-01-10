@@ -268,8 +268,8 @@ def matchlist_view(request):
     return redirect('../matchlistresults/')
 
 # Creats a list match caching
-def matchlist_create(request):
-    my_profile = Profile.objects.get(id=request.user.id)
+def matchlist_create(user):
+    my_profile = user.profile
     rankersString = str(my_profile.rank_by)
 
     rankers = []
@@ -297,7 +297,7 @@ def matchlist_get(request):
 
     # in the case that the user doesn't have a cached match list yet
     if not match_cache:
-        matchlist_create(request)
+        matchlist_create(request.user)
 
     match_cache = Cached_List_Matches.objects.filter(user=my_profile.user)[0]
 
@@ -359,7 +359,7 @@ def update_matchconfig(request):
     
         if form.is_valid():
             form.save()
-            matchlist_create(request)
+            matchlist_create(request.user)
         else:
             return redirect('matchconfig')
     
