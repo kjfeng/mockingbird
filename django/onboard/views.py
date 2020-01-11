@@ -111,10 +111,10 @@ def login(request):
 
     context = {
         'has_unread': pulled[0],
-        'notif': pulled[1], 
-        'discover_users': discover_users, 
-        'recommended': recommended, 
-        'match': match, 
+        'notif': pulled[1],
+        'discover_users': discover_users,
+        'recommended': recommended,
+        'match': match,
         'requestee': requestee,
     }
 
@@ -130,7 +130,7 @@ def login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 auth_login(request, user)
-                redirect('home')
+                return redirect('home')
             else:
                 # return invalid login error message
                 return render(request, '../templates/home.html', {'form': form, 'error_message': "Incorrect username and/or password"})
