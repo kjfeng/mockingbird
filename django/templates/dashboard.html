@@ -71,13 +71,13 @@
         <div class="col-md-12 col-lg-6">
           <form action="{% url 'survey:survey' %}" style="padding-top: 1rem; padding-bottom: 1rem;">
             {% csrf_token %}
-            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">I'm done</button>
+            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">I'm done!</button>
           </form>
         </div>
         <div class="col-md-12 col-lg-6">
           <form method="POST" action="{% url 'open-chat' %}" style="padding-top: 1rem; padding-bottom: 1rem">
             {% csrf_token %}
-            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Chat With match</button>
+            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Chat With Match</button>
             <input type="hidden" id="username" name="username" value="{{ user.profile.match_name }}">
           </form>
         </div>
