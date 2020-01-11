@@ -212,6 +212,27 @@
     </div>
 
     <div class="module">
+      <h3 style="font-weight: 600; padding-bottom: 1rem">Incoming requests</h3>
+
+      <div class="">
+        {% if user.profile.is_idle %}
+        <p>You are idle so you cannot receive match requests.</p>
+        {% elif user.profile.has_request and not user.profile.is_matched %}
+        <p>{{user.requested_users|length}}</p>
+        {% for requester in user.requested_users %}
+        <div class="profile-card">
+          <h5><strong>Name:</strong> {{requester.first_name}} <a href="{% url 'account:profile_view' user.username %}">(@{{ requester.username }})</a></h5>
+
+        </div>
+        {% endfor %}
+        <a href="{% url 'request_info' %}">Respond to your requests</a>
+        {% else %}
+        <p>You have no incoming mock interview requests.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="module">
       {% if user.profile.is_idle %}
         <h3 style="font-weight: 600">Your status is "idle" so this is hidden.</h3>
       {% else %}
@@ -249,7 +270,6 @@
         {% endif %}
       {% endif %}
     </div>
-
 
 
     <!-- END RIGHT SIDE -->
