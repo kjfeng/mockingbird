@@ -40,7 +40,7 @@ def account_delete(request):
 
 
 def account_delete_confirm(request):
-    if request.user.profile.match_name or request.user.profile.match_name != "None":
+    if request.user.profile.match_name and request.user.profile.match_name != "None":
         target = User.objects.get(username=request.user.profile.match_name)
 
         # refreshes the list
