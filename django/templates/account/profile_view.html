@@ -1,5 +1,14 @@
 {% extends 'base-app.html'%}
+
 {% block content %}
+<style>
+    .non-clickable {
+        pointer-events: none;
+        cursor: default;
+        border-radius: 5px;
+        padding: 10px;
+    }
+</style>
 <div>
     <div class = "row">
         <div class ="col-md-6 col-lg-6">
@@ -79,23 +88,18 @@
           {% endif %}
 
         {% if is_matched and has_sent %}
-              <form style="padding-top: 1rem; padding-bottom: 1rem">
-                {% csrf_token %}
-            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">You are already requested this user!</button>
-          </form>
+
+            <button class="non-clickable" style="background-color: #FFC933; color: #3f3f3f; outline: none">You are already requested this user!</button>
           {% elif is_matched %}
-                  <form style="padding-top: 1rem; padding-bottom: 1rem">
-                    {% csrf_token %}
-                <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">You already have a match!</button>
+
+                <button class="non-clickable" style="background-color: #FFC933; color: #3f3f3f; outline: none">You already have a match!</button>
                       <p><small style="color:gray">You can only be matched with one person at a time so finish up that mock interview and come back!</small></p>
-              </form>
+
           {% elif has_sent %}
-          <form style="padding-top: 1rem; padding-bottom: 1rem">
-            {% csrf_token %}
-        <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">You've already sent a request!</button>
+
+        <button class="non-clickable" style="background-color: #FFC933; color: #3f3f3f; outline: none">You've already sent a request!</button>
              <p><small style="color:gray">You can only send one request at a time so please be patient and wait for that user to respond first. </small></p>
 
-      </form>
           {% else %}
         <form method="POST" style="padding-top: 1rem; padding-bottom: 1rem">
             {% csrf_token %}

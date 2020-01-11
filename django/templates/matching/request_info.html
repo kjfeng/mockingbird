@@ -4,7 +4,9 @@
 
 <h1 class="title"> Current Matches</h1>
 {% if user.profile.is_matched %}
-<p> Congratulations on getting Matched! Please contact your Match with the contact information below. </p>
+<p> Congratulations on getting Matched! Please contact your Match with the contact information below or through our
+    provided chat room. </p>
+
 {% elif user.profile.is_sender %}
 <p> Please wait for your match to accept the match and contact you. If you would like to cancel your match request,
 you can do so here. </p>
@@ -14,9 +16,6 @@ you can do so here. </p>
     <button type="submit" style="outline: none; background-color: #ee0000">Cancel request</button>
     <p><input type="hidden" name="requestee" value="{{ requestee.username }}"></p>
 </form>
-
-    <p> You will not be able to see information about your other match requests until you finish up with your current
-    match.</p>
 {% else %}
 <p> Please review your match request. You may choose to accept or decline. </p>
 <b><hr></b>
@@ -24,6 +23,13 @@ you can do so here. </p>
 <div>
     {% if user.profile.is_matched %}
     <p> Contact Info: {{ requestee.email }}</p>
+    <form method="POST" action="{% url 'open-chat' %}" style="padding-top: 1rem; padding-bottom: 1rem">
+            {% csrf_token %}
+            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Chat With Match</button>
+            <input type="hidden" id="username" name="username" value="{{ user.profile.match_name }}">
+          </form>
+    <p><small style="color:gray"> You will not be able to see information about your other match requests until you finish up with your current
+        match.</small></p>
     {% elif user.profile.has_request %}
     {% for match in users %}
     <p> Username: {{ match.username }} </p>
@@ -44,6 +50,7 @@ you can do so here. </p>
         <p><input type="hidden" name="match" value="{{ match.username }}"></p>
     </form>
     <b><hr></b>
+
     {% endfor %}
     {% endif %}
 </div>
