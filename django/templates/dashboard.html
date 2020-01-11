@@ -217,11 +217,12 @@
       <div class="">
         {% if user.profile.is_idle %}
         <p>You are idle so you cannot receive match requests.</p>
-        {% elif user.profile.has_request and not user.profile.is_matched %}
+        {% elif user.profile.is_matched %}
+        <p>You are currently matched. When you finish your mock interview, you will be able to receive match requests again. </p>
+        {% elif user.profile.has_request %}
         {% for user in users %}
         <div class="profile-card">
           <h5>{{user.first_name}} (<a href="{% url 'account:profile_view' user.username %}">@{{ user.username }}</a>)</h5>
-
         </div>
         {% endfor %}
         <a href="{% url 'request_info' %}">Respond to your requests</a>
@@ -239,7 +240,7 @@
         {% if user.profile.is_sender %}
           <p>You've already sent a match request and you can only send one at a time so this is unavailable at this time.</p>
         {% elif user.profile.is_matched %}
-          <p>You've already been matched so this is unavailable at this time.</p>
+          <p>You've already been matched so this is unavailable until you finish your mock interview.</p>
         {% else %}
           <p>Based on <a href="{% url 'account:account_details' %}">your profile</a> and <a href="{% url 'matchconfig' %}">your configurations</a></p>
           <!-- pull first couple matches from list view and display here -->
