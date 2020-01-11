@@ -130,6 +130,7 @@ def login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 auth_login(request, user)
+                redirect('home')
             else:
                 # return invalid login error message
                 return render(request, '../templates/home.html', {'form': form, 'error_message': "Incorrect username and/or password"})

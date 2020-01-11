@@ -532,21 +532,33 @@ def done_cancel(request):
     # update target's info
     match = request.POST.get('match')
     target = User.objects.get(username=match)
-    target.profile.match_name = ""
-    target.profile.is_matched = False
-    target.profile.is_waiting = False
-    target.profile.has_request = False
-    target.profile.is_sender = False
-    target.profile.save()
 
     # make a notification for the target
     # if user is sender, they are canceling
     if request.user.profile.is_sender:
+        print("here")
+        # if they are only one in the request
+        request_names = target.profile.requested_names.split(",")
+        if len(request_names) == 1:
+            target.profile.has_request = False
+        else:
+            # remove their name from request_names
+            new_names = []
+            for x in request_names:
+                if x != request.user.username:
+                    new_names.append(x)
+            target.profile.requested_names = ",".join(new_names)
+
         NotificationItem.objects.create(type="MC", user=target, match_name=str(request.user.username))
 
     # if they are not the sender, they are rejected
     else:
+        target.profile.is_sender = False
+        target.profile.is_waiting = False
+        target.profile.match_name = ""
+
         NotificationItem.objects.create(type="MD", user=target, match_name=str(request.user.username))
+    target.profile.save()
 
     if target.profile.receive_email:
         # send email that the match has been canceled
