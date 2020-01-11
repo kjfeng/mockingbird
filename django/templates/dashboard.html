@@ -31,7 +31,7 @@
       <h3 style="color: white; font-weight: 600">You sent a match request to: {{ user.profile.match_name }} </h3>
 
       {% elif user.profile.is_idle %}
-      <h3 style="color: white; font-weight: 600">Your status is "idle" so this is hidden.</h3>
+      <h3 style="color: white; font-weight: 600">Your status is "inactive" so this is hidden.</h3>
       {% else %}
       <h3 style="color: white; font-weight: 600">Your recommended match</h3>
       <p style="color: white">Based on <a href="{% url 'account:account_details' %}" style="color: #FFC933">your profile</a> and <a href="{% url 'matchconfig' %}" style="color: #FFC933">your configurations</a></p>
@@ -185,7 +185,7 @@
     <!-- RIGHT SIDE -->
     <div class="module adventurous">
     {% if user.profile.is_idle %}
-    <h3 style="font-weight: 600">Your status is "idle" so this is hidden.</h3>
+    <h3 style="font-weight: 600">Your status is "inactive" so this is hidden.</h3>
     {% else %}
         <h3 style="font-weight: 600; padding-bottom: 1rem">I'm feeling adventurous</h3>
         {% if user.profile.is_matched %}
@@ -216,7 +216,7 @@
 
       <div class="">
         {% if user.profile.is_idle %}
-        <p>You are idle so you cannot receive match requests.</p>
+        <p>You are inactive so you cannot receive match requests.</p>
         {% elif user.profile.is_matched %}
         <p>You are currently matched. When you finish your mock interview, you will be able to receive match requests again. </p>
         {% elif user.profile.has_request %}
@@ -234,7 +234,7 @@
 
     <div class="module">
       {% if user.profile.is_idle %}
-        <h3 style="font-weight: 600">Your status is "idle" so this is hidden.</h3>
+        <h3 style="font-weight: 600">Your status is "inactive" so this is hidden.</h3>
       {% else %}
       <h3 style="font-weight: 600">Discover similar users</h3>
         {% if user.profile.is_sender %}
