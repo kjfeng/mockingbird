@@ -63,9 +63,9 @@
           <div class="col-md-12 col-lg-6">
             <h6><strong>Industry</strong></h6>
             {% if target_user.profile.industry_choice_2 != "None" %}
-              <p>{{target_user.profile.industry_choice_1}}, {{target_user.profile.industry_choice_2}}</p> 
+              <p>{{target_user.profile.industry_choice_1}}, {{target_user.profile.industry_choice_2}}</p>
             {% else %}
-              <p>{{target_user.profile.industry_choice_1}}</p> 
+              <p>{{target_user.profile.industry_choice_1}}</p>
             {% endif %}
           </div>
         </div>
@@ -81,7 +81,7 @@
         {% if is_matched and has_sent %}
               <form style="padding-top: 1rem; padding-bottom: 1rem">
                 {% csrf_token %}
-            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">You are already requested this user!</button>
+            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">You have already requested this user!</button>
           </form>
           {% elif is_matched %}
                   <form style="padding-top: 1rem; padding-bottom: 1rem">
