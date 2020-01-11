@@ -543,6 +543,7 @@ def done_cancel(request):
         # update own info
         request.user.profile.is_waiting = False
         request.user.profile.is_sender = False
+        request.user.profile.match_name = "None"
         request.user.save()
 
         print("here")
