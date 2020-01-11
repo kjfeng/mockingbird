@@ -98,31 +98,26 @@ def login(request):
 
 
     match = ""
-    requestee = ""
+    requested_users = []
 
     if not request.user.is_anonymous:
         if request.user.profile.match_name != "" and request.user.profile.match_name != "None":
             name = request.user.profile.match_name
             match = User.objects.filter(username=name)[0]
 
-        #if request.user.profile.request_name != "":
-        #    name = request.user.profile.request_name
-        #    requestee = User.objects.filter(username=name)[0]
+        if request.user.profile.is_matched or request.user.profile.is_waiting or request.user.profile.has_request:
 
-    requested_users = []
-    if request.user.profile.is_matched or request.user.profile.is_waiting or request.user.profile.has_request:
+            requested_names = str(request.user.profile.requested_names).split(",")
+            # requested_users = []
 
-        requested_names = str(request.user.profile.requested_names).split(",")
-        # requested_users = []
+            for name in requested_names:
+                if name is not '':
+                    requested_users.append(User.objects.get(username=name))
 
-        for name in requested_names:
-            if name is not '':
-                requested_users.append(User.objects.get(username=name))
-
-        if request.method == 'POST' and 'markread' in request.POST:
-            for x in pulled[1]:
-                x.read = True
-                x.save()
+            if request.method == 'POST' and 'markread' in request.POST:
+                for x in pulled[1]:
+                    x.read = True
+                    x.save()
 
 
     context = {
@@ -131,7 +126,6 @@ def login(request):
         'discover_users': discover_users,
         'recommended': recommended,
         'match': match,
-        'requestee': requestee,
         'users': requested_users,
     }
 
