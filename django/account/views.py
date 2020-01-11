@@ -80,8 +80,36 @@ def account_delete_confirm(request):
             target.profile.requested_names = ",".join(new_array)
             target.profile.save()
 
-        # case where the partner only sent a request
+    # case where the partner only sent a request
+    names_list = request.user.profile.requested_names.split(",")
+    for name in names_list:
+        target = User.objects.filter(username=name)
+
+        # if the target no longer in database skip
+        if len(target) == 0:
+            continue
+
+        target = target[0]
+
         # logic to unmatch partner
+        target.profile.match_name = "None"
+        target.profile.is_waiting = False
+        target.profile.is_sender = False
+        target.profile.save()
+
+        # send them a notification
+        NotificationItem.objects.create(type="DAR", user=target, match_name=str(request.user.username))
+
+        # send them an email
+        if target.profile.receive_email:
+            current_site = get_current_site(request)
+            subject = '[MockingBird] Your Match Request has Deleted Their Account :('
+            message = render_to_string('account/deleted_user_email.html', {
+                'user': target,
+                'deleted_user': request.user.username,
+                'domain': current_site.domain,
+            })
+            target.email_user(subject, message)
 
     request.user.delete()
 
