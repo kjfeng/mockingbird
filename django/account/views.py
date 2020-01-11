@@ -154,6 +154,18 @@ def change_password(request):
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(request, 'Your password was successfully updated!')
+
+            current_site = get_current_site(request)
+
+            # send an email that also says this
+            if request.user.profile.receive_email:
+                subject = '[MockingBird] Your Password has been Changed!'
+                message = render_to_string('account/changed_password_email.html', {
+                    'user': request.user,
+                    'domain': current_site.domain,
+                })
+                request.user.email_user(subject, message)
+
             return redirect('account:account_details')
         else:
             messages.error(request, 'Please correct the error below.')
