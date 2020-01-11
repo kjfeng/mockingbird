@@ -66,18 +66,18 @@
           </div>
         </div>
       </div>
-      <p>Enjoy your mock interview, and make sure <strong>you both interview each other</strong> for optimal benefit! Please take the following survey once you're done. You can also now chat with your match.</p>
+      <p>Enjoy your mock interview, and make sure <strong>you both interview each other</strong> for optimal benefit! You can also now chat with your match. When you've finished your mock interview, click 'I'm done'.</p>
       <div class="row">
         <div class="col-md-12 col-lg-6">
           <form action="{% url 'survey:survey' %}" style="padding-top: 1rem; padding-bottom: 1rem;">
             {% csrf_token %}
-            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Take the survey</button>
+            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">I'm done</button>
           </form>
         </div>
         <div class="col-md-12 col-lg-6">
           <form method="POST" action="{% url 'open-chat' %}" style="padding-top: 1rem; padding-bottom: 1rem">
             {% csrf_token %}
-            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Chat With Match</button>
+            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Chat With match</button>
             <input type="hidden" id="username" name="username" value="{{ user.profile.match_name }}">
           </form>
         </div>
@@ -159,23 +159,24 @@
     </div>
 
     <div class="module last-left">
-      <h3 style="font-weight: 600; padding-bottom: 1rem">Upcoming mock interviews</h3>
-      {% if user.profile.is_matched %}
+      <h3 style="font-weight: 600;">Incoming requests</h3>
+
       <div class="">
-        <h5><strong>Name:</strong> {{ match.first_name }} (<a href="{% url 'account:profile_view' request.user.profile.match_name %}">@{{match.username}}</a>)</h5>
-        {% if match.profile.industry_choice_2 != "None" %}
-        <span><strong>Industry Choices:</strong> {{ match.profile.industry_choice_1 }}, {{ match.profile.industry_choice_2 }}</span>
+        {% if user.profile.is_idle %}
+        <p>You are idle so you cannot receive match requests.</p>
+        {% elif user.profile.is_matched %}
+        <p>You are currently matched. When you finish your mock interview, you will be able to receive match requests again. </p>
+        {% elif user.profile.has_request %}
+        {% for user in users %}
+        <div class="profile-card">
+          <h5>{{user.first_name}} (<a href="{% url 'account:profile_view' user.username %}">@{{ user.username }}</a>)</h5>
+        </div>
+        {% endfor %}
+        <a href="{% url 'request_info' %}">Respond to your requests</a>
         {% else %}
-        <span><strong>Industry Choices:</strong> {{ match.profile.industry_choice_1 }}</span>
+        <p>You have no incoming mock interview requests.</p>
         {% endif %}
-        <br>
-        <span><strong>Contact:</strong> {{match.email}}<span>
-        <br>
-        <a href="#">View Profile</a>
       </div>
-      {% else %}
-      <p>You have no upcoming mock interviews.</p>
-      {% endif %}
     </div>
 
     <!-- END LEFT SIDE -->
