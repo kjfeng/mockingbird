@@ -162,7 +162,7 @@
       <h3 style="font-weight: 600; padding-bottom: 1rem">Upcoming mock interviews</h3>
       {% if user.profile.is_matched %}
       <div class="">
-        <h5><strong>Name:</strong> {{match.first_name }}( <a href="{% url 'account:profile_view' request.user.profile.match_name %}">@{{match.username}}</a>)</h5>
+        <h5><strong>Name:</strong> {{ match.first_name }} (<a href="{% url 'account:profile_view' request.user.profile.match_name %}">@{{match.username}}</a>)</h5>
         {% if match.profile.industry_choice_2 != "None" %}
         <span><strong>Industry Choices:</strong> {{ match.profile.industry_choice_1 }}, {{ match.profile.industry_choice_2 }}</span>
         {% else %}
@@ -212,16 +212,15 @@
     </div>
 
     <div class="module">
-      <h3 style="font-weight: 600; padding-bottom: 1rem">Incoming requests</h3>
+      <h3 style="font-weight: 600;">Incoming requests</h3>
 
       <div class="">
         {% if user.profile.is_idle %}
         <p>You are idle so you cannot receive match requests.</p>
         {% elif user.profile.has_request and not user.profile.is_matched %}
-        <p>{{user.requested_users|length}}</p>
-        {% for requester in user.requested_users %}
+        {% for user in users %}
         <div class="profile-card">
-          <h5><strong>Name:</strong> {{requester.first_name}} <a href="{% url 'account:profile_view' user.username %}">(@{{ requester.username }})</a></h5>
+          <h5>{{user.first_name}} (<a href="{% url 'account:profile_view' user.username %}">@{{ user.username }}</a>)</h5>
 
         </div>
         {% endfor %}

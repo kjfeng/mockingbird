@@ -109,6 +109,22 @@ def login(request):
         #    name = request.user.profile.request_name
         #    requestee = User.objects.filter(username=name)[0]
 
+    requested_users = []
+    if request.user.profile.is_matched or request.user.profile.is_waiting or request.user.profile.has_request:
+
+        requested_names = str(request.user.profile.requested_names).split(",")
+        # requested_users = []
+
+        for name in requested_names:
+            if name is not '':
+                requested_users.append(User.objects.get(username=name))
+
+        if request.method == 'POST' and 'markread' in request.POST:
+            for x in pulled[1]:
+                x.read = True
+                x.save()
+
+
     context = {
         'has_unread': pulled[0],
         'notif': pulled[1],
@@ -116,6 +132,7 @@ def login(request):
         'recommended': recommended,
         'match': match,
         'requestee': requestee,
+        'users': requested_users,
     }
 
     if request.method == 'POST' and 'send_request' in request.POST:
