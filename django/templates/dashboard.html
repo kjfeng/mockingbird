@@ -66,12 +66,12 @@
           </div>
         </div>
       </div>
-      <p>Enjoy your mock interview, and make sure <strong>you both interview each other</strong> for optimal benefit! Please take the following survey once you're done. You can also now chat with your match.</p>
+      <p>Enjoy your mock interview, and make sure <strong>you both interview each other</strong> for optimal benefit! You can also now chat with your match. When you've finished your mock interview, click 'I'm done'.</p>
       <div class="row">
         <div class="col-md-12 col-lg-6">
           <form action="{% url 'survey:survey' %}" style="padding-top: 1rem; padding-bottom: 1rem;">
             {% csrf_token %}
-            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Take the survey</button>
+            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">I'm done</button>
           </form>
         </div>
         <div class="col-md-12 col-lg-6">
