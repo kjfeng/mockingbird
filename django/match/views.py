@@ -494,6 +494,10 @@ def accept_request(request):
         send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
         matchedUser = MatchedUser(username = str(target.username), email = str(target.email),
                     industry1 = str(target.profile.industry_choice_1), industry2 = str(target.profile.industry_choice_2))
+
+        # notification for the send survey notification
+
+
         request.session['matchedUser'] = matchedUser.__dict__
         return redirect('request_info')
 
