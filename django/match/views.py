@@ -398,6 +398,11 @@ def request_info(request):
 
         requestee = request.session.get('matchedUser', None)
 
+        request_match = ""
+        request_matches = User.objects.filter(username=request.user.profile.match_name)
+        if request_matches:
+            request_match = request_matches[0]
+
         # if (str(target.profile.industry_choice_2) == 'None'):
         #     industry = target.profile.industry_choice_1
         # else:
@@ -405,6 +410,7 @@ def request_info(request):
         context = {
             'users': requested_users,
             'requestee': requestee,
+            'request_match': request_match,
             # 'username': target.username,
             # 'industry': industry,
             # 'year': target.profile.year_in_school,

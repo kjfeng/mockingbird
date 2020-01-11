@@ -1,28 +1,18 @@
 {% extends 'base-app.html' %}
 {% block content %}
 <div>
+{% if user.profile.is_matched %}
+<h1 class="title"> Current Match</h1>
+    {% else %}
+    <h1 class="title"> Current Matches</h1>
+    {% endif %} 
 
-<h1 class="title"> Current Matches</h1>
+    <!-- match page (w contact means) -->
 {% if user.profile.is_matched %}
 <p> Congratulations on getting Matched! Please contact your Match with the contact information below or through our
     provided chat room. </p>
-
-{% elif user.profile.is_sender %}
-<p> Please wait for your match to accept the match and contact you. If you would like to cancel your match request,
-you can do so here. </p>
-<form method="POST" action="{% url 'confirm_cancel_request' %}">
-    {% csrf_token %}
-    <!-- <p><input type="submit" value="Cancel Request"></p> -->
-    <button type="submit" style="outline: none; background-color: #ee0000">Cancel request</button>
-    <p><input type="hidden" name="requestee" value="{{ requestee.username }}"></p>
-</form>
-{% else %}
-<p> Please review your match request. You may choose to accept or decline. </p>
-<b><hr></b>
-{% endif %}
-<div>
-    {% if user.profile.is_matched %}
-    <p> Contact Info: {{ requestee.email }}</p>
+    <b><hr></b>
+ <p> Contact Info: {{ requestee.email }}</p>
     <form method="POST" action="{% url 'open-chat' %}" style="padding-top: 1rem; padding-bottom: 1rem">
             {% csrf_token %}
             <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Chat With Match</button>
@@ -30,30 +20,60 @@ you can do so here. </p>
           </form>
     <p><small style="color:gray"> You will not be able to see information about your other match requests until you finish up with your current
         match.</small></p>
-    {% elif user.profile.has_request %}
-    {% for match in users %}
-    <p> Username: {{ match.username }} </p>
-    <p> Industry 1: {{ match.profile.industry_choice_1 }}</p>
-    <p> Industry 2: {{ match.profile.industry_choice_2 }}</p>
-    <p> Year: {{match.profile.year_in_school}} </p>
-    <p> Desired Role: {{ match.profile.role }}</p>
-    <form method="POST" action="{% url 'accept_request' %}" style="padding-top: 1rem; display: inline-block">
-        {% csrf_token %}
-        <!-- <p><input type="submit" value="Accept Request"></p> -->
-        <button type="submit" style="outline: none;">Accept Request</button>
-        <input type="hidden" name="match" value="{{ match.username }}">
-    </form>
-    <form method="POST" action="{% url 'confirm_cancel_request' %}" style="padding-top: 1rem; display: inline-block">
-        {% csrf_token %}
-        <!-- <p><input type="submit" value="Reject Request"></p> -->
-        <button type="submit" style="outline: none; background-color: #ee0000">Reject Request</button>
-        <p><input type="hidden" name="match" value="{{ match.username }}"></p>
-    </form>
     <b><hr></b>
 
-    {% endfor %}
+{% else %}
+    {% if user.profile.is_sender %}
+        <p> Please wait for your match to accept the match and contact you. If you would like to cancel your match request,
+        you can do so here. </p>
+        <b><hr></b>
+        <p> Username: {{ request_match.username }} </p>
+        <p> Industry 1: {{ request_match.profile.industry_choice_1 }}</p>
+        <p> Industry 2: {{ request_match.profile.industry_choice_2 }}</p>
+        <p> Year: {{request_match.profile.year_in_school}} </p>
+        <p> Desired Role: {{ request_match.profile.role }}</p>
+        <form method="POST" action="{% url 'confirm_cancel_request' %}">
+            {% csrf_token %}
+            <!-- <p><input type="submit" value="Cancel Request"></p> -->
+            <button type="submit" style="outline: none; background-color: #ee0000">Cancel request</button>
+            <p><input type="hidden" name="requestee" value="{{ requestee.username }}"></p>
+        </form>
+            <hr>
+
     {% endif %}
+
+    {% if user.profile.has_request %}
+        <p> Please review your match request. You may choose to accept or decline. </p>
+            <b><hr></b>
+        <ddiv>
+
+        {% for match in users %}
+        <p> Username: {{ match.username }} </p>
+        <p> Industry 1: {{ match.profile.industry_choice_1 }}</p>
+        <p> Industry 2: {{ match.profile.industry_choice_2 }}</p>
+        <p> Year: {{match.profile.year_in_school}} </p>
+        <p> Desired Role: {{ match.profile.role }}</p>
+        <form method="POST" action="{% url 'accept_request' %}" style="padding-top: 1rem; display: inline-block">
+            {% csrf_token %}
+            <!-- <p><input type="submit" value="Accept Request"></p> -->
+            <button type="submit" style="outline: none;">Accept Request</button>
+            <input type="hidden" name="match" value="{{ match.username }}">
+        </form>
+        <form method="POST" action="{% url 'confirm_cancel_request' %}" style="padding-top: 1rem; display: inline-block">
+            {% csrf_token %}
+            <!-- <p><input type="submit" value="Reject Request"></p> -->
+            <button type="submit" style="outline: none; background-color: #ee0000">Reject Request</button>
+            <p><input type="hidden" name="match" value="{{ match.username }}"></p>
+        </form>
+        <b><hr></b>
+
+        {% endfor %}
+     {% endif %}
 </div>
+
+{% endif %}
+
+
 <p><a href="{% url 'home' %} ">Back to Home</a> </p>
 </div>
 
