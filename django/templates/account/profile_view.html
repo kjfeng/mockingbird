@@ -27,9 +27,9 @@
     <div class="row">
           <div class="col-md-12 col-lg-6">
           {% if target_user.profile.is_idle %}
-            <p>(@{{target_user.username}}) <b>(Idle)</b></p>
+            <p>(@{{target_user.username}}) <b style="color: orange">(Idle)</b></p>
           {% else %}
-            <p>(@{{target_user.username}}) <b>(Active)</b></p>
+            <p>(@{{target_user.username}}) <b style="color: green">(Active)</b></p>
           {% endif %}
           </div>
 
