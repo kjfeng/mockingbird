@@ -112,7 +112,7 @@ def _on_accept(request):
             target.email_user(subject, message)
 
         # logic to create a notification for the target
-        NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username)) 
+        NotificationItem.objects.create(type="MR", user=target, match_name=str(request.user.username))
         return True
 
 # Create your views here.
@@ -246,7 +246,7 @@ def matchlist_view(request):
         rankers = []
         if (rankersString is not None):
             rankers = rankersString.split(',')
-        
+
         if "" in rankers:
             rankers.remove("")
         match_list = list_match(my_profile, rankers, my_profile.industry_match)
@@ -257,7 +257,7 @@ def matchlist_view(request):
         else:
             match_cache = list(match_cache)[0]
             match_cache.matches = matches
-        
+
         match_cache.save()
 
         matchedUsers = []
@@ -280,7 +280,7 @@ def matchlist_create(user):
     rankers = []
     if (rankersString is not None):
         rankers = rankersString.split(',')
-    
+
     if "" in rankers:
         rankers.remove("")
     match_list = list_match(my_profile, rankers, my_profile.industry_match)
@@ -291,7 +291,7 @@ def matchlist_create(user):
     else:
         match_cache = list(match_cache)[0]
         match_cache.matches = matches
-    
+
     match_cache.save()
 
 
@@ -307,13 +307,13 @@ def matchlist_get(request):
     match_cache = Cached_List_Matches.objects.filter(user=my_profile.user)[0]
 
     match_cache_list = to_user_list(match_cache.matches, 'u')
-    
+
     # If there is a deleted user in the cache, refresh cache then return the new cache list.
     if match_cache_list == 'Deleted User':
         matchlist_create(request.user)
         match_cache = Cached_List_Matches.objects.filter(user=my_profile.user)[0]
         match_cache_list = to_user_list(match_cache.matches, 'u')
-    
+
     return match_cache_list
 
 @login_required(login_url='/login/')
@@ -368,13 +368,13 @@ def update_matchconfig(request):
     if request.method == 'POST':
         my_profile = Profile.objects.get(id=request.user.id)
         form = MatchConfigurationForm(request.POST, instance=request.user.profile)
-    
+
         if form.is_valid():
             form.save()
             matchlist_create(request.user)
         else:
             return redirect('matchconfig')
-    
+
     return redirect('home')
 
 @login_required(login_url='/login/')
@@ -490,8 +490,8 @@ def accept_request(request):
             target.email_user(subject, message)
 
         #send_survey(request, target, str(target.profile.match_name), str(t_username))
-        #send_time = timezone.now() + timedelta(seconds=30)
-       # send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
+        send_time = timezone.now() + timedelta(seconds=30)
+        send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
         matchedUser = MatchedUser(username = str(target.username), email = str(target.email),
                     industry1 = str(target.profile.industry_choice_1), industry2 = str(target.profile.industry_choice_2))
         request.session['matchedUser'] = matchedUser.__dict__
