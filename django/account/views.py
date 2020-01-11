@@ -77,7 +77,7 @@ def account_delete_confirm(request):
                 if name != request.user.username:
                     new_array.append(name)
 
-            target.profile.requested_names = (",").join(new_array)
+            target.profile.requested_names = ",".join(new_array)
             target.profile.save()
 
         # case where the partner only sent a request
