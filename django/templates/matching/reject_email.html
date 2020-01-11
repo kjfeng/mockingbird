@@ -1,0 +1,7 @@
+{% autoescape off %}
+Hi {{ user.username }},
+
+Your match request to {{ cancel_username }} has been rejected. :( Please return back to our site to find another partner.
+http://{{ domain }}{% url 'home' %}
+
+{% endautoescape %}

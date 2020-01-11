@@ -540,57 +540,74 @@ def done_cancel(request):
     # make a notification for the target
     # if user is sender, they are canceling
     if request.user.profile.is_sender:
+        # update own info
+        request.user.profile.is_waiting = False
+        request.user.profile.is_sender = False
+        request.user.save()
+
         print("here")
         # if they are only one in the request
         request_names = target.profile.requested_names.split(",")
-        if len(request_names) == 1:
+        if len(request_names) == 0:
             target.profile.has_request = False
         else:
             # remove their name from request_names
             new_names = []
             for x in request_names:
-                if x != request.user.username:
+                if x and x != request.user.username:
                     new_names.append(x)
-            target.profile.requested_names = ",".join(new_names)
+            if len(new_names) == 0:
+                target.profile.has_request = False
+                target.profile.requested_names = ""
+            else:  # else reset the names
+                target.profile.requested_names = ",".join(new_names)
 
+        if target.profile.receive_email:
+            # send email that the match has been rejected
+            subject = '[MockingBird] Canceled Match Request :('
+            message = render_to_string('matching/cancel_email.html', {
+                'user': target,
+                'cancel_username': request.user.username,
+            })
+            target.email_user(subject, message)
         NotificationItem.objects.create(type="MC", user=target, match_name=str(request.user.username))
 
-    # if they are not the sender, they are rejected
+    # if user are not the sender, they are rejecting someone
     else:
         target.profile.is_sender = False
         target.profile.is_waiting = False
         target.profile.match_name = ""
 
+        # update current user
+        requested_names = str(request.user.profile.requested_names).split(",")
+        new_names = []
+        for x in requested_names:
+            if x and x != target.username:
+                print(x)
+                new_names.append(x)
+        print("rejecting")
+        print(new_names)
+
+
+        # if none remaining, change to false
+        if len(new_names) == 0:
+            request.user.profile.has_request = False
+            request.user.profile.requested_names = ""
+        else: #else reset the names
+            request.user.profile.requested_names = ",".join(new_names)
+
+        # send email
+        if target.profile.receive_email:
+            # send email that the match has been rejected
+            subject = '[MockingBird] Rejected Match Request :('
+            message = render_to_string('matching/reject_email.html', {
+                'user': target,
+                'cancel_username': request.user.username,
+            })
+            target.email_user(subject, message)
+
         NotificationItem.objects.create(type="MD", user=target, match_name=str(request.user.username))
     target.profile.save()
-
-    if target.profile.receive_email:
-        # send email that the match has been canceled
-        subject = '[MockingBird] Canceled Match :('
-        message = render_to_string('matching/cancel_email.html', {
-            'user': target,
-            'cancel_username': request.user.username,
-        })
-        target.email_user(subject, message)
-
-    # update current user's info
-    requested_names = str(request.user.profile.requested_names).split(",")
-    if match in requested_names:
-        requested_names.remove(match)
-        requested_names_str = ""
-        for name in requested_names:
-            requested_names_str += name + ","
-        request.user.profile.requested_names = requested_names_str
-    else:
-        request.user.profile.match_name = ""
-
-    requested_names = str(request.user.profile.requested_names).split(",")
-    if len(requested_names) is 1 and requested_names[0] is "":
-        request.user.profile.has_request = False
-
-    request.user.profile.is_matched = False
-    request.user.profile.is_waiting = False
-    request.user.profile.is_sender = False
     request.user.profile.save()
 
     pulled = pull_notif(request.user)
