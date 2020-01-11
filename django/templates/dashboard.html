@@ -1,4 +1,33 @@
 {% load static %}
+<style>
+    .mb-badge {
+      border-radius: 5px;
+      color:white;
+      padding: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 170px;
+    }
+    .mb-badge-expert{
+      background-color: green;
+    }
+    .mb-badge-training{
+      background-color: dodgerblue;
+    }
+    .mb-badge-fledgling{
+      background-color: orange;
+    }
+    .mb-badge-baby{
+      background-color: red;
+    }
+    .mb-badge-text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+</style>
 <div>
   {% if user.profile.is_matched %}
   <div class="modal-backdrop">
@@ -43,9 +72,31 @@
 
       {% if user.profile.is_matched %}
       <h1 style="font-weight: 600">{{match.first_name}}</h1>
-      <p ><a style="color:#Ffd357" href="{% url 'account:profile_view' request.user.profile.match_name %}">@{{match.username}}</a></p>
+      <div class="row">
+        <div class="col-md-12 col-lg-6">
+          <p ><a style="color:#Ffd357" href="{% url 'account:profile_view' request.user.profile.match_name %}">@{{match.username}}</a></p>
+        </div>
+        <div class="col-md-12 col-lg-6">
+              {% if match.statistics.tot_interview >= 25 and match.statistics.overall_rating >= 4 %}
+                  <div class="mb-badge mb-badge-expert">
+                    <p class="mb-badge-text"> expert flyer</p>
+                  </div>
+                  {% elif match.statistics.tot_interview >= 10 and match.statistics.overall_rating >= 4 %}
+                  <div class="mb-badge mb-badge-training">
+                    <p class="mb-badge-text"> flyer-in-training </p>
+                  </div>
+                  {% elif match.statistics.tot_interview >= 5 and match.statistics.overall_rating >= 4 %}
+                  <div class="mb-badge mb-badge-fledgling">
+                    <p class="mb-badge-text"> fledgling</p>
+                  </div>
+                  {% else %}
+                  <div class="mb-badge mb-badge-baby">
+                    <p class="mb-badge-text"> baby bird</p>
+                  </div>
+                  {% endif %}
+            </div>
+      </div>
       <div class="recommended-match-info">
-        <div class="row">
           <div class="col-md-12 col-lg-6">
             <h6><strong>Year</strong></h6>
             <p>{{match.profile.year_in_school}}</p>
@@ -86,8 +137,28 @@
       {% elif user.profile.is_sender %}
       <h1 style="font-weight: 600">{{match.first_name}}</h1>
       <p><a href="{% url 'account:profile_view' match.username %}" style="color: #FFC933">@{{ match.username }}</a></p>
+      <div class="col-md-12 col-lg-6">
+              {% if match.statistics.tot_interview >= 25 and match.statistics.overall_rating >= 4 %}
+                  <div class="mb-badge mb-badge-expert">
+                    <p class="mb-badge-text"> expert flyer</p>
+                  </div>
+                  {% elif match.statistics.tot_interview >= 10 and match.statistics.overall_rating >= 4 %}
+                  <div class="mb-badge mb-badge-training">
+                    <p class="mb-badge-text"> flyer-in-training </p>
+                  </div>
+                  {% elif match.statistics.tot_interview >= 5 and match.statistics.overall_rating >= 4 %}
+                  <div class="mb-badge mb-badge-fledgling">
+                    <p class="mb-badge-text"> fledgling</p>
+                  </div>
+                  {% else %}
+                  <div class="mb-badge mb-badge-baby">
+                    <p class="mb-badge-text"> baby bird</p>
+                  </div>
+                  {% endif %}
+            </div>
       <div class="recommended-match-info">
         <div class="row">
+
           <div class="col-md-12 col-lg-6">
             <h6><strong>Year</strong></h6>
             <p>{{match.profile.year_in_school}}</p>
@@ -118,9 +189,31 @@
             <p>There currently doesn't seem to be any users similar to you so we don't have a recommended match for you!</p>
           {% else %}
           <h1 style="font-weight: 600">{{recommended.first_name}}</h1>
-          <p><a href="{% url 'account:profile_view' recommended.username %}" style="color: #FFC933">@{{ recommended.username }}</a></p>
+          <div class="row">
+            <p class="col-md-12 col-lg-6"><a href="{% url 'account:profile_view' recommended.username %}" style="color: #FFC933">@{{ recommended.username }}</a></p>
+               <div class="col-md-12 col-lg-6">
+              {% if recommended.statistics.tot_interview >= 25 and recommended.statistics.overall_rating >= 4 %}
+                  <div class="mb-badge mb-badge-expert">
+                    <p class="mb-badge-text"> expert flyer</p>
+                  </div>
+                  {% elif recommended.statistics.tot_interview >= 10 and recommended.statistics.overall_rating >= 4 %}
+                  <div class="mb-badge mb-badge-training">
+                    <p class="mb-badge-text"> flyer-in-training </p>
+                  </div>
+                  {% elif recommended.statistics.tot_interview >= 5 and recommended.statistics.overall_rating >= 4 %}
+                  <div class="mb-badge mb-badge-fledgling">
+                    <p class="mb-badge-text"> fledgling</p>
+                  </div>
+                  {% else %}
+                  <div class="mb-badge mb-badge-baby">
+                    <p class="mb-badge-text"> baby bird</p>
+                  </div>
+                  {% endif %}
+            </div>
+          </div>
           <div class="recommended-match-info">
             <div class="row">
+
               <div class="col-md-12 col-lg-6">
                 <h6><strong>Year</strong></h6>
                 <p>{{recommended.profile.year_in_school}}</p>
