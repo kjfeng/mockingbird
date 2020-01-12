@@ -75,6 +75,7 @@ class Profile(models.Model):
     has_request = models.BooleanField(default=False)
     match_name = models.CharField(max_length=100, default="None")
     requested_names = models.CharField(max_length=3000, blank=True)
+    finish_survey = models.BooleanField(default=False)
 
     # is this user  the sender
     is_sender = models.BooleanField(default=False)
