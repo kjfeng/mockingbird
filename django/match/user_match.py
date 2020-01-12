@@ -13,7 +13,7 @@ year = {"Freshman":1,
         "Senior":4,
         "Graduate Student":5,
         "Postdoc":6,
-        "Not in School": -1,
+        "Not in School": 7,
         "Unknown": -1}
 
 #----------------------------------------------------------------#
@@ -80,7 +80,7 @@ def _calculate_score(user_profile, match):
     matchStats = Statistics.objects.get(user=match.user)
     score = float(matchStats.rate)
     score += _tot_interview_similarity(user_profile, match)
-    score += _year_similarity(user_profile, match)
+    score += _year_similarity(user_profile, match, False)
     score += _second_industry_match(user_profile, match)
     score += MIN_SCORE
 
@@ -100,7 +100,7 @@ def _tot_interview_similarity(user_profile, match):
     else:
         return 0.0
 
-def _year_similarity(user_profile, match):
+def _year_similarity(user_profile, match, isList):
     user_year = year.get(user_profile.year_in_school)
     match_year = year.get(match.year_in_school)
 
@@ -109,7 +109,12 @@ def _year_similarity(user_profile, match):
 
     diff = float(math.fabs(user_year - match_year))
 
-    return 1 - (diff / 6)
+    wdiff = 1 - (diff / 7)
+
+    if isList:
+        return wdiff * 7
+        
+    return wdiff
 
 def _second_industry_match(user_profile, match):
     if (user_profile.industry_choice_2 == match.industry_choice_2):
@@ -340,8 +345,8 @@ def list_match(profile, rankers, industryChoice):
         if 'Role' in rankers:
             if str(match.role).lower() == str(profile.role).lower():
                 score += 8.0
-        if 'Year in School' in rankers:
-            score += _year_similarity(profile, match)
+        if 'Year In School' in rankers:
+            score += _year_similarity(profile, match, True)
         if 'Similar Interviews' in rankers:
             score += _tot_interview_similarity(profile, match)
         if 'Most Interviews' in rankers:
