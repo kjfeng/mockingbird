@@ -10,6 +10,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from .models import NotificationItem
 
+from decimal import *
+
+
 from django.urls import reverse
 import sys
 
@@ -128,7 +131,7 @@ def account_delete_confirm(request):
                     })
                     x.user.email_user(subject, message)
 
-    #request.user.delete()
+    request.user.delete()
 
     return render(request, 'account/deleted_user.html')
 
@@ -237,12 +240,17 @@ def show_statistics(request):
         ranking = 2
 
     total_late = request.user.statistics.late * request.user.statistics.tot_interview
+    late_warning = False
+    if request.user.statistics.tot_interview != 0:
+        if float(request.user.statistics.late) / float(request.user.statistics.tot_interview):
+            late_warning = True
     pulled = pull_notif(request.user)
     context = {
         'tot_late': total_late,
         'has_unread': pulled[0],
         'notif': pulled[1],
-        'ranking': ranking
+        'ranking': ranking,
+        'late_warning': late_warning
     }
     if request.method == 'POST' and 'markread' in request.POST:
         for x in pulled[1]:
