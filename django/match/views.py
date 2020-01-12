@@ -493,11 +493,11 @@ def accept_request(request):
             })
             target.email_user(subject, message)
 
-        #send_survey(request, target, str(target.profile.match_name), str(t_username))
+        send_survey(request, target, str(target.profile.match_name), str(t_username))
         # celery async block
-        send_time = timezone.now() + timedelta(seconds=30)
-        send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
-        set_survey_boolean.apply_async(eta=send_time, args=(request.user, target))
+        # send_time = timezone.now() + timedelta(seconds=30)
+        # send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
+        #set_survey_boolean.apply_async(eta=send_time, args=(request.user, target))
         matchedUser = MatchedUser(username = str(target.username), email = str(target.email),
                     industry1 = str(target.profile.industry_choice_1), industry2 = str(target.profile.industry_choice_2))
 
@@ -632,7 +632,7 @@ def done_cancel(request):
         'notif': pulled[1]
     }
 
-    
+
     return render(request, 'matching/done_cancel.html', context)
 
 def send_request_home(request):
