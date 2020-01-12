@@ -4,11 +4,14 @@ from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from onboard.models import ERROR_MESSAGES
+from onboard.models import ERROR_MESSAGES, Profile
 from mockingbird.decorators import onboard_only
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from .models import NotificationItem
+
+from decimal import *
+
 
 from django.urls import reverse
 import sys
@@ -40,6 +43,9 @@ def account_delete(request):
 
 
 def account_delete_confirm(request):
+    match_name_matches = Profile.objects.filter(match_name=request.user.username)
+    print(match_name_matches)
+
     if request.user.profile.match_name and request.user.profile.match_name != "None":
         target = User.objects.get(username=request.user.profile.match_name)
 
@@ -48,6 +54,7 @@ def account_delete_confirm(request):
 
         # case where they were actually matched with their partner
         if request.user.profile.is_matched:
+            print("shouldn't be")
             # send notification to the target about their partner being deleted
             NotificationItem.objects.create(type="DA", user=target, match_name=str(request.user.username))
 
@@ -67,7 +74,6 @@ def account_delete_confirm(request):
             target.profile.is_matched = False
             target.profile.match_name = "None"
             target.profile.save()
-
         else:
             # if they only sent a request, reset the requested info
             request_names = target.profile.requested_names
@@ -80,36 +86,50 @@ def account_delete_confirm(request):
             target.profile.requested_names = ",".join(new_array)
             target.profile.save()
 
-    # case where the partner only sent a request
-    names_list = request.user.profile.requested_names.split(",")
-    for name in names_list:
-        target = User.objects.filter(username=name)
+    # find everyone who has their match name
+    if len(match_name_matches) > 0:
+        #print("here)")
+        for x in match_name_matches:
+            # if actually matched
+            if x.is_matched:
+                #print(x)
+                NotificationItem.objects.create(type="DA", user=x.user, match_name=str(request.user.username))
 
-        # if the target no longer in database skip
-        if len(target) == 0:
-            continue
+                current_site = get_current_site(request)
 
-        target = target[0]
+                # logic to send email to the target
+                if x.receive_email:
+                    subject = '[MockingBird] Your Match has Deleted Their Account :('
+                    message = render_to_string('account/deleted_user_email.html', {
+                        'user': x.user,
+                        'deleted_user': request.user.username,
+                        'domain': current_site.domain,
+                    })
+                    x.user.email_user(subject, message)
 
-        # logic to unmatch partner
-        target.profile.match_name = "None"
-        target.profile.is_waiting = False
-        target.profile.is_sender = False
-        target.profile.save()
+                # reset target's profile
+                x.is_matched = False
+                x.match_name = "None"
+                x.save()
+            else:
+                x.match_name = "None"
+                x.is_waiting = False
+                x.is_sender = False
+                x.save()
 
-        # send them a notification
-        NotificationItem.objects.create(type="DAR", user=target, match_name=str(request.user.username))
+                # send them a notification
+                NotificationItem.objects.create(type="DAR", user=x.user, match_name=str(request.user.username))
 
-        # send them an email
-        if target.profile.receive_email:
-            current_site = get_current_site(request)
-            subject = '[MockingBird] Your Match Request has Deleted Their Account :('
-            message = render_to_string('account/deleted_user_email.html', {
-                'user': target,
-                'deleted_user': request.user.username,
-                'domain': current_site.domain,
-            })
-            target.email_user(subject, message)
+                # send them an email
+                if x.receive_email:
+                    current_site = get_current_site(request)
+                    subject = '[MockingBird] Your Match Request has Deleted Their Account :('
+                    message = render_to_string('account/deleted_user_email.html', {
+                        'user': x.user,
+                        'deleted_user': request.user.username,
+                        'domain': current_site.domain,
+                    })
+                    x.user.email_user(subject, message)
 
     request.user.delete()
 
@@ -212,20 +232,25 @@ def change_password(request):
 @onboard_only
 def show_statistics(request):
     ranking = 1
-    if request.user.statistics.tot_interview >= 25 and request.user.statistics.overall_rating >= 4:
+    if request.user.statistics.tot_interview >= 25 and request.user.statistics.overall_rating >= 4.5:
         ranking = 4
-    elif request.user.statistics.tot_interview >= 10 and request.user.statistics.overall_rating >= 4:
+    elif request.user.statistics.tot_interview >= 15 and request.user.statistics.overall_rating >= 4:
         ranking = 3
-    elif request.user.statistics.tot_interview >= 5 and request.user.statistics.overall_rating >= 4:
+    elif request.user.statistics.tot_interview >= 5 and request.user.statistics.overall_rating >= 3.5:
         ranking = 2
 
     total_late = request.user.statistics.late * request.user.statistics.tot_interview
+    late_warning = False
+    if request.user.statistics.tot_interview != 0:
+        if float(request.user.statistics.late) / float(request.user.statistics.tot_interview):
+            late_warning = True
     pulled = pull_notif(request.user)
     context = {
         'tot_late': total_late,
         'has_unread': pulled[0],
         'notif': pulled[1],
-        'ranking': ranking
+        'ranking': ranking,
+        'late_warning': late_warning
     }
     if request.method == 'POST' and 'markread' in request.POST:
         for x in pulled[1]:

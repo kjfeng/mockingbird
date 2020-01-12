@@ -12,11 +12,13 @@
     <form action='/matchresults/' method="POST"> <!-- this is where it redirects -->
         <input type="hidden" id="username" name="username" value={{matchedUser.username}}>
         <p><b>User:</b> {{matchedUser.username}}</p>
-        <p><b>Email:</b> {{matchedUser.email}}</p>
         <p><b>Industry:</b> {{matchedUser.industry}}</p>
+        <p><b>Desired Role:</b> {{matchedUser.role}}</p>
+        <p><b>Year In School:</b> {{matchedUser.year}}</p>
         {% csrf_token %}
         <button type='submit'>Send Request</button>
-    </form><br>
+    </form>
+    <b><hr></b>
     {% endfor %}
     {% if not configured %}
         <form action='/match/' method='POST'>{% csrf_token %}

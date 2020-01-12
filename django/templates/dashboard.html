@@ -126,6 +126,13 @@
               <p>{{match.profile.industry_choice_1}}</p>
             </div>
           </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <h6><strong>Contact Info</strong></h6>
+              <p> {{match.email}}</p>
+
+            </div>
+          </div>
 
         </div>
         <p>Enjoy your mock interview, and make sure <strong>you both interview each other</strong> for optimal benefit! You can also now chat with your match. When you've finished your mock interview, click 'I'm done'.</p>
@@ -322,7 +329,6 @@
       <!--
     <div class="module">
       <h3 style="font-weight: 600;">Incoming requests</h3>
-
       <div class="">
         {% if user.profile.is_idle %}
         <p>You are inactive so you cannot receive match requests.</p>
@@ -359,18 +365,22 @@
         <p>You have one similar user and that is your recommended match! Adjust your match configurations or check back later to find more matches!</p>
         {% else %}
         {% for users in discover_users %}
-        <a href="#" class="profile-card-link">
+        <b><hr></b>
+        <a href="{% url 'account:profile_view' users.username %}" class="profile-card-link">
           <div class="profile-card">
             <h5><strong>Name:</strong> {{users.first_name}} <a href="{% url 'account:profile_view' users.username %}">(@{{ users.username }})</a></h5>
-            <span><strong>Email:</strong> {{ users.email }} </span><br>
             {% if users.profile.industry_choice_2 != "None" %}
             <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}, {{ users.profile.industry_choice_2 }}</span>
             {% else %}
             <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}</span>
             {% endif %}
+            <br>
+            <span><strong>Desired Role:</strong> {{ users.profile.role }} </span><br>
+            <span><strong>Year:</strong> {{ users.profile.year_in_school}}</span><br>
           </div>
         </a>
         {% endfor %}
+        <b><hr></b>
         <form method="POST" action="{% url 'matchlist' %}">
           {% csrf_token %}
           <button type="submit" style="outline: none">See All</button>
@@ -387,15 +397,11 @@
   </div>
 
   <!--
-
 <div class="">
-
   <a href="{% url 'account:account_details' %}"> Account Details </a>
-
   {% if user.profile.is_matched %}
     <p>Get Me Matched!****</p>
     <p><a href="{% url 'survey:survey' %}">Finish Survey </a></p>
-
     <p> **** this feature is disabled until you complete all surveys</p>
     <p><a href='chat/{{user.profile.match_name}}/'>Chat Room</a></p>
   {% elif user.profile.has_request %}
