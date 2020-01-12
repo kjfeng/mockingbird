@@ -10,6 +10,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from .models import NotificationItem
 
+from decimal import *
+
+
 from django.urls import reverse
 import sys
 
@@ -238,8 +241,9 @@ def show_statistics(request):
 
     total_late = request.user.statistics.late * request.user.statistics.tot_interview
     late_warning = False
-    if request.user.statistics.late / request.user.statistics.tot_interview:
-        late_warning = True
+    if request.user.statistics.tot_interview != 0:
+        if float(request.user.statistics.late) / float(request.user.statistics.tot_interview):
+            late_warning = True
     pulled = pull_notif(request.user)
     context = {
         'tot_late': total_late,
