@@ -212,11 +212,11 @@ def change_password(request):
 @onboard_only
 def show_statistics(request):
     ranking = 1
-    if request.user.statistics.tot_interview >= 25 and request.user.statistics.overall_rating >= 4:
+    if request.user.statistics.tot_interview >= 25 and request.user.statistics.overall_rating >= 4.5:
         ranking = 4
-    elif request.user.statistics.tot_interview >= 10 and request.user.statistics.overall_rating >= 4:
+    elif request.user.statistics.tot_interview >= 15 and request.user.statistics.overall_rating >= 4:
         ranking = 3
-    elif request.user.statistics.tot_interview >= 5 and request.user.statistics.overall_rating >= 4:
+    elif request.user.statistics.tot_interview >= 5 and request.user.statistics.overall_rating >= 3.5:
         ranking = 2
 
     total_late = request.user.statistics.late * request.user.statistics.tot_interview

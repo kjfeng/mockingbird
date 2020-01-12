@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 
 NOT_TYPES = [('MR', 'Match Request'),
-            ('CS', 'Complete Survey'),
+          #  ('CS', 'Complete Survey'),
             ('MC', 'Match Canceled'),
              ('MA', 'Match Accept'),
              ('MD', 'Match Deny/Reject'),

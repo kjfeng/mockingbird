@@ -77,15 +77,15 @@
           <p ><a style="color:#Ffd357" href="{% url 'account:profile_view' request.user.profile.match_name %}">@{{match.username}}</a></p>
         </div>
         <div class="col-md-12 col-lg-6">
-              {% if match.statistics.tot_interview >= 25 and match.statistics.overall_rating >= 4 %}
+              {% if match.statistics.tot_interview >= 25 and match.statistics.overall_rating >= 4.5 %}
                   <div class="mb-badge mb-badge-expert">
                     <p class="mb-badge-text"> expert flyer</p>
                   </div>
-                  {% elif match.statistics.tot_interview >= 10 and match.statistics.overall_rating >= 4 %}
+                  {% elif match.statistics.tot_interview >= 15 and match.statistics.overall_rating >= 4 %}
                   <div class="mb-badge mb-badge-training">
                     <p class="mb-badge-text"> flyer-in-training </p>
                   </div>
-                  {% elif match.statistics.tot_interview >= 5 and match.statistics.overall_rating >= 4 %}
+                  {% elif match.statistics.tot_interview >= 5 and match.statistics.overall_rating >= 3.5 %}
                   <div class="mb-badge mb-badge-fledgling">
                     <p class="mb-badge-text"> fledgling</p>
                   </div>
@@ -138,15 +138,15 @@
       <h1 style="font-weight: 600">{{match.first_name}}</h1>
       <p><a href="{% url 'account:profile_view' match.username %}" style="color: #FFC933">@{{ match.username }}</a></p>
       <div class="col-md-12 col-lg-6">
-              {% if match.statistics.tot_interview >= 25 and match.statistics.overall_rating >= 4 %}
+              {% if match.statistics.tot_interview >= 25 and match.statistics.overall_rating >= 4.5 %}
                   <div class="mb-badge mb-badge-expert">
                     <p class="mb-badge-text"> expert flyer</p>
                   </div>
-                  {% elif match.statistics.tot_interview >= 10 and match.statistics.overall_rating >= 4 %}
+                  {% elif match.statistics.tot_interview >= 15 and match.statistics.overall_rating >= 4 %}
                   <div class="mb-badge mb-badge-training">
                     <p class="mb-badge-text"> flyer-in-training </p>
                   </div>
-                  {% elif match.statistics.tot_interview >= 5 and match.statistics.overall_rating >= 4 %}
+                  {% elif match.statistics.tot_interview >= 5 and match.statistics.overall_rating >= 3.5 %}
                   <div class="mb-badge mb-badge-fledgling">
                     <p class="mb-badge-text"> fledgling</p>
                   </div>
@@ -192,15 +192,15 @@
           <div class="row">
             <p class="col-md-12 col-lg-6"><a href="{% url 'account:profile_view' recommended.username %}" style="color: #FFC933">@{{ recommended.username }}</a></p>
                <div class="col-md-12 col-lg-6">
-              {% if recommended.statistics.tot_interview >= 25 and recommended.statistics.overall_rating >= 4 %}
+              {% if recommended.statistics.tot_interview >= 25 and recommended.statistics.overall_rating >= 4.5 %}
                   <div class="mb-badge mb-badge-expert">
                     <p class="mb-badge-text"> expert flyer</p>
                   </div>
-                  {% elif recommended.statistics.tot_interview >= 10 and recommended.statistics.overall_rating >= 4 %}
+                  {% elif recommended.statistics.tot_interview >= 15 and recommended.statistics.overall_rating >= 4 %}
                   <div class="mb-badge mb-badge-training">
                     <p class="mb-badge-text"> flyer-in-training </p>
                   </div>
-                  {% elif recommended.statistics.tot_interview >= 5 and recommended.statistics.overall_rating >= 4 %}
+                  {% elif recommended.statistics.tot_interview >= 5 and recommended.statistics.overall_rating >= 3.5 %}
                   <div class="mb-badge mb-badge-fledgling">
                     <p class="mb-badge-text"> fledgling</p>
                   </div>
