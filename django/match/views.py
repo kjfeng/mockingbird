@@ -10,7 +10,7 @@ from .models import Cached_Matches, Recent_Matches, Cached_List_Matches
 from .user_match import quick_match_prototype, get_match_list, list_match
 from .user_match import to_user_list, to_user_string, dequeue, enqueue
 from sys import stderr
-from .tasks import send_survey,set_survey_boolean
+from .tasks import send_survey
 from datetime import timedelta
 from django.utils import timezone
 from .forms import MatchConfigurationForm
@@ -21,13 +21,14 @@ from account.pull_notif import pull_notif
 from mockingbird.decorators import onboard_only
 
 class MatchedUser(object):
-    def __init__(self, username: str, email: str, industry1: str, industry2: str):
+    def __init__(self, username: str, email: str, industry1: str, industry2: str, year: str):
         self.username = username
         self.email = email
         if industry2 == 'None':
             self.industry = industry1
         else:
             self.industry = industry1 + ', ' + industry2
+        self.year = year
 
     def getUsername(self):
         return self.username
@@ -37,6 +38,9 @@ class MatchedUser(object):
 
     def getIndustry(self):
         return self.industry
+
+    def getYear(self):
+        return self.year
 
 register = template.Library()
 
@@ -152,7 +156,7 @@ def match_view(request):
         recent.save()
 
         matchedUser = MatchedUser(username = str(match.username), email = str(match.email),
-                    industry1 = str(match_profile.industry_choice_1), industry2 = str(match_profile.industry_choice_2))
+                    industry1 = str(match_profile.industry_choice_1), industry2 = str(match_profile.industry_choice_2), year=str(match_profile.year_in_school))
         request.session['matchedUser'] = matchedUser.__dict__
 
         match_list = dequeue(match_list)
@@ -263,7 +267,7 @@ def matchlist_view(request):
         matchedUsers = []
         for match in match_list:
             matchedUser = MatchedUser(username = str(match.user.username), email = str(match.user.email),
-                    industry1 = str(match.industry_choice_1), industry2 = str(match.industry_choice_2))
+                    industry1 = str(match.industry_choice_1), industry2 = str(match.industry_choice_2), year=str(match.year_in_school))
             matchedUsers.append(matchedUser.__dict__)
 
         request.session['matchedUsers'] = matchedUsers
@@ -275,14 +279,8 @@ def matchlist_view(request):
 # Creats a list match caching
 def matchlist_create(user):
     my_profile = user.profile
-    rankersString = str(my_profile.rank_by)
+    rankers = my_profile.rank_by
 
-    rankers = []
-    if (rankersString is not None):
-        rankers = rankersString.split(',')
-
-    if "" in rankers:
-        rankers.remove("")
     match_list = list_match(my_profile, rankers, my_profile.industry_match)
     matches = to_user_string(match_list)
     match_cache = Cached_List_Matches.objects.filter(user=my_profile.user)
@@ -499,6 +497,7 @@ def accept_request(request):
         send_time = timezone.now() + timedelta(seconds=30)
         #send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
         #set_survey_boolean.apply_async(eta=send_time, args=(request.user, target))
+        send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
         matchedUser = MatchedUser(username = str(target.username), email = str(target.email),
                     industry1 = str(target.profile.industry_choice_1), industry2 = str(target.profile.industry_choice_2))
 
@@ -553,7 +552,7 @@ def done_cancel(request):
         request.user.profile.match_name = "None"
         request.user.save()
 
-        print("here")
+        # print("here")
         # if they are only one in the request
         request_names = target.profile.requested_names.split(",")
         if len(request_names) == 0:
@@ -578,9 +577,11 @@ def done_cancel(request):
                 'cancel_username': request.user.username,
             })
             target.email_user(subject, message)
+
+        matchlist_create(request.user)
         NotificationItem.objects.create(type="MC", user=target, match_name=str(request.user.username))
 
-    # if user are not the sender, they are rejecting someone
+    # if user is not the sender, they are rejecting someone
     else:
         target.profile.is_sender = False
         target.profile.is_waiting = False
@@ -593,8 +594,8 @@ def done_cancel(request):
             if x and x != target.username:
                 print(x)
                 new_names.append(x)
-        print("rejecting")
-        print(new_names)
+        # print("rejecting")
+        # print(new_names)
 
 
         # if none remaining, change to false
@@ -630,6 +631,8 @@ def done_cancel(request):
         'has_unread': pulled[0],
         'notif': pulled[1]
     }
+
+
     return render(request, 'matching/done_cancel.html', context)
 
 def send_request_home(request):

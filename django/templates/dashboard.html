@@ -34,7 +34,7 @@
   }
 </style>
 <div>
-  {% if user.profile.is_matched %}<!--and user.profile.finish_survey %}-->
+  {% if user.profile.is_matched %}
   <div class="modal-backdrop">
     <div class="col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 survey-card" role="document">
       <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
@@ -365,18 +365,22 @@
         <p>You have one similar user and that is your recommended match! Adjust your match configurations or check back later to find more matches!</p>
         {% else %}
         {% for users in discover_users %}
-        <a href="#" class="profile-card-link">
+        <b><hr></b>
+        <a href="{% url 'account:profile_view' users.username %}" class="profile-card-link">
           <div class="profile-card">
             <h5><strong>Name:</strong> {{users.first_name}} <a href="{% url 'account:profile_view' users.username %}">(@{{ users.username }})</a></h5>
-            <span><strong>Email:</strong> {{ users.email }} </span><br>
             {% if users.profile.industry_choice_2 != "None" %}
             <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}, {{ users.profile.industry_choice_2 }}</span>
             {% else %}
             <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}</span>
             {% endif %}
+            <br>
+            <span><strong>Desired Role:</strong> {{ users.profile.role }} </span><br>
+            <span><strong>Year:</strong> {{ users.profile.year_in_school}}</span><br>
           </div>
         </a>
         {% endfor %}
+        <b><hr></b>
         <form method="POST" action="{% url 'matchlist' %}">
           {% csrf_token %}
           <button type="submit" style="outline: none">See All</button>

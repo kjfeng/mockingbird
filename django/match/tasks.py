@@ -8,14 +8,13 @@ from account.models import NotificationItem
 @shared_task
 def send_survey(request_user, target, current_site):
     # if the target has deleted their account, don't have to do this
-    #current_targets = User.objects.filter(username=target.username)
-    #if len(current_targets) == 0:
-     #   return
+    current_targets = User.objects.filter(username=target.username)
+    if len(current_targets) == 0:
+        return
 
     # if the survey has already been done, don't do this
-    #if request_user.profile.is_matched and request_user.profile.match_name == target.username:
+    if request_user.profile.is_matched and request_user.profile.match_name == target.username:
         # logic to send email to the target
-        print("here?")
         subject = '[MockingBird] How was your Mock Interview?'
         message = render_to_string('matching/do_survey.html', {
             'user': request_user,
@@ -34,13 +33,3 @@ def send_survey(request_user, target, current_site):
         target.profile.save()
         target.email_user(subject, message)
 
-@shared_task
-def set_survey_boolean(request_user, target):
-    #current_targets = User.objects.filter(username=target.username)
-    #if len(current_targets) == 0:
-    #    return
-
-    # if the survey has already been done, don't do this
-    #f request_user.profile.is_matched and request_user.profile.match_name == target.username:
-        request_user.profile.finish_survey = True
-        request_user.profile.save()
