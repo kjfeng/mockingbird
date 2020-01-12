@@ -1,5 +1,14 @@
 {% extends 'base-app.html'%}
+
 {% block content %}
+<style>
+    .non-clickable {
+        pointer-events: none;
+        cursor: default;
+        border-radius: 5px;
+        padding: 10px;
+    }
+</style>
 <div>
     <div class = "row">
         <div class ="col-md-6 col-lg-6">
@@ -9,13 +18,13 @@
                 <h1 style="font-weight: 600">Name Unknown </h1>
             {% endif %}
         </div>
-        <div class="col-md-2 col-lg-2">
+        <div class="col-md-3 col-lg-3">
             <center>
                 <!-- rating system logic -->
                 {% if target_user.statistics.tot_interview >= 25 and target_user.statistics.overall_rating >= 4 %}
                 <p style="border-radius:5px; background-color:green;"><font color="white"> expert flyer</font></p>
                 {% elif target_user.statistics.tot_interview >= 10 and target_user.statistics.overall_rating >= 4 %}
-                <p style="border-radius:5px; background-color: blue;"<font color="white"> flyer-in-training</font> </p>
+                <p style="border-radius:5px; background-color: dodgerblue;"><font color="white"> flyer-in-training</font> </p>
                 {% elif target_user.statistics.tot_interview >= 5 and target_user.statistics.overall_rating >= 4 %}
                 <p style="border-radius:5px; background-color: orange;"> <font color="white">fledgling</font></p>
                 {% else %}
@@ -88,14 +97,13 @@
                     {% csrf_token %}
                 <button type="submit" style="background-color: #aeaeae; color: #3f3f3f; pointer-events: none">You already have a match!</button>
                       <p><small style="color:gray">You can only be matched with one person at a time so finish up that mock interview and come back!</small></p>
-              </form>
+
           {% elif has_sent %}
           <form style="padding-top: 1rem; padding-bottom: 1rem">
             {% csrf_token %}
         <button type="submit" style="background-color: #aeaeae; color: #3f3f3f; pointer-events: none">You've already sent a request!</button>
              <p><small style="color:gray">You can only send one request at a time so please be patient and wait for that user to respond first. </small></p>
 
-      </form>
           {% else %}
         <form method="POST" style="padding-top: 1rem; padding-bottom: 1rem">
             {% csrf_token %}

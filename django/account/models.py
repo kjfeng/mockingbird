@@ -9,7 +9,8 @@ NOT_TYPES = [('MR', 'Match Request'),
             ('MC', 'Match Canceled'),
              ('MA', 'Match Accept'),
              ('MD', 'Match Deny/Reject'),
-             ('DA', 'Deleted Account')]
+             ('DA', 'Deleted Account'),
+             ('DAR', 'Deleted Account Request')]
 
 class NotificationItem(models.Model):
     type = models.CharField(
