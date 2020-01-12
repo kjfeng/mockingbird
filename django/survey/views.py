@@ -50,7 +50,7 @@ def survey(request):
             # if tried to meet but the other person did not show up
             if form.cleaned_data['did_meet'] == 'yes' and form.cleaned_data['on_time'] == '1':
                 target.statistics.no_show += 1
-                target.statistics.overall_rating -= 0.5
+                target.statistics.overall_rating -= Decimal(0.5)
                 target.statistics.save()
             elif form.cleaned_data['did_meet'] == 'yes':
                 # print("did meet", file=stderr)
@@ -66,21 +66,21 @@ def survey(request):
 
                 # updates to ratings
                 if form.cleaned_data['friendly'] == "2":
-                    target.statistics.overall_rating -= 0.2
+                    target.statistics.overall_rating -= Decimal(0.2)
                 elif form.cleaned_data['friendly'] == "1":
-                    target.statistics.overall_rating -= 0.1
+                    target.statistics.overall_rating -= Decimal(0.1)
 
                 if form.cleaned_data['on_time'] == "2":
-                    target.statistics.overall_rating -= 0.1
+                    target.statistics.overall_rating -= Decimal(0.1)
                 elif form.cleaned_data['on_time'] == "3":
-                    target.statistics.overall_rating -= 0.2
+                    target.statistics.overall_rating -= Decimal(0.2)
 
                 # positive updates (capped at 5)
                 if target.statistics.overall_rating < 5:
                     if form.cleaned_data['on_time'] == "4" and form.cleaned_data['friendly'] == "4":
-                        target.statistics.overall_rating += 0.1
+                        target.statistics.overall_rating += Decimal(0.1)
                     elif form.cleaned_data['on_time'] == "4" and form.cleaned_data['friendly'] == "5":
-                        target.statistics.overall_rating += 0.2
+                        target.statistics.overall_rating += Decimal(0.2)
 
                 target.statistics.save()
 

@@ -155,8 +155,11 @@ def match_view(request):
         recent.matches = to_user_string(recent_list)
         recent.save()
 
-        matchedUser = MatchedUser(username = str(match.username), email = str(match.email),
-                    industry1 = str(match_profile.industry_choice_1), industry2 = str(match_profile.industry_choice_2), year=str(match_profile.year_in_school))
+        matchedUser = MatchedUser(username = str(match.username),
+                                  email = str(match.email),
+                                  industry1 = str(match.profile.industry_choice_1),
+                                  industry2 = str(match.profile.industry_choice_2),
+                                  year=str(match.profile.year_in_school))
         request.session['matchedUser'] = matchedUser.__dict__
 
         match_list = dequeue(match_list)
@@ -498,8 +501,12 @@ def accept_request(request):
         #send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
         #set_survey_boolean.apply_async(eta=send_time, args=(request.user, target))
         send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
-        matchedUser = MatchedUser(username = str(target.username), email = str(target.email),
-                    industry1 = str(target.profile.industry_choice_1), industry2 = str(target.profile.industry_choice_2))
+
+        matchedUser = MatchedUser(username = str(target.username),
+                                  email = str(target.email),
+                                  industry1 = str(target.profile.industry_choice_1),
+                                  industry2 = str(target.profile.industry_choice_2),
+                                  year = str(target.profile.year_in_school))
 
         # notification for the send survey notification
 
