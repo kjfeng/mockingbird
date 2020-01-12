@@ -100,6 +100,14 @@
                              <p class="notif-detail"> {{n.created_at}} </p>
                            </div>
                          </div>
+                {% elif n.type == "DAR" %}
+                     <!-- Fdeleted account notif (for people who had only requested them) -->
+                       <div class="notif" id="notif">
+                         <div class="notif-container">
+                           Your match request {{n.match_name}} has deleted their account :(
+                           <p class="notif-detail"> {{n.created_at}} </p>
+                         </div>
+                       </div>
                      {% else %}
                      <!-- Finish survey notification -->
                        <div class="notif" id="notif">
