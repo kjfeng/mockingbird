@@ -128,7 +128,7 @@ def account_delete_confirm(request):
                     })
                     x.user.email_user(subject, message)
 
-    #request.user.delete()
+    request.user.delete()
 
     return render(request, 'account/deleted_user.html')
 
