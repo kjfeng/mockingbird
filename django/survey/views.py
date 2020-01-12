@@ -99,6 +99,10 @@ def survey(request):
 
             Thread.objects.filter(Q(first=request.user) | Q(second=request.user)).delete()
             matchlist_create(request.user)
+
+            request.user.profile.finish_survey = False
+            request.user.profile.save()
+
             return redirect('survey:survey_complete')
 
     # if first time loading
