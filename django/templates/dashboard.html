@@ -82,7 +82,6 @@
           <p><a style="color:#Ffd357" href="{% url 'account:profile_view' request.user.profile.match_name %}">@{{match.username}}</a></p>
         </div>
         <div class="col-md-12 col-lg-6">
-
           {% if match.statistics.tot_interview >= 25 and match.statistics.overall_rating >= 4 %}
           <div class="mb-badge mb-badge-expert">
             <p class="mb-badge-text"> expert flyer</p>
@@ -170,28 +169,6 @@
         </div>
         <div class="recommended-match-info">
           <div class="row">
-
-      {% elif user.profile.is_sender %}
-      <h1 style="font-weight: 600">{{match.first_name}}</h1>
-      <p><a href="{% url 'account:profile_view' match.username %}" style="color: #FFC933">@{{ match.username }}</a></p>
-      <div class="col-md-12 col-lg-6">
-              {% if match.statistics.tot_interview >= 25 and match.statistics.overall_rating >= 4.5 %}
-                  <div class="mb-badge mb-badge-expert">
-                    <p class="mb-badge-text"> expert flyer</p>
-                  </div>
-                  {% elif match.statistics.tot_interview >= 15 and match.statistics.overall_rating >= 4 %}
-                  <div class="mb-badge mb-badge-training">
-                    <p class="mb-badge-text"> flyer-in-training </p>
-                  </div>
-                  {% elif match.statistics.tot_interview >= 5 and match.statistics.overall_rating >= 3.5 %}
-                  <div class="mb-badge mb-badge-fledgling">
-                    <p class="mb-badge-text"> fledgling</p>
-                  </div>
-                  {% else %}
-                  <div class="mb-badge mb-badge-baby">
-                    <p class="mb-badge-text"> baby bird</p>
-                  </div>
-                  {% endif %}
 
             <div class="col-md-12 col-lg-6">
               <h6><strong>Year</strong></h6>
@@ -345,7 +322,6 @@
       <!--
     <div class="module">
       <h3 style="font-weight: 600;">Incoming requests</h3>
-
       <div class="">
         {% if user.profile.is_idle %}
         <p>You are inactive so you cannot receive match requests.</p>
@@ -410,15 +386,11 @@
   </div>
 
   <!--
-
 <div class="">
-
   <a href="{% url 'account:account_details' %}"> Account Details </a>
-
   {% if user.profile.is_matched %}
     <p>Get Me Matched!****</p>
     <p><a href="{% url 'survey:survey' %}">Finish Survey </a></p>
-
     <p> **** this feature is disabled until you complete all surveys</p>
     <p><a href='chat/{{user.profile.match_name}}/'>Chat Room</a></p>
   {% elif user.profile.has_request %}
