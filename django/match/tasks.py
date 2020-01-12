@@ -7,6 +7,7 @@ from celery import shared_task
 from account.models import NotificationItem
 @shared_task
 def send_survey(request_user, target, current_site):
+    print("sent email")
     # if the target has deleted their account, don't have to do this
     current_targets = User.objects.filter(username=target.username)
     if len(current_targets) == 0:
@@ -32,4 +33,24 @@ def send_survey(request_user, target, current_site):
         target.profile.is_sender = False
         target.profile.save()
         target.email_user(subject, message)
+
+@shared_task
+def send_modal(request_user, target):
+    print("sent modal")
+
+    # if the target has deleted their account, don't have to do this
+    current_targets = User.objects.filter(username=target.username)
+    if len(current_targets) == 0:
+        return
+
+    # if the survey has already been done by current user, don't do this
+    if request_user.profile.is_matched and request_user.profile.match_name == target.username:
+        request_user.profile.send_survey = True
+        request_user.profile.save()
+
+    # if survey has been done by other user, don't do this
+    if target.profile.is_matched and target.profile.match_name == request_user.username:
+        target.profile.send_survey = True
+        target.profile.save()
+
 
