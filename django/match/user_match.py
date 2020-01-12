@@ -339,7 +339,7 @@ def list_match(profile, rankers, industryChoice):
             score += _scoreIndustries(profile, match)
         if 'Role' in rankers:
             if str(match.role).lower() == str(profile.role).lower():
-                score += 2.0
+                score += 8.0
         if 'Year in School' in rankers:
             score += _year_similarity(profile, match)
         if 'Similar Interviews' in rankers:
