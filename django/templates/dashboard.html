@@ -1,49 +1,54 @@
 {% load static %}
 <style>
-    .mb-badge {
-      border-radius: 5px;
-      color:white;
-      padding: 5px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 170px;
-    }
-    .mb-badge-expert{
-      background-color: green;
-    }
-    .mb-badge-training{
-      background-color: dodgerblue;
-    }
-    .mb-badge-fledgling{
-      background-color: orange;
-    }
-    .mb-badge-baby{
-      background-color: red;
-    }
-    .mb-badge-text {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0;
-    }
+  .mb-badge {
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 170px;
+  }
+
+  .mb-badge-expert {
+    background-color: green;
+  }
+
+  .mb-badge-training {
+    background-color: dodgerblue;
+  }
+
+  .mb-badge-fledgling {
+    background-color: orange;
+  }
+
+  .mb-badge-baby {
+    background-color: red;
+  }
+
+  .mb-badge-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+  }
 </style>
 <div>
   {% if user.profile.is_matched %}
   <div class="modal-backdrop">
-  <div class="col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 survey-card" role="document">
-    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-    <button type="button" class="close">
-          <i class="material-icons">close</i>
-    </button>
-    <h3 style="font-weight: 600">{{user.first_name}}, how was your mock interview experience?</h3>
-    <p>Tell us about your experience in our quick feedback survey so we can provide great interview experiences for everyone.</p>
-    <form action="{% url 'survey:survey' %}">
-      {% csrf_token %}
+    <div class="col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 survey-card" role="document">
+      <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+      <button type="button" class="close">
+        <i class="material-icons">close</i>
+      </button>
+      <h3 style="font-weight: 600">{{user.first_name}}, how was your mock interview experience?</h3>
+      <p>Tell us about your experience in our quick feedback survey so we can provide great interview experiences for everyone.</p>
+      <form action="{% url 'survey:survey' %}">
+        {% csrf_token %}
 
-      <button type="submit" style="outline: none">Complete survey</button>
-    </form>
-  </div>
+        <button type="submit" style="outline: none">Complete survey</button>
+      </form>
+    </div>
   </div>
   {% endif %}
   <h1 class="title" style="padding-top: 1rem; position: relative;">Hi, {{user.first_name}}!</h1>
@@ -74,65 +79,97 @@
       <h1 style="font-weight: 600">{{match.first_name}}</h1>
       <div class="row">
         <div class="col-md-12 col-lg-6">
-          <p ><a style="color:#Ffd357" href="{% url 'account:profile_view' request.user.profile.match_name %}">@{{match.username}}</a></p>
+          <p><a style="color:#Ffd357" href="{% url 'account:profile_view' request.user.profile.match_name %}">@{{match.username}}</a></p>
         </div>
         <div class="col-md-12 col-lg-6">
-              {% if match.statistics.tot_interview >= 25 and match.statistics.overall_rating >= 4.5 %}
-                  <div class="mb-badge mb-badge-expert">
-                    <p class="mb-badge-text"> expert flyer</p>
-                  </div>
-                  {% elif match.statistics.tot_interview >= 15 and match.statistics.overall_rating >= 4 %}
-                  <div class="mb-badge mb-badge-training">
-                    <p class="mb-badge-text"> flyer-in-training </p>
-                  </div>
-                  {% elif match.statistics.tot_interview >= 5 and match.statistics.overall_rating >= 3.5 %}
-                  <div class="mb-badge mb-badge-fledgling">
-                    <p class="mb-badge-text"> fledgling</p>
-                  </div>
-                  {% else %}
-                  <div class="mb-badge mb-badge-baby">
-                    <p class="mb-badge-text"> baby bird</p>
-                  </div>
-                  {% endif %}
-            </div>
-      </div>
-      <div class="recommended-match-info">
-          <div class="col-md-12 col-lg-6">
-            <h6><strong>Year</strong></h6>
-            <p>{{match.profile.year_in_school}}</p>
+
+          {% if match.statistics.tot_interview >= 25 and match.statistics.overall_rating >= 4 %}
+          <div class="mb-badge mb-badge-expert">
+            <p class="mb-badge-text"> expert flyer</p>
           </div>
-          <div class="col-md-12 col-lg-6">
-            <h6><strong>Major</strong></h6>
-            <p>{{match.profile.major}}</p>
+          {% elif match.statistics.tot_interview >= 10 and match.statistics.overall_rating >= 4 %}
+          <div class="mb-badge mb-badge-training">
+            <p class="mb-badge-text"> flyer-in-training </p>
           </div>
+          {% elif match.statistics.tot_interview >= 5 and match.statistics.overall_rating >= 4 %}
+          <div class="mb-badge mb-badge-fledgling">
+            <p class="mb-badge-text"> fledgling</p>
+          </div>
+          {% else %}
+          <div class="mb-badge mb-badge-baby">
+            <p class="mb-badge-text"> baby bird</p>
+          </div>
+          {% endif %}
         </div>
+
+        </div>
+        <div class="recommended-match-info">
+
+          <div class="row">
+            <div class="col-md-12 col-lg-6">
+              <h6><strong>Year</strong></h6>
+              <p>{{match.profile.year_in_school}}</p>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <h6><strong>Major</strong></h6>
+              <p>{{match.profile.major}}</p>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-12 col-lg-6">
+              <h6><strong>Desired Role</strong></h6>
+              <p>{{match.profile.role}}</p>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <h6><strong>Primary Industry</strong></h6>
+              <p>{{match.profile.industry_choice_1}}</p>
+            </div>
+          </div>
+
+        </div>
+        <p>Enjoy your mock interview, and make sure <strong>you both interview each other</strong> for optimal benefit! You can also now chat with your match. When you've finished your mock interview, click 'I'm done'.</p>
         <div class="row">
           <div class="col-md-12 col-lg-6">
-            <h6><strong>Desired Role</strong></h6>
-            <p>{{match.profile.role}}</p>
+            <form action="{% url 'survey:survey' %}" style="padding-top: 1rem; padding-bottom: 1rem;">
+              {% csrf_token %}
+              <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">I'm done!</button>
+            </form>
           </div>
           <div class="col-md-12 col-lg-6">
-            <h6><strong>Primary Industry</strong></h6>
-            <p>{{match.profile.industry_choice_1}}</p>
+            <form method="POST" action="{% url 'open-chat' %}" style="padding-top: 1rem; padding-bottom: 1rem">
+              {% csrf_token %}
+              <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Chat With Match</button>
+              <input type="hidden" id="username" name="username" value="{{ user.profile.match_name }}">
+            </form>
           </div>
         </div>
-      </div>
-      <p>Enjoy your mock interview, and make sure <strong>you both interview each other</strong> for optimal benefit! You can also now chat with your match. When you've finished your mock interview, click 'I'm done'.</p>
-      <div class="row">
+
+        {% elif user.profile.is_sender %}
+        <h1 style="font-weight: 600">{{match.first_name}}</h1>
+        <p><a href="{% url 'account:profile_view' match.username %}" style="color: #FFC933">@{{ match.username }}</a></p>
         <div class="col-md-12 col-lg-6">
-          <form action="{% url 'survey:survey' %}" style="padding-top: 1rem; padding-bottom: 1rem;">
-            {% csrf_token %}
-            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">I'm done!</button>
-          </form>
+          {% if match.statistics.tot_interview >= 25 and match.statistics.overall_rating >= 4 %}
+          <div class="mb-badge mb-badge-expert">
+            <p class="mb-badge-text"> expert flyer</p>
+          </div>
+          {% elif match.statistics.tot_interview >= 10 and match.statistics.overall_rating >= 4 %}
+          <div class="mb-badge mb-badge-training">
+            <p class="mb-badge-text"> flyer-in-training </p>
+          </div>
+          {% elif match.statistics.tot_interview >= 5 and match.statistics.overall_rating >= 4 %}
+          <div class="mb-badge mb-badge-fledgling">
+            <p class="mb-badge-text"> fledgling</p>
+          </div>
+          {% else %}
+          <div class="mb-badge mb-badge-baby">
+            <p class="mb-badge-text"> baby bird</p>
+          </div>
+          {% endif %}
         </div>
-        <div class="col-md-12 col-lg-6">
-          <form method="POST" action="{% url 'open-chat' %}" style="padding-top: 1rem; padding-bottom: 1rem">
-            {% csrf_token %}
-            <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none">Chat With Match</button>
-            <input type="hidden" id="username" name="username" value="{{ user.profile.match_name }}">
-          </form>
-        </div>
-      </div>
+        <div class="recommended-match-info">
+          <div class="row">
 
       {% elif user.profile.is_sender %}
       <h1 style="font-weight: 600">{{match.first_name}}</h1>
@@ -155,40 +192,60 @@
                     <p class="mb-badge-text"> baby bird</p>
                   </div>
                   {% endif %}
-            </div>
-      <div class="recommended-match-info">
-        <div class="row">
 
-          <div class="col-md-12 col-lg-6">
-            <h6><strong>Year</strong></h6>
-            <p>{{match.profile.year_in_school}}</p>
+            <div class="col-md-12 col-lg-6">
+              <h6><strong>Year</strong></h6>
+              <p>{{match.profile.year_in_school}}</p>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <h6><strong>Major</strong></h6>
+              <p>{{match.profile.major}}</p>
+            </div>
           </div>
-          <div class="col-md-12 col-lg-6">
-            <h6><strong>Major</strong></h6>
-            <p>{{match.profile.major}}</p>
+          <div class="row">
+            <div class="col-md-12 col-lg-6">
+              <h6><strong>Desired Role</strong></h6>
+              <p>{{match.profile.role}}</p>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <h6><strong>Primary Industry</strong></h6>
+              <p>{{match.profile.industry_choice_1}}</p>
+            </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12 col-lg-6">
-            <h6><strong>Desired Role</strong></h6>
-            <p>{{match.profile.role}}</p>
-          </div>
-          <div class="col-md-12 col-lg-6">
-            <h6><strong>Primary Industry</strong></h6>
-            <p>{{match.profile.industry_choice_1}}</p>
-          </div>
-        </div>
-      </div>
-      <p>You will receive a notification once this person responds to your request.</p>
-      <form action="{% url 'confirm_cancel_request' %}" style='padding: 5px 10px 10px 10px;outline: none;'>
-                <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none;" >Cancel Request</button>
-      </form>
-      {% else %}
+        <p>You will receive a notification once this person responds to your request.</p>
+        <form action="{% url 'confirm_cancel_request' %}" style='padding: 5px 10px 10px 10px;outline: none;'>
+          <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none;">Cancel Request</button>
+        </form>
+        {% else %}
         {% if not user.profile.is_idle %}
-          {% if recommended == None %}
-            <p>There currently doesn't seem to be any users similar to you so we don't have a recommended match for you!</p>
-          {% else %}
-          <h1 style="font-weight: 600">{{recommended.first_name}}</h1>
+        {% if recommended == None %}
+        <p>There currently doesn't seem to be any users similar to you so we don't have a recommended match for you!</p>
+        {% else %}
+        <h1 style="font-weight: 600">{{recommended.first_name}}</h1>
+        <div class="row">
+          <p class="col-md-12 col-lg-6"><a href="{% url 'account:profile_view' recommended.username %}" style="color: #FFC933">@{{ recommended.username }}</a></p>
+          <div class="col-md-12 col-lg-6">
+            {% if recommended.statistics.tot_interview >= 25 and recommended.statistics.overall_rating >= 4 %}
+            <div class="mb-badge mb-badge-expert">
+              <p class="mb-badge-text"> expert flyer</p>
+            </div>
+            {% elif recommended.statistics.tot_interview >= 10 and recommended.statistics.overall_rating >= 4 %}
+            <div class="mb-badge mb-badge-training">
+              <p class="mb-badge-text"> flyer-in-training </p>
+            </div>
+            {% elif recommended.statistics.tot_interview >= 5 and recommended.statistics.overall_rating >= 4 %}
+            <div class="mb-badge mb-badge-fledgling">
+              <p class="mb-badge-text"> fledgling</p>
+            </div>
+            {% else %}
+            <div class="mb-badge mb-badge-baby">
+              <p class="mb-badge-text"> baby bird</p>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="recommended-match-info">
           <div class="row">
             <p class="col-md-12 col-lg-6"><a href="{% url 'account:profile_view' recommended.username %}" style="color: #FFC933">@{{ recommended.username }}</a></p>
                <div class="col-md-12 col-lg-6">
@@ -209,78 +266,77 @@
                     <p class="mb-badge-text"> baby bird</p>
                   </div>
                   {% endif %}
-            </div>
-          </div>
-          <div class="recommended-match-info">
-            <div class="row">
 
-              <div class="col-md-12 col-lg-6">
-                <h6><strong>Year</strong></h6>
-                <p>{{recommended.profile.year_in_school}}</p>
-              </div>
-              <div class="col-md-12 col-lg-6">
-                <h6><strong>Major</strong></h6>
-                <p>{{recommended.profile.major}}</p>
-              </div>
+
+            <div class="col-md-12 col-lg-6">
+              <h6><strong>Year</strong></h6>
+              <p>{{recommended.profile.year_in_school}}</p>
             </div>
-            <div class="row">
-              <div class="col-md-12 col-lg-6">
-                <h6><strong>Desired Role</strong></h6>
-                <p>{{recommended.profile.role}}</p>
-              </div>
-              <div class="col-md-12 col-lg-6">
-                <h6><strong>Industry(s)</strong></h6>
-                {% if recommended.profile.industry_choice_2 != "None" %}
-                <p>{{ recommended.profile.industry_choice_1 }}, {{ recommended.profile.industry_choice_2 }}</p>
-                {% else %}
-                <p>{{ recommended.profile.industry_choice_1 }}</p>
-                {% endif %}
-              </div>
-              <br>
-              <form method='POST' action='/matchresults/' style='padding: 5px 10px 10px 10px;outline: none;'>
-                {% csrf_token %}
-                <input type="hidden" id="username" name="username" value={{recommended.username}}>
-                <input type="hidden" id="origin" value="home">
-                <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none"  name="send_request">Send Request</button>
-              </form>
+            <div class="col-md-12 col-lg-6">
+              <h6><strong>Major</strong></h6>
+              <p>{{recommended.profile.major}}</p>
             </div>
           </div>
-          {% endif %}
+          <div class="row">
+            <div class="col-md-12 col-lg-6">
+              <h6><strong>Desired Role</strong></h6>
+              <p>{{recommended.profile.role}}</p>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <h6><strong>Industry(s)</strong></h6>
+              {% if recommended.profile.industry_choice_2 != "None" %}
+              <p>{{ recommended.profile.industry_choice_1 }}, {{ recommended.profile.industry_choice_2 }}</p>
+              {% else %}
+              <p>{{ recommended.profile.industry_choice_1 }}</p>
+              {% endif %}
+            </div>
+            <br>
+            <form method='POST' action='/matchresults/' style='padding: 5px 10px 10px 10px;outline: none;'>
+              {% csrf_token %}
+              <input type="hidden" id="username" name="username" value={{recommended.username}}>
+              <input type="hidden" id="origin" value="home">
+              <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none" name="send_request">Send Request</button>
+            </form>
+          </div>
+        </div>
+        {% endif %}
         {% endif %}
 
-      {% endif %}
-    </div>
-
-    <div class="module last-left">
-      <h3 style="font-weight: 600;">Incoming requests</h3>
-
-      <div class="">
-        {% if user.profile.is_idle %}
-        <p>You are idle so you cannot receive match requests.</p>
-        {% elif user.profile.is_matched %}
-        <p>You are currently matched. When you finish your mock interview, you will be able to receive match requests again. </p>
-        {% elif user.profile.has_request %}
-        {% for user in users %}
-        <div class="profile-card">
-          <h5>{{user.first_name}} (<a href="{% url 'account:profile_view' user.username %}">@{{ user.username }}</a>)</h5>
-        </div>
-        {% endfor %}
-        <a href="{% url 'request_info' %}">Respond to your requests</a>
-        {% else %}
-        <p>You have no incoming mock interview requests.</p>
         {% endif %}
       </div>
+
+      <div class="module last-left">
+        <h3 style="font-weight: 600;">Incoming requests</h3>
+
+        <div class="">
+          {% if user.profile.is_idle %}
+          <p>You are idle so you cannot receive match requests.</p>
+          {% elif user.profile.is_matched %}
+          <p>You are currently matched. When you finish your mock interview, you will be able to receive match requests again. </p>
+          {% elif user.profile.has_request %}
+          {% for user in users %}
+          <div class="profile-card">
+            <h5>{{user.first_name}} (<a href="{% url 'account:profile_view' user.username %}">@{{ user.username }}</a>)</h5>
+          </div>
+          {% endfor %}
+          <a href="{% url 'request_info' %}">Respond to your requests</a>
+          {% else %}
+          <p>You have no incoming mock interview requests.</p>
+          {% endif %}
+        </div>
+      </div>
+
+
+
+      <!-- END LEFT SIDE -->
     </div>
 
-    <!-- END LEFT SIDE -->
-  </div>
-
-  <div class="module-wrapper-right">
-    <!-- RIGHT SIDE -->
-    <div class="module adventurous">
-    {% if user.profile.is_idle %}
-    <h3 style="font-weight: 600">Your status is "inactive" so this is hidden.</h3>
-    {% else %}
+    <div class="module-wrapper-right">
+      <!-- RIGHT SIDE -->
+      <div class="module adventurous">
+        {% if user.profile.is_idle %}
+        <h3 style="font-weight: 600">Your status is "inactive" so this is hidden.</h3>
+        {% else %}
         <h3 style="font-weight: 600; padding-bottom: 1rem">I'm feeling adventurous</h3>
         {% if user.profile.is_matched %}
         <div class="">
@@ -302,9 +358,11 @@
           </form>
         </div>
         {% endif %}
-    {% endif %}
-    </div>
-<!--
+        {% endif %}
+      </div>
+
+
+      <!--
     <div class="module">
       <h3 style="font-weight: 600;">Incoming requests</h3>
 
@@ -326,52 +384,52 @@
       </div>
     </div>
 -->
-    <div class="module">
-      {% if user.profile.is_idle %}
+      <div class="module">
+        {% if user.profile.is_idle %}
         <h3 style="font-weight: 600">Your status is "inactive" so this is hidden.</h3>
-      {% else %}
-      <h3 style="font-weight: 600">Discover similar users</h3>
-        {% if user.profile.is_sender %}
-          <p>You've already sent a match request and you can only send one at a time so this is unavailable at this time.</p>
-        {% elif user.profile.is_matched %}
-          <p>You've already been matched so this is unavailable until you finish your mock interview.</p>
         {% else %}
-          <p>Based on <a href="{% url 'account:account_details' %}">your profile</a> and <a href="{% url 'matchconfig' %}">your configurations</a></p>
-          <!-- pull first couple matches from list view and display here -->
-          {% if discover_users|length == 0 and recommended == None %}
-            <p>There currently doesn't seem to be any users similar to you. Adjust your match configurations or check back later to find more matches!</p>
-          {% elif discover_users|length == 0 %}
-            <p>You have one similar user and that is your recommended match! Adjust your match configurations or check back later to find more matches!</p>
-          {% else %}
-            {% for users in discover_users %}
-            <a href="#" class="profile-card-link">
-              <div class="profile-card">
-                <h5><strong>Name:</strong> {{users.first_name}} <a href="{% url 'account:profile_view' users.username %}">(@{{ users.username }})</a></h5>
-                <span><strong>Email:</strong> {{ users.email }} </span><br>
-                {% if users.profile.industry_choice_2 != "None" %}
-                <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}, {{ users.profile.industry_choice_2 }}</span>
-                {% else %}
-                <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}</span>
-                {% endif %}
-              </div>
-            </a>
-            {% endfor %}
-            <form method="POST" action="{% url 'matchlist' %}">
-              {% csrf_token %}
-              <button type="submit" style="outline: none">See All</button>
-            </form>
-          {% endif %}
+        <h3 style="font-weight: 600">Discover similar users</h3>
+        {% if user.profile.is_sender %}
+        <p>You've already sent a match request and you can only send one at a time so this is unavailable at this time.</p>
+        {% elif user.profile.is_matched %}
+        <p>You've already been matched so this is unavailable until you finish your mock interview.</p>
+        {% else %}
+        <p>Based on <a href="{% url 'account:account_details' %}">your profile</a> and <a href="{% url 'matchconfig' %}">your configurations</a></p>
+        <!-- pull first couple matches from list view and display here -->
+        {% if discover_users|length == 0 and recommended == None %}
+        <p>There currently doesn't seem to be any users similar to you. Adjust your match configurations or check back later to find more matches!</p>
+        {% elif discover_users|length == 0 %}
+        <p>You have one similar user and that is your recommended match! Adjust your match configurations or check back later to find more matches!</p>
+        {% else %}
+        {% for users in discover_users %}
+        <a href="#" class="profile-card-link">
+          <div class="profile-card">
+            <h5><strong>Name:</strong> {{users.first_name}} <a href="{% url 'account:profile_view' users.username %}">(@{{ users.username }})</a></h5>
+            <span><strong>Email:</strong> {{ users.email }} </span><br>
+            {% if users.profile.industry_choice_2 != "None" %}
+            <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}, {{ users.profile.industry_choice_2 }}</span>
+            {% else %}
+            <span><strong>Industry Choices:</strong> {{ users.profile.industry_choice_1 }}</span>
+            {% endif %}
+          </div>
+        </a>
+        {% endfor %}
+        <form method="POST" action="{% url 'matchlist' %}">
+          {% csrf_token %}
+          <button type="submit" style="outline: none">See All</button>
+        </form>
         {% endif %}
-      {% endif %}
+        {% endif %}
+        {% endif %}
+      </div>
+
+
+      <!-- END RIGHT SIDE -->
+
     </div>
-
-
-    <!-- END RIGHT SIDE -->
-
   </div>
-</div>
 
-<!--
+  <!--
 
 <div class="">
 

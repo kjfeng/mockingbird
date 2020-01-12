@@ -250,4 +250,8 @@ button[type=submit]:focus, button[type=button]:focus {
     width: 100%;
     padding: 0;
   }
+
+  .card-contents {
+    padding: 3rem 1rem 3rem 1rem !important;
+  }
 }

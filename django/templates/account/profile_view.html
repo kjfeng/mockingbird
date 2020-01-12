@@ -88,22 +88,26 @@
           {% endif %}
 
         {% if is_matched and has_sent %}
-
-            <button class="non-clickable" style="background-color: #FFC933; color: #3f3f3f; outline: none">You have already requested this user!</button>
+              <form style="padding-top: 1rem; padding-bottom: 1rem">
+                {% csrf_token %}
+            <button type="submit" style="background-color: #aeaeae; color: #3f3f3f; pointer-events: none">You have already requested this user!</button>
+          </form>
           {% elif is_matched %}
-
-                <button class="non-clickable" style="background-color: #FFC933; color: #3f3f3f; outline: none">You already have a match!</button>
+                  <form style="padding-top: 1rem; padding-bottom: 1rem">
+                    {% csrf_token %}
+                <button type="submit" style="background-color: #aeaeae; color: #3f3f3f; pointer-events: none">You already have a match!</button>
                       <p><small style="color:gray">You can only be matched with one person at a time so finish up that mock interview and come back!</small></p>
 
           {% elif has_sent %}
-
-        <button class="non-clickable" style="background-color: #FFC933; color: #3f3f3f; outline: none">You've already sent a request!</button>
+          <form style="padding-top: 1rem; padding-bottom: 1rem">
+            {% csrf_token %}
+        <button type="submit" style="background-color: #aeaeae; color: #3f3f3f; pointer-events: none">You've already sent a request!</button>
              <p><small style="color:gray">You can only send one request at a time so please be patient and wait for that user to respond first. </small></p>
 
           {% else %}
         <form method="POST" style="padding-top: 1rem; padding-bottom: 1rem">
             {% csrf_token %}
-        <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none" name="send_request">Send a match request!</button>
+        <button type="submit" style="outline: none" name="send_request">Send a match request!</button>
       </form>
           {% endif %}
 </div>
