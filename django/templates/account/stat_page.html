@@ -123,7 +123,7 @@
 
                 <h3 rel="tooltip" title="This is the percentage of times that you have been late to a mock interview."> Lateness Rate </h3>
                 <p> {{ request.user.statistics.late }}%
-                    {% if request.user.statistics.late/request.user.statistics.tot_interview >= 0.5 %}
+                    {% if late_warning %}
                         <b>* needs improvement </b>
                     {% endif %}
                 </p>
