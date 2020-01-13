@@ -102,8 +102,8 @@
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     // Creates a websocket that points to the given url
     //var chatSocket = new ReconnectingWebSocket(endpoint);
-    var chatSocket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/chat" + window.location.pathname);
     console.log("before opening")
+    var chatSocket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + window.location.pathname);
     // Action performed when the socket opens
     chatSocket.onopen = function(e) {
         console.log('Chat socket opened', e);

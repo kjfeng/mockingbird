@@ -47,11 +47,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'message': msg,
                 'username': username
             })
-            
+
 
             # Broadcasts message to be sent to group
-            await self.channel_layer.group_send(
-                self.chat_room, 
+            print(msg)
+            self.channel_layer.group_send(
+                self.chat_room,
                 {
                     'type': 'chat_message',
                     'message': response
