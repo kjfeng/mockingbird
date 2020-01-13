@@ -1,0 +1,9 @@
+{% extends 'base-app.html' %}
+{% block content %}
+<div>
+
+    <p> You cannot cancel your match request with <b>{{match}}</b> because they have already accepted your request. </p>
+    <p> If you would still like to cancel your interview, find out how to contact them <a href="/request_info/">here</a>. </p>
+<!-- <p><a href="{% url 'home' %} ">Back to Home</a> </p> -->
+</div>
+{% endblock %}
