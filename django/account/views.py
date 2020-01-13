@@ -244,7 +244,7 @@ def show_statistics(request):
     late_rate = 0
     if request.user.statistics.tot_interview != 0:
         late_rate = float(request.user.statistics.late) / float(request.user.statistics.tot_interview)
-        if late_rate:
+        if late_rate >= 0.5:
             late_warning = True
     pulled = pull_notif(request.user)
     context = {
