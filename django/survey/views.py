@@ -7,7 +7,7 @@ from decimal import *
 from chat.models import Thread
 from django.db.models import Q
 from .forms import SurveyForm
-from account.pull_notif import pull_notif, mark_read
+from account.pull_notif import pull_notif
 from mockingbird.decorators import onboard_only
 from match.views import matchlist_create
 
@@ -24,10 +24,9 @@ def survey(request):
             'notif': pulled[1]
         }
         if request.method == 'POST' and 'markread' in request.POST:
-            mark_read(request.user)
-            pulled = pull_notif(request.user)
-            context['has_unread'] = pulled[0]
-            context['notif'] = pulled[1]
+            for x in pulled[1]:
+                x.read = True
+                x.save()
 
         return render(request, 'survey/no_survey.html', context)
 
@@ -118,8 +117,9 @@ def survey(request):
     form.fields['did_meet'].initial = 'n/a'
 
     if request.method == 'POST' and 'markread' in request.POST:
-        mark_read(request.user)
-        pulled = pull_notif(request.user)
+        for x in pulled[1]:
+            x.read = True
+            x.save()
 
     args = {
         'form': form,
@@ -136,8 +136,9 @@ def survey_complete(request):
     pulled = pull_notif(request.user)
 
     if request.method == 'POST' and 'markread' in request.POST:
-        mark_read(request.user)
-        pulled = pull_notif(request.user)
+        for x in pulled[1]:
+            x.read = True
+            x.save()
 
     context = {
         'has_unread': pulled[0],

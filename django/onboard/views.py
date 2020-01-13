@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
-from account.pull_notif import pull_notif, mark_read
+from account.pull_notif import pull_notif
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 from django.core.mail import EmailMessage
@@ -77,9 +77,9 @@ def activate(request, uidb64, token):
 def login(request):
     pulled = pull_notif(request.user)
     if request.method == 'POST' and 'markread' in request.POST:
-        mark_read(request.user)
-        pulled = pull_notif(request.user)
-
+        for x in pulled[1]:
+            x.read = True
+            x.save()
     discover_users = []
     recommended = None
 
@@ -114,6 +114,10 @@ def login(request):
                 if name is not '':
                     requested_users.append(User.objects.get(username=name))
 
+            if request.method == 'POST' and 'markread' in request.POST:
+                for x in pulled[1]:
+                    x.read = True
+                    x.save()
 
 
     context = {
@@ -150,9 +154,9 @@ def default_view(request, extra):
     pulled = pull_notif(request.user)
 
     if request.method == 'POST' and 'markread' in request.POST:
-        mark_read(request.user)
-        pulled = pull_notif(request.user)
-
+        for x in pulled[1]:
+            x.read = True
+            x.save()
     return render(request, '../templates/broken_page.html', {'has_unread': pulled[0], 'notif': pulled[1]})
 '''
 def forgotPassword(request):
