@@ -136,11 +136,11 @@ USE_TZ = True
 # Celery stuff
 # CELERY_BROKER_URL=os.environ.get('REDIS_URL', '')
 # CELERY_RESULT_BACKEND=os.environ.get('REDIS_URL', '')
-BROKER_URL = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-88-173-114.compute-1.amazonaws.com:13639'
-CELERY_RESULT_BACKEND = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-88-173-114.compute-1.amazonaws.com:13639'
-CELERY_ACCEPT_CONTENT = ['pickle']
-CELERY_TASK_SERIALIZER = 'pickle'
-CELERY_TIMEZONE = TIME_ZONE
+# BROKER_URL = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-88-173-114.compute-1.amazonaws.com:13639'
+# CELERY_RESULT_BACKEND = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-88-173-114.compute-1.amazonaws.com:13639'
+# CELERY_ACCEPT_CONTENT = ['pickle']
+# CELERY_TASK_SERIALIZER = 'pickle'
+# CELERY_TIMEZONE = TIME_ZONE
 
 # redis_host = os.environ.get('REDIS_HOST', 'ec2-54-164-134-74.compute-1.amazonaws.com')
 # redis_host = os.environ.get('REDIS_HOST', 'redis://localhost:6379')
@@ -148,15 +148,31 @@ redis_host = os.environ.get('REDIS_HOST', 'ec2-54-88-173-114.compute-1.amazonaws
 # redis_host = os.environ.get(BROKER_URL)
 # Channel layer definitions
 # http://channels.readthedocs.org/en/latest/deploying.html#setting-up-a-channel-backend
+CELERY_BROKER_URL = os.environ['REDIS_URL']
+CELERY_RESULT_BACKEND = os.environ['REDIS_URL']
+CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_TIMEZONE = TIME_ZONE
+
 CHANNEL_LAYERS = {
     "default": {
         # This example app uses the Redis channel layer implementation asgi_redis
         # "BACKEND": "asgi_redis.RedisChannelLayer",
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [BROKER_URL],
+            "hosts": [os.environ['REDIS_URL']],
         },
     },
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ['REDIS_URL'],  # Here we have Redis DSN (for ex. redis://localhost:6379/1)
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        }
+    }
 }
 
 # Static files (CSS, JavaScript, Images)

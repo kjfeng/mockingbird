@@ -1,2 +1,2 @@
-python: gunicorn --chdir django mockingbird.wsgi --log-file -
+python: daphne mockingbird.asgi:application --port $PORT --bind 0.0.0.0
 worker: celery -A mockingbird worker --workdir django
