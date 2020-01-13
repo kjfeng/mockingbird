@@ -93,17 +93,15 @@
     var this_user = $("#this_user").val();
     var chatButton = $("#chat-send-button");
     // Websocket creation
-    //var wsStart = 'ws://';
+    var wsStart = 'ws://';
     // For production purposes in a secure server
-    // if (loc.protocol == 'https:') {
-    //     wsStart = 'wss://';
-    // }
-    //var endpoint = wsStart + loc.host + loc.pathname + "websocket";
-    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    if (loc.protocol == 'https:') {
+        wsStart = 'wss://';
+    }
+    var endpoint = wsStart + loc.host + loc.pathname;
     // Creates a websocket that points to the given url
-    //var chatSocket = new ReconnectingWebSocket(endpoint);
-    console.log("before opening")
-    var chatSocket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + window.location.pathname);
+    var chatSocket = new ReconnectingWebSocket(endpoint);
+
     // Action performed when the socket opens
     chatSocket.onopen = function(e) {
         console.log('Chat socket opened', e);
