@@ -32,7 +32,8 @@ def send_survey(request_user, target, current_site):
         })
         target.profile.is_sender = False
         target.profile.save()
-        target.email_user(subject, message)
+        if target.profile.receive_email:
+            target.email_user(subject, message)
 
 @shared_task
 def send_modal(request_user, target):
