@@ -29,17 +29,17 @@ class BasicForm(UserChangeForm):
         }
 
 class TagForm(UserChangeForm):
-  industry_choice_1 = forms.ChoiceField(choices=INDUSTRY_CHOICES, help_text="Choose your preferred/primary industry.")
-  industry_choice_2 = forms.ChoiceField(choices=INDUSTRY_CHOICES, help_text="If applicable, choose your secondary industry.")
-  industry_match = forms.ChoiceField(choices=INDUSTRY_MATCH_CHOICE, help_text="Choose which of your chosen industries you'd like to be matched in. Or find matches in both (or neither)!")
+  industry_choice_1 = forms.CharField(widget=forms.Select(choices=INDUSTRY_CHOICES), help_text="Choose your preferred/primary industry.")
+  industry_choice_2 = forms.CharField(widget=forms.Select(choices=INDUSTRY_CHOICES), help_text="If you would also like to interview for another industry, choose your secondary industry.")
+  industry_match = forms.CharField(widget=forms.Select(choices=INDUSTRY_MATCH_CHOICE), help_text="Choose which of your chosen industries you'd like to be matched in. Or find matches in both (or neither)!")
   password = None
   class Meta:
     model = Profile
-    fields = (
+    fields = [
       'industry_choice_1',
       'industry_choice_2',
-      'industry_match',
-    )
+      'industry_match'
+    ]
 
   def is_valid(self):
 

@@ -25,7 +25,7 @@ def tags_view(request):
       error_message = 'You can\'t fly just yet! ' + ERROR_MESSAGES[isValidReturn]
       formB.fields['role'].label = "Desired Role"
       formB.fields['summary'].label = "Here's some space to tell us a little more about yourself!"
-      formB.fields['summary'].help_text = "Tell us about your career goals or current projects or anything else!" \
+      formB.fields['summary'].help_text = "Tell us about your career goals or current projects or anything else! " \
                                           "This introduction will be visible to all other users."
 
       return render(request, "tagging/selecttags.html", {'form': form, 'formB':formB, 'error_message': error_message})
@@ -34,7 +34,7 @@ def tags_view(request):
     formB = BasicForm()
     formB.fields['role'].label = "Desired Role"
     formB.fields['summary'].label = "Here's some space to tell us a little more about yourself!"
-    formB.fields['summary'].help_text = "Tell us about your career goals or current projects or anything else!" \
+    formB.fields['summary'].help_text = "Tell us about your career goals or current projects or anything else! " \
                                         "This introduction will be visible to all other users."
 
   return render(request, "tagging/selecttags.html", {'form': form, 'formB': formB, 'error_message':''})
