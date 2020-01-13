@@ -31,6 +31,7 @@ def enqueue(my_list, next_elem, max_size):
         my_list = dequeue(my_list)
 
     if next_elem not in my_list:
+
         my_list.append(next_elem)
 
     return my_list
