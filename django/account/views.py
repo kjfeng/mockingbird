@@ -208,9 +208,7 @@ def account_edit(request):
 
 @login_required(login_url='/login')
 def change_password(request):
-    if request.method =='POST' and 'markread' in request.POST:
-        mark_read(request.user)
-    elif request.method == 'POST':
+    if request.method == 'POST' and 'markread' not in request.POST:
         form = PasswordChangeForm(request.user, request.POST)
 
         if form.is_valid():
@@ -234,6 +232,8 @@ def change_password(request):
             messages.error(request, 'Please correct the error below.')
 
     else:
+        if request.method == 'POST' and 'markread' in request.POST:
+            mark_read(request.user)
         form = PasswordChangeForm(request.user)
     pulled = pull_notif(request.user)
     context = {

@@ -558,10 +558,28 @@ def confirm_cancel_request(request):
 @login_required(login_url='/login/')
 @onboard_only
 def done_cancel(request):
+    if request.method == 'POST' and 'markread' in request.POST:
+        storage = messages.get_messages(request)
+        msgs = []
+        for m in storage:
+            msgs.append(m)
+        mark_read(request.user)
+        pulled = pull_notif(request.user)
+
+        context = {
+            'username': msgs[0],
+            'has_unread': pulled[0],
+            'notif': pulled[1],
+        }
+        return render(request, 'matching/done_cancel.html', context)
 
     # update target's info
     match = request.POST.get('match')
     target = User.objects.get(username=match)
+
+    # case where they're trying to go to this url forcefully
+    if not match or match == "None":
+        return redirect('../default')
 
     # make a notification for the target
     # if user is sender, they are canceling
@@ -641,15 +659,13 @@ def done_cancel(request):
 
     pulled = pull_notif(request.user)
 
-    if request.method == 'POST' and 'markread' in request.POST:
-        mark_read(request.user)
-        pulled = pull_notif(request.user)
-
     context = {
         'username': target.username,
         'has_unread': pulled[0],
-        'notif': pulled[1]
+        'notif': pulled[1],
     }
+
+    messages.add_message(request, messages.INFO, str(target.username))
 
 
     return render(request, 'matching/done_cancel.html', context)
