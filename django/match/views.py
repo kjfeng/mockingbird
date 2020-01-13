@@ -10,7 +10,7 @@ from .models import Cached_Matches, Recent_Matches, Cached_List_Matches
 from .user_match import quick_match_prototype, get_match_list, list_match
 from .user_match import to_user_list, to_user_string, dequeue, enqueue
 from sys import stderr
-from .tasks import send_survey, send_modal
+from .tasks import send_survey
 from datetime import timedelta
 from django.utils import timezone
 from .forms import MatchConfigurationForm
