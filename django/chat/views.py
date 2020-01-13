@@ -9,6 +9,7 @@ from django.views.generic import DetailView, ListView
 
 from .forms import ComposeForm
 from .models import Thread, ChatMessage
+from account.pull_notif import pull_notif, mark_read
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.contrib.auth.decorators import login_required
