@@ -95,10 +95,10 @@
     // Websocket creation
     var wsStart = 'ws://';
     // For production purposes in a secure server
-    if (loc.protocol == 'https:') {
-        wsStart = 'wss://';
-    }
-    var endpoint = wsStart + loc.host + loc.pathname;
+    // if (loc.protocol == 'https:') {
+    //     wsStart = 'wss://';
+    // }
+    var endpoint = wsStart + loc.host + loc.pathname + "websocket";
     // Creates a websocket that points to the given url
     var chatSocket = new ReconnectingWebSocket(endpoint);
 
