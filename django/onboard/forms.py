@@ -4,10 +4,10 @@ from django.contrib.auth.models import User
 
 
 # add whatever other info we want to add
-class SignUpForm(UserCreationForm):
-    email = forms.EmailField(max_length=254, required=True,
-                             help_text='Required.')
+from django.core.exceptions import ValidationError
 
+
+class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('first_name', 'username', 'email',
@@ -15,6 +15,12 @@ class SignUpForm(UserCreationForm):
         help_text = {
             'password2': 'why isnt this working',
         }
+
+    def clean(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            self.add_error('email', "This email is already in use!")
+        return self.cleaned_data
 
 
 class ForgotPasswordForm(forms.Form):
