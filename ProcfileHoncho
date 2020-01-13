@@ -1,2 +1,2 @@
 python: daphne mockingbird.asgi:application --port $PORT --bind 0.0.0.0 -v2
-worker: REMAP_SIGTERM=SIGQUIT celery worker --app mockingbird.celery.app --loglevel info
+worker: celery -A mockingbird worker
