@@ -138,6 +138,7 @@ def match_view(request):
 
     recent = Recent_Matches.objects.get(user=my_profile.user)
     recent_list = to_user_list(recent.matches, 'p')
+    print(type(recent_list))
 
     match_cache = Cached_Matches.objects.get(user=my_profile.user)
     match_cache_list = to_user_list(match_cache.matches, 'p')
@@ -148,10 +149,11 @@ def match_view(request):
 
     # match = quick_match_prototype(my_profile)
     if match_list is not None and len(match_list) is not 0:
+        #print("here")
         match = User.objects.get(username=match_list[0])
         match_profile = Profile.objects.get(user=match)
 
-        recent_list = enqueue(recent_list, match.username, L_SIZE)
+        recent_list = enqueue(recent_list, match_profile, L_SIZE)
         recent.matches = to_user_string(recent_list)
         recent.save()
 
