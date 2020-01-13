@@ -1,2 +1,2 @@
-python: daphne mockingbird.asgi:application --workdir django --port $PORT --bind 0.0.0.0 -v2
+python: daphne django/mockingbird.asgi:application --port $PORT --bind 0.0.0.0 -v2
 worker: celery -A mockingbird worker --workdir django
