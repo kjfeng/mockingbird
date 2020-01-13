@@ -51,7 +51,7 @@
     <!-- <h1> Profile </h1> -->
 
     <h5>{{user.first_name}}, you're doing great!</h5>
-    <p> To learn more about any statistics and how it is calculated, hover over the question mark next to the statistic's name for a couple of seconds!</p>
+    <p> To learn more about any statistics and how it is calculated, <b>hover</b> over the question mark next to the statistic's name for a couple of seconds!</p>
 </div>
 
     <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -124,7 +124,7 @@
                 <hr>
 
                 <h3> Lateness Rate <i rel="tooltip" title="This is the percentage of times that you have been late to a mock interview." class="material-icons">help_outline</i></h3>
-                <p> {{ request.user.statistics.late }}%
+                <p> {{ late_rate }}%
                     {% if late_warning %}
                         <b>* needs improvement </b>
                     {% endif %}
@@ -134,10 +134,11 @@
                 <h3>
                     Average User Rating <i rel="tooltip" title="This is the averaged rating that other users have rated you." class="material-icons">help_outline</i>
                 </h3>
-                <p> <b>{{request.user.statistics.rate }}</b> <small>/ 5.00</small></p>
+                <p> <b>{{request.user.statistics.rate }}</b> <small>/ 5.00</small>
                 {% if request.user.statistics.rate < 2.5 %}
                         <b>* needs improvement </b>
                     {% endif %}
+                </p>
                 <hr>
 
                 <h3 >

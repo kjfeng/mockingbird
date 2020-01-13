@@ -241,8 +241,10 @@ def show_statistics(request):
 
     total_late = request.user.statistics.late * request.user.statistics.tot_interview
     late_warning = False
+    late_rate = 0
     if request.user.statistics.tot_interview != 0:
-        if float(request.user.statistics.late) / float(request.user.statistics.tot_interview):
+        late_rate = float(request.user.statistics.late) / float(request.user.statistics.tot_interview)
+        if late_rate >= 0.5:
             late_warning = True
     pulled = pull_notif(request.user)
     context = {
@@ -250,7 +252,8 @@ def show_statistics(request):
         'has_unread': pulled[0],
         'notif': pulled[1],
         'ranking': ranking,
-        'late_warning': late_warning
+        'late_warning': late_warning,
+        'late_rate':late_rate*100
     }
     if request.method == 'POST' and 'markread' in request.POST:
         for x in pulled[1]:
