@@ -10,7 +10,7 @@ from .models import Cached_Matches, Recent_Matches, Cached_List_Matches
 from .user_match import quick_match_prototype, get_match_list, list_match
 from .user_match import to_user_list, to_user_string, dequeue, enqueue
 from sys import stderr
-from .tasks import send_survey
+from .tasks import send_survey, send_modal
 from datetime import timedelta
 from django.utils import timezone
 from .forms import MatchConfigurationForm
@@ -495,6 +495,7 @@ def accept_request(request):
         #send_survey(request, target, str(target.profile.match_name), str(t_username))
         send_time = timezone.now() + timedelta(seconds=30)
         #send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
+        send_modal.apply_async(eta=send_time, args=(request.user, target))
         send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
 
         matchedUser = MatchedUser(username = str(target.username),
@@ -526,7 +527,7 @@ def confirm_cancel_request(request):
       if not match:
         return render(request, 'matching/done_cancel.html')
 
-      # if match accepted
+      # if match accepted  
       target = User.objects.get(username=match)
       email = target.email
       #print("hello match:", match, email)
