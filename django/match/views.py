@@ -17,7 +17,7 @@ from .forms import MatchConfigurationForm
 #from post_office import mail
 
 from account.models import NotificationItem
-from account.pull_notif import pull_notif
+from account.pull_notif import pull_notif, mark_read
 from mockingbird.decorators import onboard_only
 
 class MatchedUser(object):
@@ -219,9 +219,10 @@ def matchresults_view(request):
         'configured': False
     }
     if request.method == 'POST' and 'markread' in request.POST:
-        for x in pulled[1]:
-            x.read = True
-            x.save()
+        mark_read(request.user)
+        pulled = pull_notif(request.user)
+        context['has_unread'] = pulled[0]
+        context['notif'] = pulled[1]
     else:
         val_acceptance = _on_accept(request)
         if (val_acceptance):
@@ -323,9 +324,8 @@ def matchlistresults_view(request):
     matchedUsers = request.session.get('matchedUsers', None)
     pulled = pull_notif(request.user)
     if request.method == 'POST' and 'markread' in request.POST:
-        for x in pulled[1]:
-            x.read = True
-            x.save()
+        mark_read(request.user)
+        pulled = pull_notif(request.user)
 
     context = {
         'has_read': pulled[0],
@@ -355,9 +355,8 @@ def matchconfig_view(request):
     pulled = pull_notif(request.user)
 
     if request.method == 'POST' and 'markread' in request.POST:
-        for x in pulled[1]:
-            x.read = True
-            x.save()
+        mark_read(request.user)
+        pulled = pull_notif(request.user)
 
     return render(request, 'matching/match.html', {'form': form,
                                                    'has_unread': pulled[0],
@@ -393,9 +392,8 @@ def request_info(request):
                 requested_users.append(User.objects.get(username=name))
 
         if request.method == 'POST' and 'markread' in request.POST:
-            for x in pulled[1]:
-                x.read = True
-                x.save()
+            mark_read(request.user)
+            pulled = pull_notif(request.user)
 
         requestee = request.session.get('matchedUser', None)
 
@@ -425,9 +423,8 @@ def request_info(request):
         return render(request, 'matching/request_info.html', context)
     else:
         if request.method == 'POST' and 'markread' in request.POST:
-            for x in pulled[1]:
-                x.read = True
-                x.save()
+            mark_read(request.user)
+            pulled = pull_notif(request.user)
 
         context = {
             'has_unread': pulled[0],
@@ -443,15 +440,14 @@ def accept_request(request):
         pulled = pull_notif(request.user)
 
         if request.method == 'POST' and 'markread' in request.POST:
-            for x in pulled[1]:
-                x.read = True
-                x.save()
+            mark_read(request.user)
+            pulled = pull_notif(request.user)
 
         context = {
             'has_unread': pulled[0],
             'notif': pulled[1]
         }
-        return render(request, 'matching/no_request.html')
+        return render(request, 'matching/no_request.html', context)
     else:
         t_username = request.POST.get('match')
         requested_users = str(request.user.profile.requested_names).split(",")
@@ -547,9 +543,8 @@ def confirm_cancel_request(request):
 
 
     if request.method == 'POST' and 'markread' in request.POST:
-        for x in pulled[1]:
-            x.read = True
-            x.save()
+        mark_read(request.user)
+        pulled = pull_notif(request.user)
 
     context = {
         'username': target.username,
@@ -647,9 +642,8 @@ def done_cancel(request):
     pulled = pull_notif(request.user)
 
     if request.method == 'POST' and 'markread' in request.POST:
-        for x in pulled[1]:
-            x.read = True
-            x.save()
+        mark_read(request.user)
+        pulled = pull_notif(request.user)
 
     context = {
         'username': target.username,

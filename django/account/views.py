@@ -18,7 +18,7 @@ import sys
 
 
 from .forms import EditAccountForm, EditProfileForm
-from .pull_notif import pull_notif
+from .pull_notif import pull_notif, mark_read
 from match.views import matchlist_create, _on_accept_home
 
 # Create your views here.
@@ -26,6 +26,11 @@ from match.views import matchlist_create, _on_accept_home
 @onboard_only
 def account_details(request):
     pulled = pull_notif(request.user)
+    if request.method == 'POST':
+        mark_read(request.user)
+        pulled = pull_notif(request.user)
+
+
     context = {
         'has_unread':pulled[0],
         'notif': pulled[1]
@@ -34,6 +39,9 @@ def account_details(request):
 
 @login_required(login_url='/login/')
 def account_delete(request):
+    if request.method == 'POST':
+        mark_read(request.user)
+
     pulled = pull_notif(request.user)
     context = {
         'has_unread': pulled[0],
@@ -154,7 +162,12 @@ def account_edit(request):
         'summary': request.user.profile.summary
     }
     obj = request.user.profile
-    if request.method == 'POST':
+    if request.method == 'POST' and 'markread' in request.POST:
+        print("here")
+        mark_read(request.user)
+
+    if request.method == 'POST' and 'markread' not in request.POST:
+        print("here?")
         form = EditAccountForm(request.POST, instance=request.user)
         formB = EditProfileForm(request.POST, instance=request.user.profile)
         isBValidReturn = formB.is_valid()
@@ -195,7 +208,9 @@ def account_edit(request):
 
 @login_required(login_url='/login')
 def change_password(request):
-    if request.method == 'POST':
+    if request.method =='POST' and 'markread' in request.POST:
+        mark_read(request.user)
+    elif request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
 
         if form.is_valid():
@@ -256,9 +271,10 @@ def show_statistics(request):
         'late_rate':late_rate*100
     }
     if request.method == 'POST' and 'markread' in request.POST:
-        for x in pulled[1]:
-            x.read = True
-            x.save()
+        mark_read(request.user)
+        pulled = pull_notif(request.user)
+        context['has_unread'] = pulled[0]
+        context['notif'] = pulled[1]
     return render(request, 'account/stat_page.html', context)
 
 @login_required(login_url='/login')
@@ -297,9 +313,10 @@ def profile_view(request, username):
     context['target_user'] = u[0]
 
     if request.method == 'POST' and 'markread' in request.POST:
-        for x in pulled[1]:
-            x.read = True
-            x.save()
+        mark_read(request.user)
+        pulled = pull_notif(request.user)
+        context['has_unread'] = pulled[0]
+        context['notif'] = pulled[1]
 
     elif request.method == 'POST' and 'send_request' in request.POST:
         print(u[0].username)

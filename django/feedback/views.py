@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 
 from .forms import FeedbackForm
-from account.pull_notif import pull_notif
+from account.pull_notif import pull_notif, mark_read
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -31,9 +31,8 @@ def feedback(request):
             return render(request, 'feedback/feedback_complete.html', context)
     else:
         if request.method == 'POST' and 'markread' in request.POST:
-            for x in pulled[1]:
-                x.read = True
-                x.save()
+            mark_read(request.user)
+            pulled = pull_notif(request.user)
 
         form = FeedbackForm()
         args = {'form': form,

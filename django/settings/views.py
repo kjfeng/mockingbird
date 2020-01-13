@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from account.pull_notif import pull_notif
+from account.pull_notif import pull_notif, mark_read
 from .forms import SettingsForm
 from match.views import matchlist_create
 
@@ -7,9 +7,9 @@ from match.views import matchlist_create
 def settings(request):
     pulled = pull_notif(request.user)
     if request.method == 'POST' and 'markread' in request.POST:
-        for x in pulled[1]:
-            x.read = True
-            x.save()
+        mark_read(request.user)
+        pulled = pull_notif(request.user)
+
     context = {
         'has_unread': pulled[0],
         'notif': pulled[1]
@@ -34,9 +34,8 @@ def edit_settings(request):
 
 
     if request.method == 'POST' and 'markread' in request.POST:
-        for x in pulled[1]:
-            x.read = True
-            x.save()
+        mark_read(request.user)
+        pulled = pull_notif(request.user)
 
     context = {
         'form': form,

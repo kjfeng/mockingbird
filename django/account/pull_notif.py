@@ -18,3 +18,15 @@ def pull_notif(t_user):
             break
 
     return [has_unread, all_ordered[:index_max]]
+
+
+# function that marks last MAX_NOTIF as read
+def mark_read(t_user):
+    all_ordered = NotificationItem.objects.filter(user__id=t_user.id).order_by('-created_at')
+    index_max = min(len(all_ordered), MAX_NOTIF)
+
+    for x in all_ordered[:index_max]:
+        x.read = True
+        x.save()
+
+    return
