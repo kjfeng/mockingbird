@@ -56,9 +56,10 @@ def survey(request):
                 # print("did meet", file=stderr)
 
                 # update the target's statistics
-                target.statistics.tot_interview += 1
                 current_total_rate = Decimal(target.statistics.rate) * target.statistics.tot_interview
-                target.statistics.rate = (current_total_rate + Decimal(form.cleaned_data['friendly']))/target.statistics.tot_interview
+
+                target.statistics.rate = (current_total_rate + Decimal(form.cleaned_data['friendly']))/(target.statistics.tot_interview +1)
+                target.statistics.tot_interview += 1
 
                 # adding late
                 if form.cleaned_data['on_time'] == "2" or form.cleaned_data['on_time'] == "3":
@@ -67,13 +68,16 @@ def survey(request):
                 # updates to ratings
                 if form.cleaned_data['friendly'] == "2":
                     target.statistics.overall_rating -= Decimal(0.2)
+
                 elif form.cleaned_data['friendly'] == "1":
                     target.statistics.overall_rating -= Decimal(0.1)
+                target.statistics.save()
 
                 if form.cleaned_data['on_time'] == "2":
                     target.statistics.overall_rating -= Decimal(0.1)
                 elif form.cleaned_data['on_time'] == "3":
                     target.statistics.overall_rating -= Decimal(0.2)
+                target.statistics.save()
 
                 # positive updates (capped at 5)
                 if target.statistics.overall_rating < 5:
@@ -81,7 +85,6 @@ def survey(request):
                         target.statistics.overall_rating += Decimal(0.1)
                     elif form.cleaned_data['on_time'] == "4" and form.cleaned_data['friendly'] == "5":
                         target.statistics.overall_rating += Decimal(0.2)
-
                 target.statistics.save()
 
                 # send email if there is feedback
