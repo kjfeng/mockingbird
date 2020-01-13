@@ -98,7 +98,7 @@ if DJANGO_ENV == "local":
         'PORT': '54320',
     }
 elif DJANGO_ENV == "production":
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+    DATABASES['default'] = dj_database_url.config()
 else:
     raise Exception(f"Not a valid DJANGO_ENV: {DJANGO_ENV}")
 
