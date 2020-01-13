@@ -523,12 +523,15 @@ def confirm_cancel_request(request):
     else:
         match = request.POST.get('match')
 
-    # if match already accepted
+    # if match accepted/declined request already
     if match == None:
       match = request.user.profile.match_name
+
+      # if match declined
       if not match:
         return render(request, 'matching/done_cancel.html')
-      # print("match cancel", match)
+
+      # if match accepted  
       target = User.objects.get(username=match)
       email = target.email
       #print("hello match:", match, email)
