@@ -523,9 +523,27 @@ def confirm_cancel_request(request):
     else:
         match = request.POST.get('match')
 
-    print(match)
+    # if match accepted/declined request already
+    if match == None:
+      match = request.user.profile.match_name
+
+      # if match declined
+      if not match:
+        return render(request, 'matching/done_cancel.html')
+
+      # if match accepted  
+      target = User.objects.get(username=match)
+      email = target.email
+      #print("hello match:", match, email)
+      context = {
+          'match': match,
+          'email': email,
+      }
+      return render(request, 'matching/cannot_cancel.html', context)
+
     target = User.objects.get(username=match)
     pulled = pull_notif(request.user)
+    print("my match")
 
 
     if request.method == 'POST' and 'markread' in request.POST:

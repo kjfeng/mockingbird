@@ -144,7 +144,8 @@ CELERY_TIMEZONE = TIME_ZONE
 
 # redis_host = os.environ.get('REDIS_HOST', 'ec2-54-164-134-74.compute-1.amazonaws.com')
 # redis_host = os.environ.get('REDIS_HOST', 'redis://localhost:6379')
-redis_host = os.environ.get('REDIS_HOST', '127.0.0.1')
+redis_host = os.environ.get('REDIS_HOST', 'ec2-54-88-173-114.compute-1.amazonaws.com')
+# redis_host = os.environ.get(BROKER_URL)
 # Channel layer definitions
 # http://channels.readthedocs.org/en/latest/deploying.html#setting-up-a-channel-backend
 CHANNEL_LAYERS = {
@@ -153,7 +154,7 @@ CHANNEL_LAYERS = {
         # "BACKEND": "asgi_redis.RedisChannelLayer",
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(redis_host, 6379)],
+            "hosts": [BROKER_URL],
         },
     },
 }

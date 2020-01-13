@@ -3,9 +3,9 @@ from django import forms
 #from .models import Post_Survey
 
 MEETING_CHOICES = [('n/a', 'Please select an answer'), ('yes', 'Yes, we did try to meet'), ('no', 'No, we did not try to meet')]
-TIME_CHOICES = [('4', 'On Time'), ('3', '< 10 minutes late'),
+TIME_CHOICES = [('n/a', 'Please select an answer'), ('4', 'On Time'), ('3', '< 10 minutes late'),
                     ('2', '10+ minutes late'), ('1', 'No Show')]
-FRIEND_CHOICES = [('5', 'Very Friendly'), ('4', 'Friendly'), ('3', 'No Impression'),
+FRIEND_CHOICES = [('n/a', 'Please select an answer'), ('5', 'Very Friendly'), ('4', 'Friendly'), ('3', 'No Impression'),
                       ('2', 'Rude'), ('1', 'Extremely Rude')]
 
 
@@ -28,5 +28,14 @@ class SurveyForm(forms.Form):
         if did_meet == 'n/a':
             raise forms.ValidationError({'did_meet': ["This field is required.",]})
 
-        return cleaned_data
+        # did_meet is toggled, make the other fields required
+        elif did_meet == 'yes':
+          on_time = cleaned_data.get("on_time")
+          friendly = cleaned_data.get("friendly")
+          msg = forms.ValidationError("This field is required.")
+          if on_time == 'n/a':
+            self.add_error('on_time', msg)
+          if friendly == 'n/a':
+            self.add_error('friendly', msg)
 
+        return cleaned_data
