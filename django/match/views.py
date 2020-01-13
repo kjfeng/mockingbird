@@ -498,7 +498,6 @@ def accept_request(request):
 
         #send_survey(request, target, str(target.profile.match_name), str(t_username))
         send_time = timezone.now() + timedelta(seconds=30)
-        #send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
         #set_survey_boolean.apply_async(eta=send_time, args=(request.user, target))
         send_survey.apply_async(eta=send_time, args=(request.user, target, current_site))
 
