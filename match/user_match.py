@@ -32,7 +32,7 @@ def enqueue(my_list, next_elem, max_size):
 
     if next_elem not in my_list:
 
-        my_list.append(next_elem)
+        my_list.append(next_elem.)
 
     return my_list
 

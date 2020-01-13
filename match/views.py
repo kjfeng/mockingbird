@@ -151,7 +151,7 @@ def match_view(request):
         match = User.objects.get(username=match_list[0])
         match_profile = Profile.objects.get(user=match)
 
-        recent_list = enqueue(recent_list, match_profile, L_SIZE)
+        recent_list = enqueue(recent_list, match.username, L_SIZE)
         recent.matches = to_user_string(recent_list)
         recent.save()
 
