@@ -31,6 +31,7 @@ def enqueue(my_list, next_elem, max_size):
         my_list = dequeue(my_list)
 
     if next_elem not in my_list:
+
         my_list.append(next_elem)
 
     return my_list
@@ -49,21 +50,22 @@ def to_user_list(user_string, profile_or_user):
     if "" in user_list:
         user_list.remove("")
 
-    i = 0
-    while i < len(user_list):
-        username = user_list[i]
-        try:
-            user = User.objects.get(username=username)
+    return_list = []
+    print("in the user list")
+
+    # if there are deleted user in the list, remove them
+    for name in user_list:
+        user = User.objects.filter(username=name)
+        if user:
+            user = user[0]
+            print(user)
             if (profile_or_user == 'p'):
                 user_profile = Profile.objects.get(user=user)
-                user_list[i] = user_profile
+                return_list.append(user_profile)
             else:
-                user_list[i] = user
-        except:
-            return 'Deleted User'
-        i += 1
+                return_list.append(user_profile)
 
-    return user_list
+    return return_list
 
 def to_user_string(user_list):
     user_string = ""

@@ -138,16 +138,24 @@ def match_view(request):
 
     recent = Recent_Matches.objects.get(user=my_profile.user)
     recent_list = to_user_list(recent.matches, 'p')
+    print(type(recent_list))
 
     match_cache = Cached_Matches.objects.get(user=my_profile.user)
     match_cache_list = to_user_list(match_cache.matches, 'p')
 
+    # if has a deleted user remake it
+    #if match_cache_list == "Deleted User":
+    #    matchlist_create(request.user)
+    #    match_cache = Cached_Matches.objects.get(user=my_profile.user)
+    #    match_cache_list = to_user_list(match_cache.matches, 'p')
+
     match_list = match_cache_list
     if len(match_list) is 0:
         match_list = get_match_list(my_profile, recent_list)
-
+    print(match_list)
     # match = quick_match_prototype(my_profile)
     if match_list is not None and len(match_list) is not 0:
+        print("here")
         match = User.objects.get(username=match_list[0])
         match_profile = Profile.objects.get(user=match)
 
