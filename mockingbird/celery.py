@@ -6,7 +6,7 @@ from celery import Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mockingbird.settings')
 redis = 'redis://h:ped0612c2ab8f1af2281848fbdce999d9e4c5f420ebf81c6c028a1cc85602b55a@ec2-54-88-173-114.compute-1.amazonaws.com:13639'
 #app = Celery('mockingbird', broker='redis') #broker='amqp://agixgbiz:rz5IW-...@shark.rmq.cloudamqp.com/agixgbiz')
-app = Celery('mockingbird', broker_pool_limit=0, broker=redis, result_backend=redis)
+app = Celery('mockingbird', broker_pool_limit=1, broker=redis, result_backend=redis)
 #app = Celery('mockingbird', broker=redis)
 
 # Using a string here means the worker doesn't have to serialize
