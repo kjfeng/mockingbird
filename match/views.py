@@ -126,7 +126,7 @@ def match_view(request):
     L_SIZE = 10
 
     # # clear messages
-    # storage = messages.get_messages(request)
+    ## storage = messages.get_messages(request)
     # for message in storage:
     #      str(message)
     # clear messages
