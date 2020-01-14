@@ -44,8 +44,25 @@
         bottom:0;
         box-shadow: inset 0px 4px 6px rgba(100,100,100,0.6);
     }
+
+    .ui-tooltip {
+    padding: 1rem;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #aeaeae;
+    max-width: 20rem;
+  }
+
+  .ui-helper-hidden-accessible {
+    display: none;
+  }
 }
 </style>
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
 <div>
     <h1 class="title">My Statistics</h1>
     <!-- <h1> Profile </h1> -->
@@ -90,7 +107,6 @@
                         <p>baby bird</p>
                     </div>
 
-                    </font>
                     <!-- <div>
                             <center>
                                 rating system logic
@@ -111,48 +127,49 @@
         <div class="column col-xs-12 col-md-6">
             <div>
                 <h1>
-                    <b>Overall Rating</b> <i rel="tooltip" title="This rating takes into account all of the below statistics and is used in conjuction with the number of completed interviews in order to determine your rank." class="material-icons" >help_outline</i>
+                    <b>Overall Rating</b>
+                      <sup><i rel="tooltip" title="This rating takes into account all of the below statistics and is used in conjuction with the number of completed interviews in order to determine your rank." class="material-icons" style="color: #aaaaaa; font-size: 1.2rem">help</i></sup>
+
                 </h1>
                 <h4> <b>{{request.user.statistics.overall_rating }}</b> <small>/5.00</small></h4>
 
                 <hr>
                 <h3>
-                    Completed Interviews <i rel="tooltip" title="This is the total number of interviews you have completed. This is only incremented once your partner has finished their survey for you." class="material-icons">help_outline </i>
+                    Completed Interviews <sup><i rel="tooltip" title="This is the total number of interviews you have completed. This is only incremented once your partner has finished their survey for you." class="material-icons" style="color: #aaaaaa; font-size: 1.2rem">help</i></sup>
                 </h3>
                 <p> {{ request.user.statistics.tot_interview }}</p>
 
                 <hr>
 
-                <h3> Lateness Rate <i rel="tooltip" title="This is the percentage of times that you have been late to a mock interview." class="material-icons">help_outline</i></h3>
+                <h3> Lateness Rate <sup><i rel="tooltip" title="This is the percentage of times that you have been late to a mock interview." class="material-icons" style="color: #aaaaaa; font-size: 1.2rem">help</i></sup></h3>
                 <p> {{ late_rate }}%
                     {% if late_warning %}
-                        <b>* needs improvement </b>
+                        <b style="color: red">* needs improvement </b>
                     {% endif %}
                 </p>
                 <hr>
 
                 <h3>
-                    Average User Rating <i rel="tooltip" title="This is the averaged rating that other users have rated you." class="material-icons">help_outline</i>
+                    Average User Rating <sup><i rel="tooltip" title="This is the averaged rating that other users have rated you." class="material-icons" style="color: #aaaaaa; font-size: 1.2rem">help</i></sup>
                 </h3>
                 <p> <b>{{request.user.statistics.rate }}</b> <small>/ 5.00</small>
                 {% if request.user.statistics.rate < 2.5 %}
-                        <b>* needs improvement </b>
+                        <b style="color: red">* needs improvement </b>
                     {% endif %}
                 </p>
                 <hr>
 
                 <h3 >
-                    Cumulative No-Shows <i rel="tooltip" title="This is the number of times you have not shown up to a scheduled meeting." class="material-icons">help_outline</i>
+                    Cumulative No-Shows <sup><i rel="tooltip" title="This is the number of times you have not shown up to a scheduled meeting." class="material-icons" style="color: #aaaaaa; font-size: 1.2rem">help</i></sup>
                 </h3>
                 <p> {{ request.user.statistics.no_show }} </p>
             </div>
         </div>
     </div>
-<script>
-     $(function () {
-        $("[rel='tooltip']").tooltip();
-    });
-});
-</script>
+    <script>
+      $(document).ready(function(){
+        $( "[rel='tooltip']" ).tooltip();
+      } );
+      </script>
 
 {% endblock %}
