@@ -63,7 +63,7 @@ def to_user_list(user_string, profile_or_user):
                 user_profile = Profile.objects.get(user=user)
                 return_list.append(user_profile)
             else:
-                return_list.append(user_profile)
+                return_list.append(user)
 
     return return_list
 
