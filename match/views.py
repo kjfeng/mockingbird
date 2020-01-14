@@ -143,6 +143,12 @@ def match_view(request):
     match_cache = Cached_Matches.objects.get(user=my_profile.user)
     match_cache_list = to_user_list(match_cache.matches, 'p')
 
+    # if has a deleted user remake it
+    if match_cache_list == "Deleted User":
+        matchlist_create(request.user)
+        match_cache = Cached_Matches.objects.get(user=my_profile.user)
+        match_cache_list = to_user_list(match_cache.matches, 'p')
+
     match_list = match_cache_list
     if len(match_list) is 0:
         match_list = get_match_list(my_profile, recent_list)
