@@ -1,0 +1,257 @@
+html, body {
+  font-family: 'Poppins', sans-serif !important;
+  color: #3f3f3f;
+  font-size: 12pt;
+  width: 100%;
+  height: 100%;
+}
+
+nav {
+  font-family: 'Poppins', sans-serif;
+  color: #3f3f3f;
+  font-size: 12pt;
+}
+
+.navbar-custom {
+  background-color: white;
+  z-index: 999;
+}
+
+.modal-backdrop {
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7) !important;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+h6 {
+  font-weight: 600;
+}
+
+.header-wrapper {
+  background-color: #efefef;
+  margin: -3rem -3rem 2rem -3rem;
+  padding-bottom: 1rem;
+}
+
+.nav-item {
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+}
+
+.form-control-feedback {
+  padding-right: 2em;
+}
+
+.form-control:focus {
+  border: 2px solid #2042F8 !important;
+  box-shadow: none !important;
+}
+
+.close {
+  color: #000 !important;
+}
+
+.close:focus {
+  background-color: transparent !important;
+  outline: none;
+}
+
+.user-icon {
+  color: #5a5a5a;
+  background-color: #b9b9b9;
+  border-radius: 50%;
+  padding: 3px;
+  margin-top: -3px;
+}
+
+.logo-wrapper {
+  padding-left: 10px;
+}
+
+.navbar-toggler .custom-toggler {
+    border: none !important;
+}
+
+.custom-toggler {
+  background-color: white;
+}
+
+
+.notif-container {
+  width: 350px;
+  white-space: normal;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.notif {
+  padding: 0.5em 1.5em 0em 1.5em;
+}
+
+#notif:hover {
+  background-color: #efefef;
+}
+
+.notif-detail {
+  font-size: 10pt;
+  color: #aaa;
+  padding-top: 0.3em;
+  margin-bottom: 0.5em;
+}
+
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color: red;
+  border-radius: 50%;
+  /* display: inline-block; */
+  position: absolute;
+  top: 5px;
+  left: 25px;
+}
+
+.stuff-under-navbar {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-bottom: 2rem;
+  height: auto;
+  position: relative;
+}
+
+.card-contents {
+  background-color: white;
+  margin-top: 3rem;
+  width: 100%;
+  padding: 3rem !important;
+  border-radius: 15px;
+}
+
+.survey-card {
+  background-color: white;
+  top: 5rem;
+  margin: 2rem 3rem 2rem 2rem;
+  width: 100%;
+  padding: 2rem !important;
+  border-radius: 15px;
+  z-index: 1000;
+  opacity: 100% !important;
+}
+
+.title {
+  font-weight: 600;
+  padding-bottom: 1rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  outline: none;
+  border-radius: 0;
+}
+
+input:focus {
+  border: 2px solid #2042F8
+}
+
+button[type=submit], button[type=button] {
+  background-color: #2042F8;
+  color: white;
+  padding: 0.8rem 2rem;
+  cursor: pointer;
+  border-radius: 8px;
+  outline: none;
+  height: auto;
+}
+
+button[type=submit]:focus, button[type=button]:focus {
+  background-color: #6275D8;
+}
+
+.module-wrapper-left {
+  /* display: flex; */
+  float: left;
+  width: 50%;
+  height: 100%;
+  padding-right: 1rem;
+  padding-bottom: 2rem;
+  position: relative;
+  z-index: 100;
+}
+
+.module-wrapper-right {
+  /* display: flex; */
+  float: left;
+  width: 50%;
+  padding-left: 1rem;
+  height: 100%;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 100;
+}
+
+.module-blue-title {
+  background-color: #3850E2;
+  padding: 1.5rem;
+  border-radius: 15px;
+  margin-bottom: -1.5rem
+}
+
+.module-blue {
+  background-color: #132ECE;
+  color: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+}
+
+.module {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+}
+
+.adventurous {
+  background-color: #FFD357;
+}
+
+.recommended-match-info {
+  padding-top: 1rem;
+}
+
+.profile-card-link {
+  color: #3f3f3f;
+}
+
+.profile-card-link:hover {
+  color: #3f3f3f;
+  text-decoration: none;
+}
+
+.profile-card {
+  padding: 1rem;
+  background-color: white;
+  border-radius: 15px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.profile-card:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+@media only screen and (max-width: 768px) {
+  .module-wrapper-left, .module-wrapper-right {
+    width: 100%;
+    padding: 0;
+  }
+
+  .card-contents {
+    padding: 3rem 1rem 3rem 1rem !important;
+  }
+}

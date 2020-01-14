@@ -19,7 +19,7 @@ DJANGO_ENV = os.environ.get("DJANGO_ENV", "local")
 SECRET_KEY = 'j!8l9$b(2=ngj&=4%+ds4$si1p8nq&%760+w3i43w@8148)040'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =True
+DEBUG = True
 
 ALLOWED_HOSTS = ['teammockingbird333.herokuapp.com', '127.0.0.1', 'localhost']
 
@@ -165,6 +165,7 @@ CACHES = {
         "LOCATION": [BROKER_URL],  # Here we have Redis DSN (for ex. redis://localhost:6379/1)
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "MAX_ENTRIES": 1000  # Increase max cache entries to 1k (from 300)
         },
     }
 }
