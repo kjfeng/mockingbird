@@ -18,11 +18,14 @@ import json
 @login_required(login_url='/login/')
 @onboard_only
 def open_chat(request):
-    if request.method == 'POST':
+    if request.method == 'POST' :#and 'markread' not in request.POST:
         username = request.POST.get('username')
         print(username)
         url = 'chat/' + username + "/"
         return redirect(url)
+    ##elif request.method == 'POST' and 'markread' in request.POST:
+     #   mark_read(request.user)
+
     else:
         print("not post")
 
@@ -50,6 +53,10 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.get_form()
+
+        pulled = pull_notif(self.request.user)
+        context['has_unread'] = pulled[0]
+        context['notif'] = pulled[1]
         return context
 
     def post(self, request, *args, **kwargs):
@@ -57,9 +64,13 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
             return HttpResponseForbidden()
         self.object = self.get_object()
         form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
+        if request.method == "POST" and 'markread' not in request.POST:
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
+        elif request.method == 'POST' and 'markread' in request.POST:
+            mark_read(request.user)
             return self.form_invalid(form)
 
     def form_valid(self, form):
