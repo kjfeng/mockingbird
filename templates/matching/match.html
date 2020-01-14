@@ -1,8 +1,7 @@
 {% extends 'base-app.html' %}
 {% load widget_tweaks %}
 {% block content %}
-    <h1>Match Configuration</h1>
-    <br>
+    <h1 class="title">Match Configuration</h1>
     <form action="{% url 'update_config' %}" method="post">
       {% csrf_token %}
         <div class="row">
@@ -27,8 +26,6 @@
     </form>
     <br>
   <p><a href="{% url 'home'%}">Home</a></p>
-    <br>
 
 
 {% endblock %}
-

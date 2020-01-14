@@ -2,7 +2,8 @@
 
 {% block content %}
 <div>
-    <h2 class="title">Settings</h2>
+    <h1 class="title">Settings</h1>
+    <h5 class='title'>App-wide Settings</h5>
     <div class="row">
          {% if request.user.profile.receive_email %}
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
@@ -10,7 +11,7 @@
           <p><i class="material-icons" style="color: #00d111">check</i>
         </div>
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-              <p>You are all set to receive email notifications from MockingBird.</p>
+              <p>You are all set to receive email notifications from Mockingbird.</p>
         </div>
 
         {% else %}
@@ -44,9 +45,33 @@
         {% endif %}
 
     </div>
-     <form action="{% url 'settings:edit_settings' %}" style="padding-top: 1rem; padding-bottom: 1rem">
-        <button type="submit" style="outline: none">Edit Settings</button>
+     <form action="{% url 'settings:edit_settings' %}" style="padding-bottom: 1rem">
+        <button type="submit" style="outline: none">Edit App Settings</button>
     </form>
+    <br>
+
+    <h5 class="title">Match Configurations</h5>
+    <p>You are currently matched for mock interviews by the following parameters:</p>
+    <p>Industry(s)<br>
+      {% if 'Role' in request.user.profile.rank_by%}
+      Role <br>
+      {% endif %}
+      {% if 'Year In School' in request.user.profile.rank_by%}
+      Year In School <br>
+      {% endif %}
+      {% if 'Similar Interviews' in request.user.profile.rank_by%}
+      Similar # of Interviews <br>
+      {% endif %}
+      {% if 'Most Interviews' in request.user.profile.rank_by%}
+      Most # of Interviews <br>
+      {% endif %}
+      {% if 'Rating' in request.user.profile.rank_by%}
+      User Rating
+      {% endif %}
+    </p>
+    <form action="{% url 'matchconfig' %}" style="padding-bottom: 1rem">
+       <button type="submit" style="outline: none">Manage Match Configurations</button>
+   </form>
 </div>
 
 {% endblock %}
