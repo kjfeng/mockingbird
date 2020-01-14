@@ -146,10 +146,10 @@ def match_view(request):
     match_list = match_cache_list
     if len(match_list) is 0:
         match_list = get_match_list(my_profile, recent_list)
-
+    print(match_list)
     # match = quick_match_prototype(my_profile)
     if match_list is not None and len(match_list) is not 0:
-        #print("here")
+        print("here")
         match = User.objects.get(username=match_list[0])
         match_profile = Profile.objects.get(user=match)
 
