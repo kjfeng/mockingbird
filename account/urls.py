@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^delete/$', views.account_delete, name='delete'),
     url(r'^edit/$', views.account_edit, name='edit'),
     url(r'^change_password/$', views.change_password, name='change_password'),
+    url(r'^change_password_success/$', views.change_password_success, name='change_password_success'),
     url(r'^statistics/$', views.show_statistics, name='show_statistics'),
     url(r'^(?P<username>\w+)/$', views.profile_view, name='profile_view'),
     url(r'', views.account_details, name='account_details'),

@@ -227,7 +227,7 @@ def change_password(request):
                 })
                 request.user.email_user(subject, message)
 
-            return redirect('account:account_details')
+            return redirect('account:change_password_success')
         else:
             messages.error(request, 'Please correct the error below.')
 
@@ -242,6 +242,17 @@ def change_password(request):
         'notif': pulled[1]
     }
     return render(request, 'account/change_password.html', context)
+
+@login_required(login_url='/login')
+def change_password_success(request):
+    if request.method == 'POST' and 'markread' in request.POST:
+        mark_read(request.user)
+    pulled = pull_notif(request.user)
+    context = {
+        'has_unread': pulled[0],
+        'notif': pulled[1]
+    }
+    return render(request, 'account/change_password_success.html', context)
 
 @login_required(login_url='/login')
 @onboard_only
