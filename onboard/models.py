@@ -11,6 +11,12 @@ INDUSTRY_CHOICES = [('None', 'None'),
                     ('Consulting', 'Consulting'),
                     ('Finance', 'Finance'),
                     ('Technology', 'Technology'),
+                    ('Law', 'Law'),
+                    ('Health Sciences', 'Health Sciences'),
+                    ('Non-Profit', 'Non-Profit'),
+                    ('Engineering', 'Engineering'),
+                    ('Government', 'Government'),
+                    ('Art', 'Art'),
                     ]
 
 ERROR_MESSAGES = {'Dup Industry':'Industry choice 1 and Industry choice 2 must be distinct.',
