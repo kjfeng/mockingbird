@@ -111,10 +111,10 @@ def _year_similarity(user_profile, match, isList):
 
     diff = float(math.fabs(user_year - match_year))
 
-    wdiff = 1 - (diff / 7)
+    wdiff = 1 - (diff / 6)
 
     if isList:
-        return wdiff * 7
+        return wdiff * 6
         
     return wdiff
 
