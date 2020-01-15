@@ -174,6 +174,8 @@ def match_view(request):
         match_cache.matches = to_user_string(match_list)
         match_cache.save()
         print("cache after matching: " + match_cache.matches, file=stderr)
+    else:
+        request.session['matchedUser'] = None
 
     return redirect('../matchresults/')
 
