@@ -155,7 +155,7 @@
         {% elif user.profile.is_sender %}
         <h1 style="font-weight: 600">{{match.first_name}}</h1>
         <p><a href="{% url 'account:profile_view' match.username %}" style="color: #FFC933">@{{ match.username }}</a></p>
-        <div class="col-md-12 col-lg-6">
+        <div class="col-md-12 col-lg-6" style="padding-left: 0">
           {% if match.statistics.tot_interview >= 25 and match.statistics.overall_rating >= 4 %}
           <div class="mb-badge mb-badge-expert">
             <p class="mb-badge-text"> expert flyer</p>
@@ -198,7 +198,7 @@
           </div>
         </div>
         <p>You will receive a notification once this person responds to your request.</p>
-        <form action="{% url 'confirm_cancel_request' %}" style='padding: 5px 10px 10px 10px;outline: none;'>
+        <form action="{% url 'confirm_cancel_request' %}" style='padding: 5px 0px 10px 0px;outline: none;'>
           <button type="submit" style="background-color: #FFC933; color: #3f3f3f; outline: none;">Cancel Request</button>
         </form>
         {% else %}
