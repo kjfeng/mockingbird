@@ -8,15 +8,15 @@ from phone_field import PhoneField
 BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
 
 INDUSTRY_CHOICES = [('None', 'None'),
-                    ('Consulting', 'Consulting'),
-                    ('Finance', 'Finance'),
-                    ('Technology', 'Technology'),
-                    ('Law', 'Law'),
-                    ('Health Sciences', 'Health Sciences'),
-                    ('Non-Profit', 'Non-Profit'),
-                    ('Engineering', 'Engineering'),
-                    ('Government', 'Government'),
                     ('Art', 'Art'),
+                    ('Consulting', 'Consulting'),
+                    ('Engineering', 'Engineering'),
+                    ('Finance', 'Finance'),
+                    ('Government', 'Government'),
+                    ('Health Sciences', 'Health Sciences'),
+                    ('Law', 'Law'),
+                    ('Non-Profit', 'Non-Profit'),
+                    ('Technology', 'Technology'),
                     ('Other', 'Other'),
                     ]
 
